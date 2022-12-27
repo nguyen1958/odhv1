@@ -1,0 +1,96 @@
+
+##  Template to generate the listing for buildings into format xls
+
+   #set($sheet = $workbook.getSheetAt(0))
+   $sheet
+   #set($rowCount = 0)
+   $pageableResults
+   $pageableResults.results.size()
+	 #foreach ($record in $pageableResults.getResults())
+	    #set($immeuble = $record.odet_immeuble)
+	    #set($transCount = $rowCount + 5)
+	    #set($crtRow = $sheet.createRow($transCount))
+      #set($shown = $rowCount + 1)
+      $crtRow.createCell($immeuble.getShortValue(1)).setCellValue($shown)
+      $crtRow.createCell($immeuble.getShortValue(2)).setCellValue($immeuble.odim_id)
+
+      $crtRow.createCell($immeuble.getShortValue(3)).setCellValue($immeuble.odim_cadsct)
+      $crtRow.createCell($immeuble.getShortValue(4)).setCellValue($immeuble.odim_cadp1)
+      $crtRow.createCell($immeuble.getShortValue(5)).setCellValue($immeuble.odim_cadp2)
+      $crtRow.createCell($immeuble.getShortValue(6)).setCellValue($immeuble.odim_cadp3)
+      $crtRow.createCell($immeuble.getShortValue(7)).setCellValue($immeuble.odim_cadp4)
+
+      $crtRow.createCell($immeuble.getShortValue(8)).setCellValue($immeuble.odim_ilsct)
+      $crtRow.createCell($immeuble.getShortValue(9)).setCellValue($immeuble.odim_ililot)
+      $crtRow.createCell($immeuble.getShortValue(10)).setCellValue($immeuble.odim_ilbat)
+
+      $immeuble.odim_datecrea
+       #set($cStyleDate = $workbook.createCellStyle())
+       #set($formatDate = $workbook.createDataFormat())
+       #set($datePattern = "d-mmm-yy")
+       #set($indexPattern = $formatDate.getBuiltinFormat($datePattern))
+       $cStyleDate.setDataFormat($indexPattern)
+
+      #if($immeuble.odim_datecrea)
+        #set($dateCell = $crtRow.createCell($immeuble.getShortValue(11)))
+        $dateCell.setCellStyle($cStyleDate)
+        $dateCell.setCellValue($immeuble.odim_datecrea)
+      #else
+        $crtRow.createCell($immeuble.getShortValue(11))
+      #end
+      $crtRow.createCell($immeuble.getShortValue(12)).setCellValue($immeuble.odim_canton)
+      $crtRow.createCell($immeuble.getShortValue(13)).setCellValue($immeuble.odim_quartier.odnt_nom)
+      $crtRow.createCell($immeuble.getShortValue(14)).setCellValue($immeuble.odim_nom)
+
+      $crtRow.createCell($immeuble.getShortValue(15)).setCellValue($immeuble.odim_groupe.odnt_nom)
+      $crtRow.createCell($immeuble.getShortValue(16)).setCellValue($immeuble.odim_type.odnt_nom)
+
+      $crtRow.createCell($immeuble.getShortValue(17)).setCellValue($immeuble.odim_desc)
+      $crtRow.createCell($immeuble.getShortValue(18)).setCellValue($immeuble.odim_num)
+      $crtRow.createCell($immeuble.getShortValue(19)).setCellValue("$immeuble.odim_rue.odrue_type $immeuble.odim_rue.odrue_liaison $immeuble.odim_rue.odrue_nom")
+      $crtRow.createCell($immeuble.getShortValue(20)).setCellValue($immeuble.odim_canton)
+
+      $crtRow.createCell($immeuble.getShortValue(21)).setCellValue($immeuble.odim_alignement)
+      $crtRow.createCell($immeuble.getShortValue(22)).setCellValue($immeuble.odim_position)
+
+      $crtRow.createCell($immeuble.getShortValue(23)).setCellValue($immeuble.odim_niv)
+      $crtRow.createCell($immeuble.getShortValue(24)).setCellValue($immeuble.odim_haut)
+      $crtRow.createCell($immeuble.getShortValue(25)).setCellValue($immeuble.odim_surfacesol)
+      $crtRow.createCell($immeuble.getShortValue(26)).setCellValue($immeuble.odim_surfacetot)
+
+      #if($immeuble.odim_syndic)
+        $crtRow.createCell($immeuble.getShortValue(27)).setCellValue($immeuble.odim_syndic.odsyn_code)
+        $crtRow.createCell($immeuble.getShortValue(28)).setCellValue("$immeuble.odim_syndic.odsyn_rpren $immeuble.odim_syndic.odsyn_rnom")
+      #end
+      $crtRow.createCell($immeuble.getShortValue(29)).setCellValue($immeuble.odim_lots.size())
+      $crtRow.createCell($immeuble.getShortValue(30)).setCellValue($immeuble.odim_procedures.size())
+
+      #if($immeuble.odim_partcoms)
+      $crtRow.createCell($immeuble.getShortValue(31)).setCellValue($immeuble.odim_partcoms.odim_ncaves)
+      $crtRow.createCell($immeuble.getShortValue(32)).setCellValue($immeuble.odim_partcoms.odim_parking)
+      $crtRow.createCell($immeuble.getShortValue(33)).setCellValue($immeuble.odim_partcoms.odim_ascenseur)
+      $crtRow.createCell($immeuble.getShortValue(34)).setCellValue($immeuble.odim_partcoms.odim_grenier)
+      $crtRow.createCell($immeuble.getShortValue(35)).setCellValue($immeuble.odim_partcoms.odim_locpoub)
+      $crtRow.createCell($immeuble.getShortValue(36)).setCellValue($immeuble.odim_partcoms.odim_chauffage)
+      $crtRow.createCell($immeuble.getShortValue(37)).setCellValue($immeuble.odim_partcoms.odim_gaz)
+      $crtRow.createCell($immeuble.getShortValue(38)).setCellValue($immeuble.odim_partcoms.odim_eau)
+      $crtRow.createCell($immeuble.getShortValue(39)).setCellValue($immeuble.odim_partcoms.odim_partscomscom)
+      #end
+
+      #if($immeuble_odimenv)
+      $crtRow.createCell($immeuble.getShortValue(40)).setCellValue($immeuble.odim_env.odim_terjeux)
+      $crtRow.createCell($immeuble.getShortValue(41)).setCellValue($immeuble.odim_env.odim_pelouse)
+      $crtRow.createCell($immeuble.getShortValue(42)).setCellValue($immeuble.odim_env.odim_enventr)
+      $crtRow.createCell($immeuble.getShortValue(43)).setCellValue($immeuble.odim_env.odim_envcomment)
+      #end
+
+      $crtRow.createCell($immeuble.getShortValue(44)).setCellValue($record.odet_plomb)
+      $crtRow.createCell($immeuble.getShortValue(45)).setCellValue($record.odet_amiante)
+      $crtRow.createCell($immeuble.getShortValue(46)).setCellValue($record.odet_moisissure)
+      $crtRow.createCell($immeuble.getShortValue(47)).setCellValue($record.odet_salpetre)
+      $crtRow.createCell($immeuble.getShortValue(48)).setCellValue($record.odet_humidite)
+      $crtRow.createCell($immeuble.getShortValue(49)).setCellValue($record.odet_termite)
+      $crtRow.createCell($immeuble.getShortValue(50)).setCellValue($record.getNotNullValue($record.odet_commentaire, ""))
+
+      #set($rowCount = $rowCount + 1)
+  #end

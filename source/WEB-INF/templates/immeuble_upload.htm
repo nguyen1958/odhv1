@@ -1,0 +1,197 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+
+ function showFile(indexForm){
+    uploadForm = document.forms[indexForm];
+    if(uploadForm.immeuble_docs.options.selectedIndex < 0)
+      alert("Choisissez d'abord un fichier dans la liste.");
+    else {
+      selectedFile = uploadForm.immeuble_docs.options[uploadForm.immeuble_docs.options.selectedIndex].value;
+      eval("window.open('"+selectedFile+"','file',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=600, width=600, top=0, left=0').focus();" );
+      uploadForm.immeuble_docs.options[uploadForm.immeuble_doc.options.selectedIndex].selected=false;
+   }
+ }
+
+ function addFile(indexForm, fileType){
+    uploadForm = document.forms[indexForm];
+    if(uploadForm.add_doc.value == '')
+      alert("Veuillez choisir un fichier à ajouter avec le bouton parcourir avant de cliquer sur le bouton ajouter.");
+    else {
+      selectedFile = uploadForm.add_doc.value;
+      uploadForm.action="immeuble_upload?dispatcher=ADD&file_type="+fileType+"&odim_id=$!req.getParameter('odim_id')&odimr_id=$!req.getParameter('odimr_id')";
+      uploadForm.submit();
+    }
+ }
+
+ function removeFile(indexForm, fileType){
+    uploadForm = document.forms[indexForm];
+    if(uploadForm.immeuble_docs.options.selectedIndex < 0)
+       alert("Choisissez d'abord un fichier dans la liste.");
+     else{
+        if(confirm("Voulez-vous vraiment retirer  cette pièce jointe ?"))
+        {
+          uploadForm.action="immeuble_upload?dispatcher=REMOVE&file_type="+fileType+"&odim_id=$!req.getParameter('odim_id')&odimr_id=$!req.getParameter('odimr_id')";
+          uploadForm.submit();
+        }
+     }
+ }
+ -->
+ </script>
+ <style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+<br><br>
+   <table  border="0" cellspacing="1" cellpadding="0">
+     <tr>
+      <td width="100" ><div align="right"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font></td>
+      <td colspan="3">
+      <strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+       #if($req.getParameter('odimr_id') && $req.getParameter('odimr_id') != '')
+         <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$immeuble.odim_id" style="color:blue">$!immeuble.notNullName</a> / Procedure $req.getParameter('odimr_id') - Documents et photos
+      #else
+         <font color="#800000">$!immeuble.notNullName</font> - Documents et photos
+      #end
+     </font></strong></div></td>
+    </tr>
+    <tr><td colspan="3">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($req.getParameter('odimr_id') && $req.getParameter('odimr_id') != '')
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>PROCEDURE <font color="#800000">$!req.getParameter('odimr_id')</font>
+      #else
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>IMMEUBLE <font color="#800000">$!immeuble.notNullName</font>
+      #end
+      - Pièces(s) jointe(s)
+      </td>
+    </tr>
+    </table>
+    <br><br>
+    <center>
+<form name="docForm" enctype="multipart/form-data" method="post" action="immeuble_upload?file_type=documents&odim_id=$!req.getParameter('odim_id')&odimr_id=$!req.getParameter('odimr_id')">
+   <table width="90%" border="0" cellspacing="1" cellpadding="0">
+      <tr>
+          <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td width="210" valign="top" >
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+              <td width="100%" background="images/fond_sousmenu.gif" height="20"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Documents
+           </font></strong></em></td>
+            </tr>
+          </table>
+          </td>
+              <td nowrap >
+                <select size="5" name="immeuble_docs" onDblClick="showFile(0)" style="width:295;height:80;" >
+                #foreach($item in $attached_docs)
+                  #if($req.getParameter('odimr_id') && $req.getParameter('odimr_id') != '')
+                   <option value="$!docs_path/$!req.getParameter('odim_id')/procedures/$!req.getParameter('odimr_id')/documents/$!immeuble.encodeISO($!item.toString())"> $!item.toString()
+                  #else
+                   <option value="$!docs_path/$!req.getParameter('odim_id')/documents/$!immeuble.encodeISO($!item.toString())"> $!item.toString()
+                  #end
+                #end
+                </select>
+              </td>
+              <td width="50%">
+                &nbsp;<a href="javascript:showFile(0)" ><img src="images/voirpetit.gif" border="0" width="128" height="17" ></a><br>
+                &nbsp;<a href="javascript:removeFile(0, 'documents')" ><img src="images/retirerpetit.gif" border="0" width="128" height="17" ></a>
+              </td>
+        </tr>
+        <tr>
+          <td width="50" valign="top"> <div align="right"></div></td>
+          <td width="210" valign="top" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+           </font></strong></em></td>
+          <td valign="absmiddle" >
+            <input type="file"   name="add_doc"  size="25"  >
+          </td><td>
+            &nbsp;<a href="javascript:addFile(0,'documents')" ><img src="images/ajouterpetit.gif" border="0" width="128" height="17" ></a>
+          </td>
+        </tr>
+</form>
+<form name="photosForm" enctype="multipart/form-data" method="post" action="immeuble_upload?file_type=photos&odim_id=$!req.getParameter('odim_id')&odimr_id=$!req.getParameter('odimr_id')">
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+      <tr>
+          <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td width="210" valign="top" >
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+              <td width="100%" background="images/fond_sousmenu.gif" height="20"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Photos
+           </font></strong></em></td>
+            </tr>
+          </table>
+          </td>
+              <td nowrap >
+                <select size="5" name="immeuble_docs" onDblClick="showFile(1)" style="width:295;height:80;" >
+                #foreach($item in $attached_photos)
+                  #if($req.getParameter('odimr_id') && $req.getParameter('odimr_id') != '')
+                    <option value="$!docs_path/$!req.getParameter('odim_id')/procedures/$!req.getParameter('odimr_id')/photos/$!immeuble.encodeISO($!item.toString())"> $!item.toString()
+                  #else
+                    <option value="$!docs_path/$!req.getParameter('odim_id')/photos/$!immeuble.encodeISO($!item.toString())"> $!item.toString()
+                  #end
+                #end
+                </select>
+              </td>
+              <td>
+                &nbsp;<a href="javascript:showFile(1)" ><img src="images/voirpetit.gif" border="0" width="128" height="17" ></a><br>
+                &nbsp;<a href="javascript:removeFile(1, 'photos')" ><img src="images/retirerpetit.gif" border="0" width="128" height="17" ></a>
+              </td>
+        </tr>
+        <tr>
+          <td width="50" valign="top"> <div align="right"></div></td>
+          <td width="210" valign="top" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+           </font></strong></em></td>
+          <td valign="absmiddle" >
+            <input type="file"   name="add_doc"  size="25"  >
+          </td><td>
+            &nbsp;<a href="javascript:addFile(1, 'photos')" ><img src="images/ajouterpetit.gif" border="0" width="128" height="17" ></a>
+          </td>
+        </tr>
+</form>
+<tr><td colspan="4">&nbsp;</td></tr>
+ <tr>
+      <td valign="top" colspan="2">&nbsp;</td>
+      <td colspan="2">
+      #if($req.getParameter('odimr_id') && $req.getParameter('odimr_id') != '')
+        <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!req.getParameter('odimr_id')" >
+      #else
+        <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$immeuble.odim_id" >
+      #end
+        <img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+    </tr>
+    </table>
+</center>
+</body>
+</html>

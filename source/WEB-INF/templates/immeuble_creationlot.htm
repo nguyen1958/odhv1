@@ -1,0 +1,483 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $req.getParameter("for_object"))
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="lot_form" >
+<input type="hidden" name="odlot_id" value="$!lot.odlot_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+<input type="hidden" name="for_object" value="$!pForObject" >
+  <p>&nbsp;</p>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong>
+      #if($for_object.equals("immeuble"))
+         <font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Immeuble
+           <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;" >$!lot.odlot_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=$!pForObject&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;">Globale</a>
+          </font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          #if($actionparam.endsWith("UPDATE"))
+            &nbsp;/ Modification lot
+            &nbsp;/ <a href="lot_form?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Ajout d'un lot</a>
+          #else
+            &nbsp;/ Ajout d'un lot
+          #end
+      #elseif($for_object.equals("proprietaire"))
+         <font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Immeuble
+          #if($actionparam.endsWith("UPDATE"))
+            <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;" >$!lot.odlot_immeuble.notNullName</a>
+          #end
+          </font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          #if($actionparam.endsWith("UPDATE"))
+            &nbsp;/ Modification lot
+            &nbsp;/ <a href="lot_form?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Ajout d'un lot</a>
+          #else
+            &nbsp;/ Ajout d'un lot
+          #end
+      #elseif($for_object.equals("locataire"))
+         <font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Immeuble
+          #if($actionparam.endsWith("UPDATE"))
+            <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;" >$!lot.odlot_immeuble.notNullName</a>
+          #end
+          </font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          #if($actionparam.endsWith("UPDATE"))
+            &nbsp;/ Modification lot
+            &nbsp;/ <a href="lot_form?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Ajout d'un lot</a>
+          #else
+            &nbsp;/ Ajout d'un lot (Pour ce locataire)
+          #end
+      #end
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>LOT <font color="#800000">$!lot.odlot_code</font> / <a href="hist?for_object=$!pForObject&odlot_immeuble=$!lot.odlot_immeuble.odim_id&odpl_lot=$!lot.odlot_id&odlot_id=$!lot.odlot_id" style="color:blue;" >Historique</a>
+        / <a href="insalubritelot?odlot_id=$!lot.odlot_id&odii_annee=$!year" style="color:blue;" >Insalubrité</a>
+      #end
+      &nbsp;
+      </td>
+    </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($lot.hasErrors())
+                  Impossible de valider : Il y a $!lot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($lot.hasErrors())
+                  Impossible de valider : Il y a $!lot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        lot *</font></strong></em></td>
+      <td nowrap>&nbsp; Bat*&nbsp;<input name="odlot_codebat" type="text"  value="$!lot.odlot_codelot.getAltValue($lot.odlot_codelot.odlot_codebat, 'odlot_codebat')" size="2" maxlength="2">
+                 Esc&nbsp;<input name="odlot_codeesc" type="text"  value="$!lot.odlot_codelot.getAltValue($!lot.zeroFillToStart($lot.odlot_codelot.odlot_codeesc.toString(), 2) ,'odlot_codeesc')" size="2" maxlength="2">
+                 Niveau&nbsp;<input name="odlot_codeniv" type="text"  value="$!lot.odlot_codelot.getAltValue($!lot.zeroFillToStart($lot.odlot_codelot.odlot_codeniv.toString(), 2), 'odlot_codeniv')" size="2" maxlength="2">
+                 Num. lot*&nbsp;<input name="odlot_codeimm" type="text"  value="$!lot.odlot_codelot.getAltValue($!lot.zeroFillToStart($lot.odlot_codelot.odlot_codeimm.toString(), 5), 'odlot_codeimm')" size="5" maxlength="5">
+              <!-- error message -->
+                 #if ($lot.hasError("odlot_codebat", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le code b&acirc;timent est obligatoire.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codebat", "MIN_LENGTH"))
+                   <font color="red">Le code b&acirc;timent doit avoir 2 caractères.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codebat", "MAX_LENGTH"))
+                   <font color="red">Le code b&acirc;timent doit avoir 2 caractères.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codeesc", "IS_INT"))
+                   <font color="red">Pour le code escalier il faut introduire seulement des chiffres.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codeimm", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le code immeuble est obligatoire.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codeimm", "IS_INT"))
+                   <font color="red">Pour le code immeuble il faut introduire seulement des chiffres.</font>
+                 #end
+                 #if ($lot.hasError("odlot_codelot","ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà un lot avec ce code lot.</font>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type
+        *</font></strong></em></td>
+     <td>&nbsp; <select name="odlot_type" >
+          <option value="">
+          #foreach($item in $!lot.getLotTypes())
+             <option value="$item.odnt_id" $lot.getSelectedAttribute($item.getOdnt_id().toString(), $!lot.getOdlot_type().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+               #if ($lot.hasError("odlot_type", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($lot.hasError("odlot_type", "NOT_EXISTS"))
+                   <font color="red">Le type choisi n'existe plus. </font><br/>
+                #end
+        </td>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Superficie
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odlot_situ" type="text" value="$!lot.getAltValue($lot.odlot_situ, 'odlot_situ')" size="8" maxlength="8">
+                 #if ($lot.hasError("odlot_situ", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($lot.hasError("odlot_situ", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Activit&eacute;
+        *</font></strong></em></td>
+     <td>&nbsp; <select name="odlot_activ" >
+          <option value="">
+          #foreach($item in $!lot.getLotActivities())
+             <option value="$item.odnt_id" $lot.getSelectedAttribute($item.getOdnt_id().toString(), $!lot.getOdlot_activ().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+               #if ($lot.hasError("odlot_activ", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($lot.hasError("odlot_activ", "NOT_EXISTS"))
+                   <font color="red">Le type choisi n'existe plus. </font><br/>
+                #end
+        </td>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Immeuble*
+        </font></strong></em></td>
+      <td>&nbsp;
+         <input name="odlot_imm" type="text" value="$!lot.getAltValue($lot.odlot_immeuble.notNullName, '')" size="40" maxlength="60" readonly>
+         <input type="hidden" name="odlot_immeuble" value="$!lot.odlot_immeuble.odim_id" >
+<!--
+        <a href = "#" onClick ="objectWin = window.open('im_list?object=LOT&chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+
+               #if ($lot.hasError("odlot_immeuble", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($lot.hasError("odlot_immeuble", "NOT_EXISTS"))
+                   <font color="red">L'immeuble choisi n'existe plus. </font><br/>
+                #end
+-->
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Garage
+        </font></strong></em></td>
+      <td>&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input name="odlot_avgarage" type="radio" value="true" $lot.getCheckedAttribute(true, $lot.odlot_avgarage) >
+        Oui
+        <input name="odlot_avgarage" type="radio" value="false" $lot.getCheckedAttribute(false, $lot.odlot_avgarage)>
+        Non </font>
+        <input name="odlot_garage" type="text" value="$!lot.getAltValue($lot.odlot_garage, 'odlot_garage')" size="20" maxlength="20">
+                 #if ($lot.hasError("odlot_garage", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 20 caractères.</font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Cave
+        </font></strong></em></td>
+      <td>&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input name="odlot_avcave" type="radio" value="true" $lot.getCheckedAttribute(true, $lot.odlot_avcave)>
+        Oui
+        <input type="radio" name="odlot_avcave" value="false" $lot.getCheckedAttribute(false, $lot.odlot_avcave)>
+        Non </font>
+        <input name="odlot_cave" type="text" value="$!lot.getAltValue($lot.odlot_cave, 'odlot_cave')" size="20" maxlength="20">
+                 #if ($lot.hasError("odlot_cave", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 20 caractères.</font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaires
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odlot_com" type="text" value="$!lot.getAltValue($lot.odlot_com, 'odlot_com')" size="40" maxlength="80">
+                 #if ($lot.hasError("odlot_com", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 80 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Informations
+        1 </font></strong></em></td>
+      <td>&nbsp; <input name="odlot_info1" type="text" value="$!lot.getAltValue($lot.odlot_info1, 'odlot_info1')" size="20" maxlength="20">
+                 #if ($lot.hasError("odlot_info1", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 20 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Informations
+        2</font></strong></em></td>
+      <td>&nbsp; <input name="odlot_info2" type="text" value="$!lot.getAltValue($lot.odlot_info2, 'odlot_info2')" size="20" maxlength="20">
+                 #if ($lot.hasError("odlot_info2", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 20 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Informations
+        3 </font></strong></em></td>
+      <td>&nbsp; <input name="odlot_info3" type="text" value="$!lot.getAltValue($lot.odlot_info3, 'odlot_info3')" size="20" maxlength="20">
+                 #if ($lot.hasError("odlot_info3", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 20 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+<!--
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Propri&eacute;taire
+        *</font></strong></em></td>
+      <td>&nbsp;
+        #set($proprietaire = $!lot.odlot_proprietaire)
+        <input name="proprietaire" type="text" value="$!lot.getAltValue($!proprietaire.odpro_pren, '') $!proprietaire.getAltValue($!proprietaire.odpro_nom, '')" size="40" maxlength="60" readonly>
+        <input type="hidden" name="odlot_proprietaire" value="$!lot.odlot_proprietaire.odpro_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('prop_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+                #if ($lot.hasError("odlot_proprietaire", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($lot.hasError("odlot_proprietaire", "NOT_EXISTS"))
+                   <font color="red">Le proprietaire choisi n'existe plus. </font><br/>
+                #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Locataire
+        </font></strong></em></td>
+      <td>&nbsp;
+        #set($locataire = $!lot.odlot_locataire)
+        <input name="locataire" type="text" value="$!lot.getAltValue($!lot.odlot_locataire.odloc_pren, '') $!lot.getAltValue($!lot.odlot_locataire.odloc_nom, '')" size="40" maxlength="60" readonly>
+        <input type="hidden" name="odlot_locataire" value="$!lot.odlot_locataire.odloc_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('loc_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.odlot_locataire.value='';document.objectForm.locataire.value='';"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+               #if ($lot.hasError("odlot_locataire", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($lot.hasError("odlot_locataire", "NOT_EXISTS"))
+                   <font color="red">Le locataire choisi n'existe plus. </font><br/>
+                #end
+      </td>
+    </tr>
+-->
+    #set($etatPar = $lot.odlot_etatpar)
+    #set($seuil = $etatPar.odet_seuil)
+    #set($colorForStylePb = "black")
+    #set($colorForStyleAm = "black")
+    #if($etatPar.odet_plomb && $seuil.odet_plomb && $etatPar.odet_plomb.compareTo($seuil.odet_plomb) > 0)
+      #set($colorForStylePb = "red")
+    #end
+    #if($etatPar.odet_amiante && $seuil.odet_amiante && $etatPar.odet_amiante.compareTo($seuil.odet_amiante) > 0)
+      #set($colorForStyleAm = "red")
+    #end
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Etat parasitaire
+        </font></strong></em></td>
+      <td nowrap>&nbsp;Termite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <input name="odet_termite" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_termite, true) onClick="if(document.objectForm.odet_termite[0].checked)document.getElementById('etat_passed_panel').style.visibility='hidden';"> Oui
+           <input name="odet_termite" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_termite, false) onClick="if(document.objectForm.odet_termite[1].checked)document.getElementById('etat_passed_panel').style.visibility='visible';"> Non
+            <span id="etat_passed_panel" style="visibility: hidden;">
+            #if($etatPar.odet_termite)
+              &nbsp;&nbsp;&nbsp;<input type="checkbox" name="etat_passed" value="true" >Passer l'immeuble en termite "non" si tous les lots sont en termite "non"
+            #end
+            </span>
+
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;Moisissure &nbsp;
+          <input name="odet_moisissure" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_moisissure, true) onClick="if(document.objectForm.odet_moisissure[0].checked)document.getElementById('etat_passed2_panel').style.visibility='hidden';"> Oui
+          <input name="odet_moisissure" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_moisissure, false) onClick="if(document.objectForm.odet_moisissure[1].checked)document.getElementById('etat_passed2_panel').style.visibility='visible';"> Non&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="etat_passed2_panel" style="visibility: hidden;">
+            #if($etatPar.odet_moisissure)
+              &nbsp;&nbsp;&nbsp;<input type="checkbox" name="etat_passed2" value="true" >Passer l'immeuble en moisissure "non" si tous les lots sont en moisissure "non"
+            #end
+            </span>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;Salpêtre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="odet_salpetre" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_salpetre, true) onClick="if(document.objectForm.odet_salpetre[0].checked)document.getElementById('etat_passed3_panel').style.visibility='hidden';"> Oui
+          <input name="odet_salpetre" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_salpetre, false) onClick="if(document.objectForm.odet_salpetre[1].checked)document.getElementById('etat_passed3_panel').style.visibility='visible';"> Non&nbsp;&nbsp;&nbsp;&nbsp;
+          <span id="etat_passed3_panel" style="visibility: hidden;">
+            #if($etatPar.odet_salpetre)
+              &nbsp;&nbsp;&nbsp;<input type="checkbox" name="etat_passed3" value="true" >Passer l'immeuble en salpêtre "non" si tous les lots sont en salpêtre "non"
+            #end
+          </span>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;Humidit&eacute;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="odet_humidite" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_humidite, true) onClick="if(document.objectForm.odet_humidite[0].checked)document.getElementById('etat_passed4_panel').style.visibility='hidden';"> Oui
+          <input name="odet_humidite" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_humidite, false) onClick="if(document.objectForm.odet_humidite[1].checked)document.getElementById('etat_passed4_panel').style.visibility='visible';"> Non&nbsp;&nbsp;&nbsp;&nbsp;
+          <span id="etat_passed4_panel" style="visibility: hidden;">
+            #if($etatPar.odet_humidite)
+              &nbsp;&nbsp;&nbsp;<input type="checkbox" name="etat_passed4" value="true" >Passer l'immeuble en humidit&eacute "non" si tous les lots sont en humidit&eacute "non"
+            #end
+          </span>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Commentaire
+        </strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odet_commentaire" cols="50" rows="2" >$!lot.getAltValue($etatPar.odet_commentaire, 'odet_commentaire')</textarea>
+                 #if ($lot.hasError("odet_commentaire", "MAX_LENGTH"))
+                   <font color="red">Le commentaire est trop long. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top" >
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; Plomb <input name="odet_plomb" type="text" value="$!etatPar.getAltValue($etatPar.odet_plomb, 'odet_plomb')" style="color:$!colorForStylePb;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($lot.hasError("odet_plomb", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($lot.hasError("odet_plomb", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($lot.hasError("odet_plomb", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top" >
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; Amiante <input name="odet_amiante" type="text" value="$!etatPar.getAltValue($etatPar.odet_amiante, 'odet_amiante')" style="color:$!colorForStyleAm;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($lot.hasError("odet_amiante", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($lot.hasError("odet_amiante", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($lot.hasError("odet_amiante", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="lot_list?for_object=$!pForObject&odlot_immeuble=$!lot.odlot_immeuble.odim_id&odlot_locataire=$!lot.odlot_locataire.odloc_id&odlot_proprietaire=$!lot.odlot_proprietaire.odpro_id" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+</body>
+</html>

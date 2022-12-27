@@ -1,0 +1,106 @@
+ <script>
+ function openNewSession(windObject, sessionStatus){
+   if(windObject != null)
+       windObject.close();
+   window.location="$req.getRequestURI()?session_status="+sessionStatus;
+ }
+
+function MM_showHideLayers(divid, sp, arg) {
+  x=document.getElementById(divid);
+  if(arg == "show")
+    x.style.display= "block";
+  else x.style.display = "none";
+}
+
+ </script>
+
+<div align="center" style="position:absolute; left: 0; width: 16%; top: 0px;height:50;" >
+<img src="images/immeuble01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;width:100%;" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">
+&nbsp;<a href="#" class="menu" >&nbsp;&nbsp;<strong>Immeuble</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 16%; width: 14%; top: 0px;height:50;">
+<img src="images/moteur01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')" >
+&nbsp;<a href="#" class="menu" onClick="window.location.href='recherche';return false;">&nbsp;&nbsp;<strong>Recherche</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 30%; width: 14%; top: 0px;height:50;">
+<img src="images/listing01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')">
+&nbsp;<a href="#" class="menu" onClick="window.location.href='listing';return false;" >&nbsp;&nbsp;<strong>Listing</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 44%; width: 14%; top: 0px;height:50;">
+<img src="images/listing01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">
+&nbsp;<a href="#" class="menu" >&nbsp;&nbsp;<strong>Insalubrit&eacute;</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 58%; width: 14%; top: 0px;height:50;">
+<img src="images/maintenance01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">
+&nbsp;<a href="#" class="menu" >&nbsp;&nbsp;<strong>Maintenance</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 72%; width: 14%; top: 0px;height:50;">
+<img src="images/administration01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu5','','show')" onMouseOut="MM_showHideLayers('menu5','','hide')">
+&nbsp;<a href="#" class="menu" >&nbsp;&nbsp;<strong>Administration</strong></a>&nbsp;
+</div>
+</div>
+<div align="center" style="position:absolute; left: 86%; width: 14%; top: 0px;height:50;">
+<img src="images/deconnexion01.gif" width="60" height="30"><br>
+<div style="background-image:url(images/fond_menu.gif);height:20;" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">
+&nbsp;<a href="#" class="menu" >&nbsp;&nbsp;<strong>Deconnexion</strong></a>&nbsp;
+</div>
+</div>
+
+<div id="menu1" style="position:absolute; display:none; left: 0%; width:10; top: 50;z-index:2;" onMouseOver="MM_showHideLayers('menu1','','show')" onMouseOut="MM_showHideLayers('menu1','','hide')">
+</div>
+<div id="menu2" style="position:absolute; display:none; left: 1%; top: 50; width:170;z-index:2;" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;height:15;"><a href="im_form"  class="menu" ><strong>&nbsp;&nbsp;&nbsp;Création immeuble</strong></a></style></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="prop_form"  class="menu" ><strong>&nbsp;&nbsp;&nbsp;Création propriétaire</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="loc_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création locataire</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="prop_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche&nbsp;propriétaire</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="loc_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche locataire</strong></a></div>
+</div>
+<div id="menu7" style="position:absolute; left: 15%; top: 50;width:170; display:none;z-index:2;" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')">
+</div>
+<div id="menu6" style="position:absolute; left: 29%; top: 50;width:170; display:none;z-index:2;" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')">
+</div>
+<div id="menu3" style="position:absolute; display:none; left: 43%; top: 50; width:170;z-index:2;" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="insalubrite?type=I"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; immeuble</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="insalubrite?type=L"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; logement</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="#" onClick="alert('Function inactive!')"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; maison</strong></a></div>
+</div>
+
+<div id="menu4" style="position:absolute; left: 57%; top: 50;width:170; display:none;z-index:2;" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="synd_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création syndic</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="synd_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche syndic</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="exp_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création expert</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="exp_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche expert</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="suiv_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création suiveur</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="suiv_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche suiveur</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="rue_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création rue</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="rue_list?new=true" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche rue</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="relogement_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création relogement</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="relogement_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche relogement</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="entrep_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création entreprise</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="entrep_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;entreprise</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="nat_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création option</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="nat_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche option</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="seuil" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Gestion seuil</strong></a></div>
+</div>
+
+<div id="menu5" style="position:absolute; left: 71%; top: 50;width:170; display:none;z-index:2;" onMouseOver="MM_showHideLayers('menu5','','show')" onMouseOut="MM_showHideLayers('menu5','','hide')">
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><a href="util_form" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création utilisateur</strong></a></div>
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;height:15;"><a href="util_list"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;utilisateur</strong></a></div>
+  </table>
+</div>
+
+<div id="menu8" style="position:absolute; left: 82%; top: 50;width:170; display:none;z-index:2;" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">
+  <div style="background-color: #CCCC99;;display:block;border: 1px solid;height:15;"><center><a href="login?session_status=closed&dispatcher=DECONNECT" class="menu" title=""><strong><span style="color:#800000;">$!req.getSession().getAttribute('remoteUser').getOduti_utilisateur()</span></strong></a></center></div>
+</div>
+<br>

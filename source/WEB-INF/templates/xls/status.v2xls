@@ -1,0 +1,46 @@
+
+##  Template to generate the listing for status into format xls
+
+   #set($sheet = $workbook.getSheetAt(0))
+   $sheet
+   #set($rowCount = 0)
+   $pageableResults
+   $pageableResults.results.size()
+	 #foreach ($record in $pageableResults.getResults())
+	    #set($immeuble = $record.odet_immeuble)
+	    $immeuble
+	    #set($transCount = $rowCount + 5)
+	    #set($crtRow = $sheet.createRow($transCount))
+      $crtRow
+      $crtRow.createCell($immeuble.getShortValue(1)).setCellValue($rowCount)
+
+      #if($immeuble.odim_syndic)
+        $crtRow.createCell($immeuble.getShortValue(2)).setCellValue($!immeuble.odim_syndic.odsyn_code)
+        $crtRow.createCell($immeuble.getShortValue(3)).setCellValue("$!immeuble.odim_syndic.odsyn_rpren $!immeuble.odim_syndic.odsyn_rnom")
+      #end
+
+      $crtRow.createCell($immeuble.getShortValue(4)).setCellValue($!immeuble.odim_nom)
+      $crtRow.createCell($immeuble.getShortValue(5)).setCellValue($!immeuble.odim_groupe.odnt_nom)
+      $crtRow.createCell($immeuble.getShortValue(6)).setCellValue($!immeuble.odim_type.odnt_nom)
+      $crtRow.createCell($immeuble.getShortValue(7)).setCellValue($!immeuble.odim_num)
+      $crtRow.createCell($immeuble.getShortValue(8)).setCellValue("$!immeuble.odim_rue.odrue_type $!immeuble.odim_rue.odrue_liaison $!immeuble.odim_rue.odrue_nom")
+
+
+      $crtRow.createCell($immeuble.getShortValue(9)).setCellValue($!record.odet_lot.odlot_codelot.odlot_codebat)
+      $crtRow.createCell($immeuble.getShortValue(10)).setCellValue($!record.odet_lot.odlot_codelot.odlot_codeesc.toString())
+      $crtRow.createCell($immeuble.getShortValue(11)).setCellValue($!record.odet_lot.odlot_codelot.odlot_codeniv.toString())
+      $crtRow.createCell($immeuble.getShortValue(12)).setCellValue($!record.odet_lot.odlot_codelot.odlot_codeimm.toString())
+
+      $crtRow.createCell($immeuble.getShortValue(13)).setCellValue("$!record.odet_lot.odlot_proprietaire.odpro_pren $!record.odet_lot.odlot_proprietaire.odpro_nom")
+      $crtRow.createCell($immeuble.getShortValue(14)).setCellValue("$!record.odet_lot.odlot_locataire.odloc_pren $!record.odet_lot.odlot_locataire.odloc_nom")
+
+      $crtRow.createCell($immeuble.getShortValue(15)).setCellValue($!record.odet_plomb)
+      $crtRow.createCell($immeuble.getShortValue(16)).setCellValue($!record.odet_amiante)
+      $crtRow.createCell($immeuble.getShortValue(17)).setCellValue($!record.odet_moisissure)
+      $crtRow.createCell($immeuble.getShortValue(18)).setCellValue($!record.odet_salpetre)
+      $crtRow.createCell($immeuble.getShortValue(19)).setCellValue($!record.odet_humidite)
+      $crtRow.createCell($immeuble.getShortValue(20)).setCellValue($!record.odet_termite)
+      $crtRow.createCell($immeuble.getShortValue(21)).setCellValue($!record.odet_commentaire)
+
+      #set($rowCount = $rowCount + 1)
+  #end

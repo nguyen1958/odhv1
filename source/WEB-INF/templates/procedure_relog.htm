@@ -1,0 +1,388 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $req.getParameter('for_object'))
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('INSERT'))
+ #set($dispatcher = "INSERT")
+#elseif($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#end
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<font face="Verdana, Arial, Helvetica, sans-serif"><strong><img src="images/procedure01.gif" width="60" height="30" align="absmiddle"></strong></font></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Proc&eacute;dures</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($procedure.odimr_immeuble)
+          / Immeuble <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;" >$!procedure.odimr_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=$!pForObject&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;">Globale</a>
+        #end
+          / <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!procedure.odimr_id" style="color:blue;" >Modification proc&eacute;dure</a>
+          / Relogements
+          </font></strong></div></td>
+    </tr>
+        <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>PROC&Eacute;DURE <font color="#800000">$!procedure.odimr_id</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($relog.hasErrors())
+                 Impossible de valider : Il y a $!relog.getErrorsCount() erreur(s).
+                 <br><br>
+                #if ($relog.hasError("odrp_nom", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le nom est obligatoire. </font><br/>
+                #end
+                 #if ($relog.hasError("odrp_nom", "MAX_LENGTH"))
+                   <font color="red">Le nom est trop long. Maximum 30 caractères.</font><br/>
+                 #end
+                #if ($relog.hasError("odrp_nbp", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le nombre de personnes est obligatoire. </font><br/>
+                #end
+                 #if ($relog.hasError("odrp_nbp", "IS_INT"))
+                   <font color="red">Pour le nombre de personnes il faut introduire seulement des chiffres. </font><br/>
+                 #end
+                 #if ($relog.hasError("odrp_datedu", "IS_DATA_VALIDE"))
+                      <font color="red">La date <b>Du</b> n'est pas correcte.</font><br>
+                 #end
+                 #if ($relog.hasError("odrp_dateau", "IS_DATA_VALIDE"))
+                      <font color="red">La date <b>Au</b> n'est pas correcte.</font><br>
+                 #end
+                 #if ($relog.hasError("odrp_dateau", "DATE_ORDERED"))
+                      <font color="red"> La date <b>Au</b> doit &ecirc;tre apr&egrave;s la date <b>Du</b>.</font><br>
+                 #end
+                #if ($relog.hasError("odrp_relogement", "IS_BLANK_OR_NULL"))
+                   <font color="red">La location de relogement est obligatoire. </font><br/>
+                #end
+                 #if ($relog.hasError("odrp_coutloyer", "IS_DOUBLE") || $relog.hasError("odrp_coutrest", "IS_DOUBLE"))
+                   <font color="red">Pour c&ocirc;uts il faut introduire seulement des chiffres. </font><br/>
+                 #end
+                 #if ($recette.hasError("odrc_daterecouv", "IS_DATA_VALIDE"))
+                      <font color="red">La date de recouvrement n'est pas correcte.</font><br>
+                 #end
+                 #if ($recette.hasError("odrc_daterec", "IS_DATA_VALIDE"))
+                      <font color="red">La date du recette n'est pas correcte.</font><br>
+                 #end
+                 #if ($recette.hasError("odrc_titre", "MAX_LENGTH"))
+                   <font color="red">Le titre est trop long. Maximum 10 caractères.</font><br/>
+                 #end
+                 #if ($recette.hasError("odrc_titre", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le titre est obligatoire. </font><br/>
+                 #end
+                 #if ($recette.hasError("odrc_somme", "IS_BLANK_OR_NULL"))
+                   <font color="red">La somme est obligatoire. </font><br/>
+                 #end
+                 #if ($recette.hasError("odrc_somme", "IS_DOUBLE"))
+                   <font color="red">Pour somme il faut introduire seulement des chiffres. </font><br/>
+                 #end
+
+          #else
+              #if($dispatcher.equalsIgnoreCase("INSERT"))
+              #if($executed)
+                L'enregistrement a été effectué.
+              #elseif($dispatcher.equalsIgnoreCase("UPDATE"))
+                L'enregistrement a été actualisé.
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  #set($immeuble = $procedure.odimr_immeuble)
+    <tr>
+      <td  valign="top" colspan="3">
+      <b>RELOGEMENTS - <font color="#800000">PROCEDURE $!procedure.odimr_id</font></b></td>
+    </tr>
+</table>
+</center>
+<br>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom*</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nb*</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Durée</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Hotel*</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Coût<br>loyer</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Restaurant</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Coût<br>rest.</font></strong></td>
+    <td colspan="5" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Recettes</font></strong></td>
+    <td rowspan="2" align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Action</font></strong></td>
+  </tr>
+    <tr>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date<br>recouvr.</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date<br>recette</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Titre<br>recette</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Somme<br>enc.</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Aj.-<br>Sup.</font></strong></td>
+    </tr>
+    #set($pattern = '##0.00')
+<form name="objectForm" method="post" action="relogproc" >
+<input type="hidden" name="odimr_id" value="$!procedure.odimr_id">
+<input type="hidden" name="dispatcher" value="INSERT" >
+<input type="hidden" name="odrp_relogement" value="$!relog.odrp_relogement.odre_id">
+<input type="hidden" name="odrp_id" value="$!relog.odrp_id" >
+<input type="hidden" name="odrc_id" value="" >
+    <tr valign="top" align="center">
+    <td background="images/fond_liste.gif">&nbsp;</td>
+    <td background="images/fond_liste.gif">
+      <input type="text" name="odrp_nom" value="$!relog.getAltValue($relog.odrp_nom, 'odrp_nom')" size="12" maxlength="30">
+    </td>
+    <td background="images/fond_liste.gif">
+      <input type="text" name="odrp_nbp" value="$!relog.getAltValue($relog.odrp_nbp, 'odrp_nbp')" size="1" maxlength="2">
+    </td>
+    <td background="images/fond_liste.gif" align="left">
+    <table cellspacing="0" border="0" cellpadding="0" >
+    <tr><td nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Du&nbsp;</font><input type="text" name="odrp_datedu" value="$!relog.getAltValue($!relog.getDateAsString($relog.odrp_datedu), 'odrp_datedu')" size="8" maxlength="10"></td></tr>
+    <tr><td nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Au&nbsp;</font><input type="text" name="odrp_dateau" value="$!relog.getAltValue($!relog.getDateAsString($relog.odrp_dateau), 'odrp_dateau')" size="8" maxlength="10"></td></tr>
+    </table>
+    </td>
+    <td background="images/fond_liste.gif" align="left">
+    <table cellspacing="0" cellpadding="0" border="0" >
+    <tr><td><input type="text" name="relogement" value="$!relog.odrp_relogement.odre_nom" size="10" maxlength="30" disabled ></td>
+    <td>
+     <a href = "#" onClick ="objectWin = window.open('relogement_list?dispatcher=CHOOSE','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/fleche_g_01.gif" border="0" ></a>
+    </td></tr></table>
+    </td>
+    <td background="images/fond_liste.gif">
+      <input type="text" name="odrp_coutloyer" value="$!relog.getAltValue($relog.odrp_coutloyer, 'odrp_coutloyer')" size="5" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif">
+      <input type="text" name="odrp_rest" value="$!relog.getAltValue($relog.odrp_rest, 'odrp_rest')" size="15" maxlength="30">
+    </td>
+    <td background="images/fond_liste.gif">
+        <input type="text" name="odrp_coutrest" value="$!relog.getAltValue($relog.odrp_coutrest, 'odrp_coutrest')" size="5" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif">
+     #set($counter=0)
+     #foreach($itrec in $relog.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.getDateAsString($itrec.odrc_daterecouv), 'odrc_daterecouv')</div>
+        #set($counter = $counter + 1)
+     #end
+        <input type="text" name="odrc_daterecouv" value="$!relog.getAltValue($recette.getDateAsString($recette.odrc_daterecouv), 'odrc_daterecouv')" size="8" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif">
+     #set($counter=0)
+     #foreach($itrec in $relog.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.getDateAsString($itrec.odrc_daterec), 'odrc_daterec')</div>
+        #set($counter = $counter + 1)
+     #end
+     <input type="text" name="odrc_daterec" value="$!relog.getAltValue($recette.getDateAsString($recette.odrc_daterec), 'odrc_daterec')" size="8" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif">
+     #set($counter=0)
+     #foreach($itrec in $relog.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.odrc_titre, 'odrc_titre')</div>
+        #set($counter = $counter + 1)
+     #end
+     <input type="text" name="odrc_titre" value="$!recette.getAltValue($recette.odrc_titre, 'odrc_titre')" size="8" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif" align="right">
+     #set($counter=0)
+     #foreach($itrec in $relog.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.getDoubleAsString($itrec.odrc_somme, $pattern), 'odrc_somme')&nbsp;</div>
+        #set($counter = $counter + 1)
+     #end
+     <input type="text" name="odrc_somme" value="$!recette.getAltValue($recette.odrc_somme, 'odrc_somme')" size="5" maxlength="10">
+    </td>
+    <td background="images/fond_liste.gif">
+     #set($counter=0)
+     #foreach($itrec in $relog.odrp_recettes)
+        <div style="height:20;" ><a href = "#" onClick ="document.objectForm.odrc_id.value='$!itrec.odrc_id';document.objectForm.dispatcher.value='DELETE_RECETTE';document.objectForm.submit();" title="Supprimer cette recette"><img src="images/fleche_d_01.gif" border="0" height="17" ></a></div>
+        #set($counter = $counter + 1)
+     #end
+     #if($relog.odrp_id > 0)
+     <div style="height:20;" ><a href = "#" onClick ="document.objectForm.odrc_id.value='$!itrec.odrc_id';document.objectForm.dispatcher.value='ADD_RECETTE';document.objectForm.submit();" title="Ajouter recette"><img src="images/fleche_g_01.gif" border="0" height="17" ></a></div>
+     #else
+      &nbsp;
+     #end
+     &nbsp;
+    </td>
+    <td background="images/fond_liste.gif">
+     #if($relog.odrp_id > 0)
+       <a href="#" onClick="document.objectForm.odrp_id.value=$!relog.odrp_id;document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();">Modifier</a>
+     #else
+       <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();">Ajouter</a>
+     #end
+     <br>
+     <a href="relogproc?dispatcher=FOR_UPDATE2&odimr_id=$!procedure.odimr_id" style="color:blue;" >
+       Annuler
+    </a>
+    </td>
+    </tr>
+</form>
+#set($counter2 = 1)
+#foreach($itrp in $relogements)
+   <tr valign="top" align="center">
+    <td background="images/fond_liste.gif" align="right">&nbsp;$counter2&nbsp;</td>
+    <td background="images/fond_liste.gif" align="left">
+      &nbsp;$!itrp.getAltValue($itrp.odrp_nom, 'odrp_nom')
+    </td>
+    <td background="images/fond_liste.gif" align="right">
+      $!itrp.getAltValue($itrp.odrp_nbp, 'odrp_nbp')&nbsp;
+    </td>
+    <td background="images/fond_liste.gif">
+    <table cellspacing="0" border="0" cellpadding="0" align="left">
+    <tr><td nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Du&nbsp;</font>$!itrp.getDateAsString($itrp.odrp_datedu)</td></tr>
+    <tr><td nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Au&nbsp;</font>$!itrp.getDateAsString($itrp.odrp_dateau)</td></tr>
+    </table>
+    </td>
+    <td background="images/fond_liste.gif" align="left">
+      &nbsp;$itrp.odrp_relogement.odre_nom
+    </td>
+    <td background="images/fond_liste.gif" align="right">
+      $!itrp.getAltValue($itrp.getDoubleAsString($itrp.odrp_coutloyer, $pattern), 'odrp_coutloyer')&nbsp;
+    </td>
+    <td background="images/fond_liste.gif" align="left">
+      &nbsp;$!itrp.getAltValue($itrp.odrp_rest, 'odrp_rest')
+    </td>
+    <td background="images/fond_liste.gif" align="right">
+      $!itrp.getAltValue($itrp.getDoubleAsString($itrp.odrp_coutrest, $pattern), 'odrp_coutrest')&nbsp;
+    </td>
+    <td background="images/fond_liste.gif">
+    #if($itrp.odrp_recettes.size() == 0)&nbsp;#end
+     #set($counter=0)
+     #foreach($itrec in $itrp.odrp_recettes)
+        <div style="height:20;color:black;" >$!itrec.getAltValue($!itrec.getDateAsString($itrec.odrc_daterecouv), 'odrc_daterecouv')&nbsp;</div>
+        #set($counter = $counter + 1)
+     #end
+    </td>
+    <td background="images/fond_liste.gif">
+    #if($itrp.odrp_recettes.size() == 0)&nbsp;#end
+     #set($counter=0)
+     #foreach($itrec in $itrp.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($!itrec.getDateAsString($itrec.odrc_daterec), 'odrc_daterec')&nbsp;</div>
+        #set($counter = $counter + 1)
+     #end
+    </td>
+    <td background="images/fond_liste.gif">
+    #if($itrp.odrp_recettes.size() == 0)&nbsp;#end
+     #set($counter=0)
+     #foreach($itrec in $itrp.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.odrc_titre, 'odrc_titre')&nbsp;</div>
+        #set($counter = $counter + 1)
+     #end
+    </td>
+    <td background="images/fond_liste.gif" align="right">
+    #if($itrp.odrp_recettes.size() == 0)&nbsp;#end
+     #set($counter=0)
+     #foreach($itrec in $itrp.odrp_recettes)
+        <div style="height:20;" >$!itrec.getAltValue($itrec.getDoubleAsString($itrec.odrc_somme, $pattern), 'odrc_somme')&nbsp;</div>
+        #set($counter = $counter + 1)
+     #end
+   </td>
+    <td background="images/fond_liste.gif">
+     #set($counter=0)
+     #foreach($itrec in $itrp.odrp_recettes)
+        <div style="height:20;" ><a href = "#" onClick ="document.objectForm.odrc_id.value='$!itrec.odrc_id';document.objectForm.dispatcher.value='DELETE_RECETTE';document.objectForm.submit();" title="Supprimer cette recette"><img src="images/fleche_d_01.gif" border="0" height="17" ></a></div>
+        #set($counter = $counter + 1)
+     #end
+     &nbsp;
+     </td>
+    <td background="images/fond_liste.gif">
+    <a href="#" onClick="document.objectForm.odrp_id.value=$!itrp.odrp_id;document.objectForm.dispatcher.value='FOR_UPDATE';document.objectForm.submit();">Modifier</a>
+     <br>
+     <a href="#" onClick="document.objectForm.odrp_id.value=$!itrp.odrp_id;document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();" style="color:blue;" >
+       Supprimer
+    </a>
+    </td>
+    </tr>
+    #set($counter2 = $counter2 + 1)
+#end
+<tr>
+<td colspan="2"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>&nbsp;Total</font></strong></td>
+<td align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>$nbp&nbsp;</font></strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>$procedure.getDoubleAsString($!coutloyer, $pattern)&nbsp;</font></strong></td>
+<td>&nbsp;</td>
+<td align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>$procedure.getDoubleAsString($!coutrest, $pattern)&nbsp;</font></strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>$procedure.getDoubleAsString($!somme, $pattern)&nbsp;</font></strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<!--
+
+ -->
+</table>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td colspan="4" nowrap>
+          <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!procedure.odimr_id" style="color:blue;" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+</form>
+<p>&nbsp;</p>
+<!--
+$procedure.getFirstFieldWithError()
+$procedure.getFirstFieldError()
+-->
+</body>
+</html>

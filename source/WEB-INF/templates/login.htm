@@ -1,0 +1,148 @@
+#set($sessionStatus = $req.getParameter("session_status"))
+#set($properties_manager = $req.getSession().getServletContext().getAttribute("properties_manager"))
+#if(!$sessionStatus)
+      <html>
+      <head>
+      </head>
+      <body>
+      <script>
+  #if($req.getSession().isNew())
+     #set($sessionStatus = 'expired')
+  #elseif(!$req.getSession().getAttribute("remoteUser") && !$module.equals("intro"))
+     #set($sessionStatus = 'reload')
+  #else
+     #set($session_status = 'valide')
+  #end
+
+  #set($pChooser = $req.getParameter("chooser"))
+  #if(($pChooser && !$pChooser.equalsIgnoreCase("")) || $module == "docs")
+      window.opener.openNewSession(window, "$!sessionStatus");
+  #else
+        window.location="$req.getRequestURI()?session_status=$!sessionStatus";
+  #end
+      </script>
+      </body>
+      </html>
+#else
+<html>
+<head>
+<meta http-equiv="Content-Language" content="fr">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Analogon - Observatoire De l'Habitat</title>
+    <script>
+    function closeWindow(){
+     #if($tries > $maxTries)
+       //if(confirm("Sorry !"))
+         window.close();
+     #end
+    }
+    </script>
+    </head>
+    <body  background="images/fond01.gif" onload="closeWindow()" >
+    <div align="center" >
+    <font face="Times New Roman" size="4"><font color="#800000">
+    <br><br>
+    #if($req.getParameter("session_status").equals("expired"))
+          Votre session a expiré !
+    #elseif($req.getParameter("session_status").equals("reload"))
+          L'application a été rechargée.
+    #elseif($req.getParameter("session_status").equals("closed"))
+
+    #end
+
+      #set($authenticateResult=$req.getSession().getAttribute("authenticateResult"))
+      #if($MAINTENANCE_MODE)
+          Application en maintenance. Seul les administrateurs peuvent se connecter.
+      #elseif($authenticateResult.equals("ERROR"))
+        Problemes d'authentification. Essayez plus tard !
+      #elseif($authenticateResult.equals("UNKNOWN_USER"))
+        Utilisateur inconnu !
+      #elseif($authenticateResult.equals("WRONG_PASSWORD"))
+        Mot de passe incorrect !
+      #elseif($authenticateResult.equals("INVALIDE_USER"))
+        Utilisateur invalide !
+      #elseif($authenticateResult.equals("TOO_MANY_CONNECTIONS"))
+      Le nombre de connexions est superieur à $!properties_manager.getProperty("application", "authenticator.maxConnections"). Vous ne pouvez pas être authentifié.
+      <br>Veuillez consulter votre service informatique.
+      #end
+     $req.getSession().setAttribute("authenticateResult", "NONE")
+    </font>
+    </div>
+
+    <form name="loginForm" method="POST" action="$!req.getRequestURI()" >
+      <div align="center"><br>
+        <br>
+        <br>
+        <table width="75%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="5"><div align="right"><img src="images/bienvenue.gif" width="500" height="100"></div></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td width="20">&nbsp;</td>
+            <td><font face="Times New Roman"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif"><img src="images/transparent01.gif" width="130" height="17"><br>
+              Veuillez saisir votre <strong><font color="#990000">code utilisateur</font></strong>
+              <br>
+              et votre <strong><font color="#990000">mot de passe</font></strong>
+              avant d'accéder à nos services.<br>
+              <img src="images/transparent01.gif" width="130" height="17"> </font></font></td>
+            <td rowspan="3" valign="bottom"><div align="left">&nbsp;<img src="images/login01.gif" width="69" height="102"></div></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td rowspan="2"><div align="right"></div>
+              <div align="right"></div></td>
+            <td width="20" rowspan="2">&nbsp;</td>
+            <td><img src="images/bt_codeutil.gif" width="130" height="17"><font color="#008080">
+              <input type="text" name="utilisateur" size="20">
+              </font></td>
+          </tr>
+          <tr>
+            <td height="30">&nbsp;</td>
+            <td><img src="images/bt_motpasse.gif" width="130" height="17"><font color="#000080">
+              <input type="password" name="password" size="20">
+              </font></td>
+          </tr>
+          <tr>
+            <td><img src="images/transparent01.gif" width="130" height="17"></td>
+            <td><img src="images/transparent01.gif" width="130" height="17"></td>
+            <td width="20">&nbsp;</td>
+            <td><img src="images/transparent01.gif" width="130" height="17"><a href="#" onClick="document.loginForm.submit();return false;" ><img src="images/bt_valider.gif" width="130" height="17" border="0"></a></td>
+          <td>
+           <div style="width:1;height:1;overflow:hidden;">
+            <input type="submit" style="background-color"white;width:0;height:0">
+           </div>
+          </td>
+          </tr>
+
+          <!--
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td valign="bottom"><div align="right"><font size="1" face="Arial, Helvetica, sans-serif">Observatoire
+                de l'habit&acirc;t : vers $!version<img src="images/transparent01.gif" width="10" height="17"></font></div></td>
+            <td><a href="http://www.analogon.fr" target="_blank"><img src="images/logo_analogon01.gif" width="120" height="62" border="0"></a></td>
+          </tr>
+          -->
+        </table>
+      </div>
+      #parse("logos.htm")
+    </form>
+    <!--
+     tries = $tries
+     <br>
+     $req.getSession().getId()
+     <br>
+     $authenticateResult
+     <br>
+     $sessions.size()
+     <br>
+     $sessions.values().size()
+     -->
+    </body>
+</html>
+#end

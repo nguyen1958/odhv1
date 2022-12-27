@@ -1,0 +1,92 @@
+ <script>
+ function openNewSession(windObject, sessionStatus){
+   if(windObject != null)
+       windObject.close();
+   window.location="$req.getRequestURI()?session_status="+sessionStatus;
+ }
+
+ </script>
+
+<div id="barre" style="position:absolute; visibility: visible; left: 0px; top: 0px;height:50;">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="4%"> <img src="images/transparent01.gif" width="30"></td>
+    <td width="12%"><div align="center"><img src="images/immeuble01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/moteur01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/listing01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/listing01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/maintenance01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/administration01.gif" width="60" height="30"></div></td>
+    <td width="12%"><div align="center"><img src="images/deconnexion01.gif" width="60" height="30"></div></td>
+    <td width="12%"><img src="images/transparent01.gif"></td>
+  </tr>
+    <tr height="22">
+      <td background="images/fond_menu.gif"> <img src="images/transparent01.gif" width="30"></td>
+      <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">&nbsp;&nbsp;<strong>Immeuble</strong></a>&nbsp;&nbsp;</div></td>
+	  <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')" onClick="window.location.href='recherche';return false;"  >&nbsp;&nbsp;<strong>Recherche</strong></a>&nbsp;&nbsp;</div></td>
+	  <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')" onClick="window.location.href='listing';return false;" >&nbsp;&nbsp;<strong>Listing</strong></a>&nbsp;&nbsp;</div></td>
+      <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">&nbsp;&nbsp;<strong>Insalubrit&eacute;</strong></a>&nbsp;&nbsp;</div></td>
+	  <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">&nbsp;&nbsp;<strong>Maintenance</strong></a>&nbsp;&nbsp;</div></td>
+      <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu5','','show')" onMouseOut="MM_showHideLayers('menu5','','hide')">&nbsp;&nbsp;<strong>Administration</strong></a>&nbsp;&nbsp;</div></td>
+      <td background="images/fond_menu.gif"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">&nbsp;&nbsp;<strong>Deconnexion</strong></a>&nbsp;&nbsp;</div></td>
+      <td background="images/fond_menu.gif"><img src="images/transparent01.gif"></td>
+    </tr>
+</table>
+</div>
+
+<div id="menu1" style="position:absolute; visibility: hidden; left: 0%; width:10; top: 48;z-index:2;" onMouseOver="MM_showHideLayers('menu1','','show')" onMouseOut="MM_showHideLayers('menu1','','hide')">
+</div>
+<div id="menu2" style="position:absolute; visibility: hidden; left: 2%; top: 48; width:170;z-index:2;" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">
+  <table style="width:170;" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="im_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création immeuble</strong></a></td></tr>
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="prop_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création propriétaire</strong></a></td></tr>
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="loc_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création locataire</strong></a></td></tr>
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="prop_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche&nbsp;propriétaire</strong></a></td></tr>
+  <tr height="15"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="loc_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche locataire</strong></a></td></tr>
+  </table>
+</div>
+<div id="menu7" style="position:absolute; left: 14%; top: 48;width:170; visibility: hidden;z-index:2;" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')">
+</div>
+<div id="menu6" style="position:absolute; left: 26%; top: 48;width:170; visibility: hidden;z-index:2;" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')">
+</div>
+<div id="menu3" style="position:absolute; visibility: hidden; left: 38%; top: 48; width:170;z-index:2;" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">
+  <table style="width:170;" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="insalubrite"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; immeuble</strong></a></td></tr>
+  <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="#" onClick="alert('Function inactive!')" class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; logement</strong></a></td></tr>
+  <tr height="15"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="#" onClick="alert('Function inactive!')"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Insalubrit&eacute; maison</strong></a></td></tr>
+  </table>
+</div>
+
+<div id="menu4" style="position:absolute; left: 50%; top: 48;width:170; visibility: hidden;z-index:2;" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">
+  <table style="width:170;" border="0" align="center" cellpadding="0" cellspacing="0" >
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="synd_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création syndic</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="synd_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche syndic</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="exp_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création expert</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="exp_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche expert</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="suiv_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création suiveur</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="suiv_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche suiveur</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="rue_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création rue</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="rue_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche rue</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="relogement_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création relogement</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="relogement_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche relogement</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="entrep_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création entreprise</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="entrep_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;entreprise</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="nat_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création option</strong></a></td></tr>
+	<tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="nat_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche option</strong></a></td></tr>
+	<tr height="15"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="seuil" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Gestion seuil</strong></a></td></tr>
+  </table>
+</div>
+
+<div id="menu5" style="position:absolute; left: 62%; top: 48;width:170; visibility: hidden;z-index:2;" onMouseOut="MM_showHideLayers('menu5','','show')" onMouseOver="MM_showHideLayers('menu5','','hide')">
+  <table  style="width:170;" border="0" align="center" cellpadding="0" cellspacing="0" >
+    <tr height="10"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="util_form" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création utilisateur</strong></a></td></tr>
+    <tr height="15"><td align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="util_list"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;utilisateur</strong></a></td></tr>
+  </table>
+</div>
+
+<div id="menu8" style="position:absolute; left: 74%; top: 48;width:170; visibility: hidden;z-index:2;" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">
+  <table  style="width:170;" border="0" align="center" cellpadding="0" cellspacing="0" >
+    <tr height="15"><td align="center" valign="top" background="images\bt_sous_menu01.gif"><a href="login?session_status=closed&dispatcher=DECONNECT" class="menu" title=""><strong><span style="color:#800000;">$!req.getSession().getAttribute('remoteUser').getOduti_utilisateur()</span></strong></a></td></tr>
+  </table>
+</div>
+<br>

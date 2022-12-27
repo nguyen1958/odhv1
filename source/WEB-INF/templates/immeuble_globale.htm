@@ -1,0 +1,809 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#set($pForObject = $!req.getParameter('for_object'))
+#if($actionparam.endsWith('INSERT'))
+ #set($dispatcher = "INSERT")
+#elseif($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#end
+ <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="2"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+           <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!immeuble.odim_id" style="color:blue;">$!immeuble.notNullName</a>
+          / Globale
+       </font></strong></div></td>
+    </tr>
+    <tr>
+      <td  colspan="9">
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>IMMEUBLE&nbsp;&nbsp;
+          #if($back_forward)
+            #if($back_forward.get(0) > 0)
+            <a href="im_form?dispatcher=SHOW&odim_id=$back_forward.get(0)" style="color:blue;" ><img src="images/fleche_g_01.gif" border="0" align="absmiddle" ></a>
+            #end
+            <font color="#800000">$!immeuble.notNullName</font>
+            #if($back_forward.get(1) > 0)
+            <a href="im_form?dispatcher=SHOW&odim_id=$back_forward.get(1)" style="color:blue;" ><img src="images/fleche_d_01.gif" border="0" align="absmiddle" ></a>
+            #end
+          #else
+            <font color="#800000">$!immeuble.notNullName</font>
+          #end
+      </td>
+    </tr>
+    <tr>
+      <td colspan="9">&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="9" align="center">
+          <font color="#800000"><b>
+          </b></font>
+       </td></tr>
+</center>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="9">&nbsp;</td>
+    </tr>
+    <tr><td colspan="9">
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+        <td width="15%">
+        <td width="20%" ><b>DONN&Eacute;ES G&Eacute;N&Eacute;RALES</b>
+        </td>
+        <td width="65%" >
+        <a href="im_form?dispatcher=FOR_UPDATE_MAIN&odim_id=$!immeuble.odim_id" style="color:blue;" >
+        <img src="images/modifier.gif" width="130" height="17" border="0">
+       </a>
+        </td>
+      </table>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;N&deg;
+        </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!immeuble.getEmptyStringToNegative($!immeuble.odim_id)
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+        immeuble </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_nom, 'odim_nom')</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Cadastre(<font size="1">Section-Parcelles</font>)
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td valign="top" nowrap>
+        <table width="210" height="100%" bgcolor="black" cellspacing="1" cellpadding="0" border="0" >
+          <tr>
+            <td width="10%" bgcolor="white" align="center" >&nbsp;$!immeuble.getAltValue($immeuble.odim_cadsct, 'odexp_cadsct')&nbsp;</td>
+            <td width="10%" bgcolor="white" align="center">-</td>
+            <td width="20%" bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_cadp1, 'odim_cadp1')&nbsp;</td>
+            <td width="20%" bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_cadp2, 'odim_cadp2')&nbsp;</td>
+            <td width="20%" bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_cadp3, 'odim_cadp3')&nbsp;</td>
+            <td width="20%" bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_cadp4, 'odim_cadp4')&nbsp;</td>
+          </tr>
+         </table>
+        </td>
+      <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;N&deg;
+        de rue / Rue </font></strong></em></td>
+      <td>&nbsp;</td>
+        #set($rue = $immeuble.odim_rue)
+      <td width="25%">$immeuble.odim_num $!rue.getAltValue($!rue.getOdrue_type(),'odrue_type') $!rue.getAltValue($!rue.getOdrue_liaison(),'odrue_liaison') $!rue.getAltValue($!rue.getOdrue_nom(), 'odrue_nom')</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;&Icirc;lot(<font size="1" >Section-&Icirc;lot-B&acirc;ti</font>)
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td valign="top">
+       <table width="100" style="height:16;"  bgcolor="black" cellspacing="1" cellpadding="0" border="0" >
+          <tr>
+            <td width="22%"  bgcolor="white" align="center" >&nbsp;$!immeuble.getAltValue($immeuble.odim_ilsct, 'odim_ilsct')&nbsp;</td>
+            <td width="11%"  bgcolor="white" align="center">-</td>
+            <td width="33%"  bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_ililot, 'odim_ililot')&nbsp;</td>
+            <td width="11%"  bgcolor="white" align="center">-</td>
+            <td width="22%"  bgcolor="white" align="center">&nbsp;$!immeuble.getAltValue($immeuble.odim_ilbat, 'odim_ilbat')&nbsp;</td>
+          </tr>
+         </table>
+        </td>
+        <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Orientation
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="25%">$!immeuble.getAltValue($immeuble.odim_position, 'odim_position')</td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Date de construction
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getDateAsString($immeuble.odim_datecrea)</td>
+      <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Alignement
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_alignement, 'odim_alignement')</td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Usage
+      </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getOdim_groupe().getOdnt_nom() </td>
+      <td>&nbsp;</td>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Etages
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_niv, 'odim_niv')</td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type
+        de propriété </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getOdim_type().getOdnt_nom()</td>
+      <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Hauteur
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_haut, 'odim_haut')</td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Syndic
+       </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getOdim_syndic().getOdsyn_code()
+       #if($!immeuble.getOdim_syndic().odsyn_raison)
+       - $!immeuble.getOdim_syndic().getAltValue($!immeuble.getOdim_syndic().odsyn_raison, '')
+      #end
+      </td>
+      <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Surface
+        au sol (m<sup>2</sup>)</font></strong></em></td>
+      <td>&nbsp;</td>
+      <td valign="top" >
+      &nbsp;$!immeuble.getAltValue($immeuble.odim_surfacesol, 'odim_surfacesol')&nbsp;
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Canton
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_canton, 'odim_canton')</td>
+      <td>&nbsp;</td>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Surface totale
+      (m<sup>2</sup>) </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+      &nbsp;$!immeuble.getAltValue($immeuble.odim_surfacetot, 'odim_surfacetot')
+      </td>
+   </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Quartier
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>$!immeuble.getAltValue($immeuble.odim_quartier.odnt_nom, '')</td>
+      <td>&nbsp;</td>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Etat g&eacute;n&eacute;ral
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+      $!immeuble.odim_etgen.odnt_nom
+      </td>
+   </tr>
+    <tr>
+   <td width="50">&nbsp;</td>
+   <td colspan="8"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire  &nbsp;&nbsp;</font></strong></em>$!immeuble.getAltValue($immeuble.odim_desc, 'odim_desc')</td>
+   </tr>
+    <tr><td colspan="9">
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+        <td width="15%" >
+        <td width="20%" ><b>PARTIES COMMUNES</b>
+        </td>
+        <td width="65%">
+        <a href="im_form?dispatcher=FOR_UPDATE_PARTSCOM&odim_id=$!immeuble.odim_id" style="color:blue;" >
+        <img src="images/modifier.gif" width="130" height="17" border="0">
+        </a>
+        </td>
+       </tr>
+      </table>
+    </td></tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre de caves </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!immeuble.getAltValue($immeuble.odim_partcoms.odim_ncaves, 'odim_ncaves')
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Local
+        poubelles </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($immeuble.odim_partcoms.odim_locpoub)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        de parking </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!immeuble.getAltValue($immeuble.odim_partcoms.odim_parking, 'odim_parking')
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+        Chauffage </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($immeuble.odim_partcoms.odim_chauffage)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        d'ascenseurs </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!immeuble.getAltValue($immeuble.odim_partcoms.odim_ascenseur, 'odim_ascenseur')
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Gaz
+         </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($immeuble.odim_partcoms.odim_gaz)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Grenier
+         </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($immeuble.odim_partcoms.odim_eau)
+           Oui
+        #else
+           Non
+        #end
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Eau
+         </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($immeuble.odim_partcoms.odim_eau)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+     <tr>
+     <td width="50">&nbsp;</td>
+     <td colspan="8"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire  &nbsp;&nbsp;</font></strong></em>$!immeuble.getAltValue($immeuble.odim_partcoms.odim_partscomscom, 'odim_partscomscom')</td>
+     </tr>
+    <tr><td colspan="9">
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+        <td width="15%" >
+        <td width="20%" ><b>ENVIRONNEMENT</b>
+        </td>
+        <td width="65%" >
+        <a href="im_form?dispatcher=FOR_UPDATE_ENV&odim_id=$!immeuble.odim_id" style="color:blue;" >
+         <img src="images/modifier.gif" width="130" height="17" border="0">
+        </a>
+        </td>
+       </tr>
+      </table>
+    </td></tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Terrain de jeux
+         </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($immeuble.odim_env.odim_terjeux)
+           Oui
+        #else
+           Non
+        #end
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Pelouse
+         </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($immeuble.odim_env.odim_pelouse)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Environnement entretenu
+         </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($immeuble.odim_env.odim_enventr)
+           Oui
+        #else
+           Non
+        #end
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+   <tr>
+   <td width="50">&nbsp;</td>
+   <td colspan="8"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire  &nbsp;&nbsp;</font></strong></em>$!immeuble.getAltValue($immeuble.odim_env.odim_envcomment, 'odim_envcomment')</td>
+   </tr>
+    <tr><td colspan="9">
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+        <td width="15%">
+        <td width="20%" ><b>SANITAIRE / PARASITAIRE </b>
+        </td>
+        <td width="65%" >
+        <a href="im_form?dispatcher=FOR_UPDATE_SANPAR&odim_id=$!immeuble.odim_id" style="color:blue;" >
+         <img src="images/modifier.gif" width="130" height="17" border="0">
+        </a>
+        </td>
+        </tr>
+        </table>
+    </td></tr>
+    #set($etatPar = $immeuble.odim_etatpar)
+    #set($seuil = $etatPar.odet_seuil)
+    #set($colorForStylePb = "black")
+    #set($colorForStyleAm = "black")
+    #if($etatPar.odet_plomb && $seuil.odet_plomb && $etatPar.odet_plomb.compareTo($seuil.odet_plomb) > 0)
+      #set($colorForStylePb = "red")
+    #end
+    #if($etatPar.odet_amiante && $seuil.odet_amiante && $etatPar.odet_amiante.compareTo($seuil.odet_amiante) > 0)
+      #set($colorForStyleAm = "red")
+    #end
+
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Plomb
+        </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%" style="color:$!colorForStylePb;"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"> $!immeuble.getAltValue($etatPar.odet_plomb, 'odet_plomb')
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Salpetre
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($etatPar.odet_salpetre)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Amiante
+         </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%" style="color:$!colorForStyleAm;"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!immeuble.getAltValue($etatPar.odet_amiante, 'odet_amiante')
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+        Humidit&eacute; </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($etatPar.odet_humidite)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Moisissure
+        </font></strong></em></td>
+      <td width="1%">&nbsp;&nbsp;</td>
+      <td width="25%"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($etatPar.odet_moisissure)
+           Oui
+        #else
+           Non
+        #end
+         </font>
+        </td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Termite
+         </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td>
+        #if($etatPar.odet_termite)
+           Oui
+        #else
+           Non
+        #end
+      </td>
+    </tr>
+   <tr>
+   <td width="50">&nbsp;</td>
+   <td colspan="8"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire  &nbsp;&nbsp;</font></strong></em>$!immeuble.getAltValue($etatPar.odet_commentaire, 'odet_commentaire')</td>
+   </tr>
+    <!--
+   <tr>
+    <td width="150">
+    <td width="300" ><b>EXPERTS </b>
+    </td>
+    <td width="800" >
+    <a href="im_form?dispatcher=FOR_UPDATE_EXPERTS&odim_id=$!immeuble.odim_id" style="color:blue;" >
+     <img src="images/modifier.gif" width="130" height="17" border="0">
+    </a>
+    </td>
+    </tr>
+    -->
+    <tr><td colspan="9">
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+        <td width="15%">
+        <td width="20%" ><b>DOCUMENTS ET PHOTOS</b>
+        </td>
+        <td width="65%" >
+        <a href="immeuble_upload?odim_id=$!immeuble.odim_id" >
+         <img src="images/modifier.gif" width="130" height="17" border="0">
+        </a>
+        </td>
+       </tr>
+      </table>
+    </td></tr>
+    #if($attached_docs.size() > 0 || $attached_photos.size() > 0 || $attached_sons.size() > 0)
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="8" >
+      <table cellspacing="0" cellpadding="0" border="1" >
+      <tr>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Documents</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Photos</font></strong></td>
+
+      </tr>
+            <tr >
+              <td  nowrap valign="top" height="20" width="33%" background="images/fond_liste.gif">
+                #foreach($item in $attached_docs)
+                   &nbsp;<a href="$!docs_path/$!immeuble.odim_id/documents/$!immeuble.encodeISO($!item.toString())" target="file" style="color:blue;" >$!item.toString()</a><br>
+
+
+
+                #end
+              </td>
+              <td nowrap valign="top"  width="33%" background="images/fond_liste.gif">
+                #foreach($item in $attached_photos)
+                   &nbsp;<a href="$!docs_path/$!immeuble.odim_id/photos/$!immeuble.encodeISO($!item.toString())" target="file" style="color:blue;" >$!item.toString()</a><br>
+                #end
+              </td>
+
+            </tr>
+          </table>
+        </td>
+    </tr>
+    #end
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="8" >
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>SYNDIC</b></font>
+      </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+        #set($syndic = $!immeuble.getOdim_syndic())
+      <td><a href="synd_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odsyn_id=$!syndic.odsyn_id&odim_id=$!immeuble.odim_id" style="color:blue;" >$!syndic.getAltValue($!syndic.odsyn_code, 'odsyn_code')</a></td>
+      <td>&nbsp;</td>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Raison sociale
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td nowrap>
+      #if($syndic.odsyn_raison)
+       $!syndic.getAltValue($syndic.odsyn_raison, '')
+      #end
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="8" >
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>PROC&Eacute;DURES</b></font>
+      </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="8">
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" >
+    #if($immeuble.odim_procedures.size() > 0 )
+      <tr>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg; de procedure</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date fin</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type de proc&eacute;dure</font></strong></td>
+        <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Suiveur</font></strong></td>
+          </font></strong></td>
+      </tr>
+        <tr>
+          <td><div align="right"></div></td>
+          <td><div align="center"></div></td>
+          <td><div align="center"></div></td>
+          <td><div align="center"></div></td>
+          <td><div align="center"></div></td>
+          <td><div align="center"></div></td>
+        </tr>
+        #set($counter = 1)
+        #foreach($item in $!immeuble.odim_procedures)
+          <tr>
+                 <td height="20" width="5%" align="right" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+            <td align="center" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                <a href="proced_form?dispatcher=FOR_UPDATE&for_object=$pForObject&odimr_id=$!item.odimr_id" style="color:blue;" >
+                   $!item.odimr_id
+                </a>
+              </font></td>
+            <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              &nbsp;$!item.getDateAsString($!item.odimr_date)
+            </font></td>
+            <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              &nbsp;$!item.getDateAsString($!item.odimr_datefin)
+            </font></td>
+            <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              &nbsp;$!item.odimr_peril.odnt_nom
+            </font></td>
+            <td align="center" width="25%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  &nbsp;$!item.odimr_suiveur.odsu_pren $!item.odimr_suiveur.odsu_nom
+            </font></td>
+          </tr>
+          #set($counter = $counter + 1)
+        #end
+     #else
+       <tr><td><font color="#800000">Aucune proc&eacute;dure pour cet immeuble.</font></td></tr>
+     #end
+      </table>
+      </td>
+     </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="8" >
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>LOTS</b></font>
+      </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="8" >
+        <table width="100%" cellspacing="0" cellpadding="0" border="1" >
+        #if($immeuble.odim_lots.size() > 0)
+            <tr>
+              <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+              <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Code lot</font></strong></td>
+              <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type</font></strong></td>
+              <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Proprietaire</font></strong></td>
+              <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Locataire</font></strong></td>
+            </tr>
+            #set($counter = 0)
+            #foreach($item in $immeuble.odim_lots)
+              <tr>
+                <td align="right" height="20" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                    <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_immeuble=$!immeuble.odim_id&odim_id=$!immeuble.odim_id&odlot_id=$!item.odlot_id" style="color:blue;" >
+                     <div onClick="window.location='lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_immeuble=$!immeuble.odim_id&odim_id=$!immeuble.odim_id&odlot_id=$!item.odlot_id'" style="cursor:hand;" >
+                     <table cellspacing=0 cellpadding=0 border=1 width="100%" >
+                       <tr>
+                         <td width="18%" align="right" style="color:blue;"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odlot_codelot.odlot_codebat</font></td>
+                         <td width="18%" align="right" style="color:blue;"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odlot_codelot.odlot_codeesc</font></td>
+                         <td width="18%" align="right" style="color:blue;"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.zeroFillToStart($!item.odlot_codelot.odlot_codeniv.toString(), 2)</font></td>
+                         <td width="45%" align="right" style="color:blue;"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.zeroFillToStart($!item.odlot_codelot.odlot_codeimm.toString(), 5)</font></td>
+                       </tr>
+                     </table>
+                     </div>
+                    </a>
+                  </font></td>
+                <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  &nbsp;$!item.odlot_type.odnt_nom
+                </font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                   &nbsp;$!item.odlot_proprietaire.odpro_civil <a href="prop_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odim_id=$!immeuble.odim_id&odpro_id=$!item.odlot_proprietaire.odpro_id" style="color:blue;">
+                       $!item.odlot_proprietaire.odpro_pren $!item.odlot_proprietaire.odpro_nom
+                   </a>
+                </font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                   &nbsp;$!item.odlot_locataire.odloc_civil <a href="loc_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odim_id=$!immeuble.odim_id&odloc_id=$!item.odlot_locataire.odloc_id" style="color:blue;">
+                        $!item.odlot_locataire.odloc_pren $!item.odlot_locataire.odloc_nom
+                   </a>
+                </font></td>
+              </tr>
+              #set($counter = $counter + 1)
+            #end
+        #else
+           <tr><td><font color="#800000">Aucun lot pour cet immeuble.</font></td></tr>
+        #end
+        </table>
+        </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="8" >
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>PROPRIETAIRES</b></font>
+      </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="8" >
+        <table width="50%" cellspacing="0" cellpadding="0" border="1" >
+        #if($proprietaires.size() > 0)
+          <tr>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Civilit&eacute;</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Pr&eacute;nom</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+              </font></strong></td>
+          </tr>
+            #set($counter = 1)
+            #foreach($item in $proprietaires)
+              <tr>
+                <td align="right" height="20" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                <td align="center" width=10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odpro_civil</font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odpro_pren</font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                    <a href="prop_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odim_id=$!immeuble.odim_id&odpro_id=$!item.odpro_id" style="color:blue;" >
+                      $!item.odpro_nom
+                    </a>
+                </font></td>
+              </tr>
+              #set($counter = $counter + 1)
+            #end
+        #else
+           <tr><td><font color="#800000">Aucun proprietaire pour cet immeuble.</font></td></tr>
+        #end
+          </table>
+          </td>
+          </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="8" >
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>LOCATAIRES</b></font>
+      </td>
+    </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="8" >
+        <table width="50%" cellspacing="0" cellpadding="0" border="1" >
+        #if($locataires.size() > 0)
+          <tr>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Civilit&eacute;</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Pr&eacute;nom</font></strong></td>
+            <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+              </font></strong></td>
+          </tr>
+            #set($counter = 1)
+            #foreach($item in $locataires)
+              <tr>
+                <td align="right" height="20" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odloc_civil</font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odloc_pren</font></td>
+                <td align="center" width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                    <a href="loc_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odim_id=$!immeuble.odim_id&odloc_id=$!item.odloc_id" style="color:blue;" >
+                      $!item.odloc_nom
+                    </a>
+                </font></td>
+              </tr>
+              #set($counter = $counter + 1)
+            #end
+        #else
+           <tr><td><font color="#800000">Aucun locataire pour cet immeuble.</font></td></tr>
+        #end
+          </table>
+          </td>
+          </tr>
+   </table>
+<p>
+<p>
+<!--
+$immeuble.getFirstFieldWithError()
+$immeuble.getFirstFieldError()
+-->
+</body>
+</html>

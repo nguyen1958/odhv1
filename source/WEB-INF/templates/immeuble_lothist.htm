@@ -1,0 +1,395 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $req.getParameter("for_object"))
+#set($actionparam = $req.getParameter("dispatcher"))
+<form name="objectForm" method="post" action="hist" >
+<input type="hidden" name="odpl_lot" value="$!propslot.odpl_lot.odlot_id">
+<input type="hidden" name="dispatcher" value="LIST" >
+<input type="hidden" name="for_object" value="$!pForObject" >
+<input type="hidden" name="odpl_id" value="$!propslot.odpl_id" >
+<input type="hidden" name="odll_id" value="$!locslot.odll_id" >
+<input type="hidden" name="query_string" value="$!query_string" >
+<input type="hidden" name="offset" value="0" >
+<input type="hidden" name="odpro_id" value="$req.getParameter('odpro_id')" >
+<input type="hidden" name="odloc_id" value="$req.getParameter('odloc_id')" >
+  <p>&nbsp;</p>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top" width="50" >&nbsp;</td>
+      <td colspan="2"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font><strong><font size="2">&nbsp;Immeuble
+      <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;" >$!lot.odlot_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;">Globale</a>
+      / <a href="lot_list?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Lots $!lot.odlot_immeuble.odim_lots.size()</a>&nbsp;/ <a href="lot_form?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Ajout d'un lot</a>
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top" width="50" >&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($lot.odlot_id > 0)
+        <b>LOT <font color="#800000">$!lot.odlot_code</font> / Historique
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" width="50" >&nbsp;</td>
+      <td valign="top" colspan="2">
+        <b>Immeuble  <font color="#800000">$!lot.odlot_immeuble.notNullName</font></b><br>
+        <b>Quartier  <font color="#800000">$!lot.odlot_immeuble.odim_quartier.odnt_nom</font></b><br>
+        #set($rue = $lot.odlot_immeuble.odim_rue)
+        <b>Adresse  <font color="#800000">$!lot.getAltValue($!lot.odlot_immeuble.odim_num,'') $!lot.getAltValue($!rue.odrue_type,'') $!lot.getAltValue($!rue.odrue_liaison,'') $!lot.getAltValue($!rue.odrue_nom,'')</font></b><br>
+        <b>CP / Ville  <font color="#800000">$!lot.getAltValue($!rue.odrue_codeposte,'') $!lot.getAltValue($!rue.odrue_ville,'')</font></b><br>
+        <b>Lot </b> Bat  <font color="#800000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>&nbsp;$!lot.odlot_codelot.odlot_codebat</font></b>
+                 Esc. <font color="#800000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>&nbsp;$!lot.zeroFillToStart($!lot.odlot_codelot.odlot_codeesc.toString(),2)</font></b>
+                 Niv. <font color="#800000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>&nbsp;$!lot.zeroFillToStart($!lot.odlot_codelot.odlot_codeniv.toString(), 2)</font></b>
+                 Imm. <font color="#800000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>&nbsp;$!lot.zeroFillToStart($!lot.odlot_codelot.odlot_codeimm.toString(), 5)</font></b>
+        <br>
+       </td>
+    </tr>
+</table>
+<center>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT_PROP"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($propslot.hasErrors())
+                  Impossible de valider : Il y a $!propslot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE_PROP"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($propslot.hasErrors())
+                  Impossible de valider : Il y a $!propslot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font><br>
+               #if ($propslot.hasError("odpl_datede", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date du est obligatoire.</font><br>
+               #end
+               #if ($propslot.hasError("odpl_datede", "IS_DATA_VALIDE"))
+                    <font color="red">La date du  n'est pas correcte.</font><br>
+               #end
+               #if ($propslot.hasError("odpl_datea", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date au est obligatoire.</font><br>
+               #end
+              #if ($propslot.hasError("odpl_datea", "DATE_ORDERED"))
+                 <font color="red">La date au doit &ecirc;tre apr&eacute;s la date du.</font><br>
+               #end
+                #if ($propslot.hasError("odpl_proprietaire", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le proprietaire est obligatoire. </font><br/>
+                #end
+                #if ($propslot.hasError("odpl_proprietaire", "NOT_EXISTS"))
+                   <font color="red">Le proprietaire choisi n'existe plus. </font><br/>
+                #end
+                #if ($propslot.hasError("odpl_lot", "NOT_EXISTS"))
+                   <font color="red">Le lot n'existe plus. </font><br/>
+                #end
+                #if ($propslot.hasError("odpl_observations", "MAX_LENGTH"))
+                   <font color="red">Le texte pour observations est trop long. Maximum 4000 caractères.</font><br/>
+                #end
+
+           <font face="Times New Roman" size="4" color="#800000">
+             #if($null-propslot)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted-propslot)
+                $deleted-propslot enregistrement(s) supprim&eacute;(s)
+             #end
+           </font>
+       </td></tr>
+</table>
+<table width="90%" border="1" cellspacing="0" cellpadding="0">
+   <tr ><td align="center" colspan="8"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">HISTORIQUE DES PROPRIETAIRES</strong></font></td></tr>
+  <tr>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right">&nbsp;</div></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Proprietaire*</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Du*</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Au</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nature</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Observations</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></strong></td>
+  </tr>
+
+     <tr>
+        <td align="center" nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td align="right"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
+        <td nowrap align="center" background="images/fond_liste.gif" >
+        <input name="odpl_prop" type="text" value="$!propslot.getAltValue($!propslot.odpl_proprietaire.odpro_pren, '') $!propslot.getAltValue($!propslot.odpl_proprietaire.odpro_nom, '')" size="25" maxlength="60" readonly>&nbsp;
+        <input type="hidden" name="odpl_proprietaire" value="$!propslot.odpl_proprietaire.odpro_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('prop_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/fleche_g_01.gif" border="0"></a>
+       </td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input type="text" name="odpl_datede"  value="$!propslot.getAltValue($!propslot.getDateAsString($!propslot.odpl_datede),'odpl_datede')" maxlength=10 size="10">
+        </font></td>
+        <td align="center" background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input type="text" name="odpl_datea"  value="$!propslot.getAltValue($!propslot.getDateAsString($!propslot.odpl_datea),'odpl_datea')" maxlength=10 size="10">
+        </font></td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <select name="odpl_nature" >
+          <option value="">
+          #foreach($item in $!propslot.allNatures)
+             <option value="$item.odnt_id" $item.getSelectedAttribute($item.getOdnt_id().toString(), $!propslot.getOdpl_nature().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+        </font></td>
+        <td align="center" background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <textarea name="odpl_observations" rows="2" cols="20" >$!propslot.getAltValue($!propslot.odpl_observations,'odpl_observations')</textarea>
+        </font></td>
+      <td background="images/fond_liste.gif" >
+        #if($propslot.odpl_id > 0)
+          <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_PROP';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0" ></a>
+        #else
+          <a href="#" onClick="document.objectForm.dispatcher.value='INSERT_PROP';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0" ></a>
+        #end
+          </td>
+       </tr>
+    <tr>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>
+    #set($counter = 1)
+    #foreach($item in $proprietaires)
+      <tr>
+          <td  align="center" nowrap>&nbsp;
+              <input name="odpl_idd" type="checkbox" value="$!item.odpl_id">
+            </td>
+        <td align="right"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;</font></td>
+        <td nowrap valign="top" background="images/fond_liste.gif">
+          <a href="prop_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id&for_object=$!pForObject&odpro_id=$!item.odpl_proprietaire.odpro_id" style="color:blue;">&nbsp;$!item.getAltValue($!item.odpl_proprietaire.odpro_pren, '') $!item.getAltValue($!item.odpl_proprietaire.odpro_nom,'')</a>
+       </td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          &nbsp;$!item.getDateAsString($!item.odpl_datede)
+        </font></td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          &nbsp;$!item.getDateAsString($!item.odpl_datea)
+        </font></td>
+        <td align="center"   background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+           &nbsp;$!item.getAltValue($!item.odpl_nature.odnt_nom,'')
+        </font></td>
+        <td background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.getAltValue($!item.odpl_observations,'odpl_observations')</font></td>
+      <td background="images/fond_liste.gif"><a href="#" onClick="document.objectForm.odpl_id.value='$!item.odpl_id';document.objectForm.dispatcher.value='FOR_UPDATE_PROP';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0" ></a></td>
+       </tr>
+      #set($counter = $counter + 1)
+    #end
+</table>
+<p>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="100" ><div align="center"></div></td>
+      <td nowrap>
+         <a href="#" onClick="document.objectForm.dispatcher.value='DELETE_PROP';document.objectForm.submit();">
+              <img src="images/supprimer.gif" width="130" height="17" border="0" ></a>
+          <a href="lot_list?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        </td>
+    </tr>
+</table>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT_LOC"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($locslot.hasErrors())
+                  Impossible de valider : Il y a $!locslot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE_LOC"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($locslot.hasErrors())
+                  Impossible de valider : Il y a $!locslot.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font><br>
+               #if ($locslot.hasError("odll_datede", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date du est obligatoire.</font><br>
+               #end
+               #if ($locslot.hasError("odll_datede", "IS_DATA_VALIDE"))
+                    <font color="red">La date du  n'est pas correcte.</font><br>
+               #end
+               #if ($locslot.hasError("odll_datea", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date au est obligatoire.</font><br>
+               #end
+              #if ($locslot.hasError("odll_datea", "DATE_ORDERED"))
+                 <font color="red">La date au doit &ecirc;tre apres la date du.</font><br>
+               #end
+                #if ($locslot.hasError("odll_locataire", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le locataire est obligatoire. </font><br/>
+                #end
+                #if ($locslot.hasError("odll_locataire", "NOT_EXISTS"))
+                   <font color="red">Le locataire choisi n'existe plus. </font><br/>
+                #end
+                #if ($locslot.hasError("odll_lot", "NOT_EXISTS"))
+                   <font color="red">Le lot n'existe plus. </font><br/>
+                #end
+                #if ($locslot.hasError("odll_observations", "MAX_LENGTH"))
+                   <font color="red">Le texte pour observations est trop long. Maximum 4000 caractères.</font><br/>
+                #end
+
+           <font face="Times New Roman" size="4" color="#800000">
+             #if($null-locslot)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted-locslot)
+                $deleted-locslot enregistrement(s) supprim&eacute;(s)
+             #end
+           </font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<table width="90%" border="1" cellspacing="0" cellpadding="0">
+   <tr><td align="center" colspan="7"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">HISTORIQUE DES LOCATAIRES</strong></font></td></tr>
+  <tr>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right">&nbsp;</div></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Locataire*</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Du*</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Au</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Observations</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></strong></td>
+  </tr>
+    <tr>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>
+     <tr>
+        <td align="center" nowrap>&nbsp;&nbsp;&nbsp;</td>
+        <td align="right" background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></td>
+        <td nowrap background="images/fond_liste.gif" >
+          <input name="odll_loc" type="text" value="$!locslot.getAltValue($!locslot.odll_locataire.odloc_pren, '') $!locslot.getAltValue($!locslot.odll_locataire.odloc_nom, '')" size="25" maxlength="60" readonly>
+          <input type="hidden" name="odll_locataire" value="$!locslot.odll_locataire.odloc_id">
+          &nbsp;<a href = "#" onClick ="objectWin = window.open('loc_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/fleche_g_01.gif"  border="0"></a>
+        </td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input type="text" name="odll_datede"  value="$!locslot.getAltValue($!locslot.getDateAsString($!locslot.odll_datede),'odll_datede')" maxlength=10 size="10">
+        </font></td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input type="text" name="odll_datea"  value="$!locslot.getAltValue($!locslot.getDateAsString($!locslot.odll_datea),'odll_datea')" maxlength=10 size="10">
+        </font></td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <textarea name="odll_observations" rows="3" cols="41" >$!locslot.getAltValue($!locslot.odll_observations,'odll_observations')</textarea>
+        </font></td>
+      <td background="images/fond_liste.gif" >
+        #if($locslot.odll_id > 0)
+          <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_LOC';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0" ></a>
+        #else
+          <a href="#" onClick="document.objectForm.dispatcher.value='INSERT_LOC';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0" ></a>
+        #end
+          </td>
+       </tr>
+    <tr>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>
+    #set($counter = 1)
+    #foreach($item in $locataires)
+      <tr>
+          <td  align="center" nowrap>&nbsp;
+              <input name="odll_idd" type="checkbox" value="$!item.odll_id">
+            </td>
+        <td align="right"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;</font></td>
+        <td nowrap valign="top" background="images/fond_liste.gif">
+         <a href="loc_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odloc_id=$!item.odll_locataire.odloc_id" style="color:blue;" >&nbsp;$!item.getAltValue($!item.odll_locataire.odloc_pren, '') $!item.getAltValue($!item.odll_locataire.odloc_nom, '')</a>
+        </td>
+        <td align="center"   background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          &nbsp;$!item.getDateAsString($!item.odll_datede)
+        </font></td>
+        <td align="center"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          &nbsp;$!item.getDateAsString($!item.odll_datea)
+        </font></td>
+        <td width="35%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.getAltValue($!item.odll_observations,'odll_observations')</font></td>
+      <td background="images/fond_liste.gif"><a href="#" onClick="document.objectForm.odll_id.value='$!item.odll_id';document.objectForm.dispatcher.value='FOR_UPDATE_LOC';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0" ></a></td>
+       </tr>
+      #set($counter = $counter + 1)
+    #end
+</table>
+<p>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="100" ><div align="center"></div></td>
+      <td nowrap>
+         <a href="#" onClick="document.objectForm.dispatcher.value='DELETE_LOC';document.objectForm.submit();">
+              <img src="images/supprimer.gif" width="130" height="17" border="0" ></a>
+          <a href="lot_list?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        </td>
+    </tr>
+</table>
+</center>
+</form>
+
+</body>
+</html>

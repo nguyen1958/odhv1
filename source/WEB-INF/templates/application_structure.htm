@@ -1,0 +1,165 @@
+<html>
+<head>
+<title>Structure SQL - Gestion de Demarches Administratives </title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+</script>
+
+<body background="images/fond03.gif" link="#FFFFFF" leftmargin="10" topmargin="10" marginwidth="10" marginheight="10">
+<p>
+<font color="#800000" size="4"><b>Gestionnaire d'Application</b></font>
+- <a href="application?action=mmode" style="color:blue;" >Mode maintenance</a>
+/ <a href="application" style="color:blue;" >Configuration</a>
+/ <font color="#800000" size="4">Structure SQL</font>
+/ <a href="application?action=sessions" style="color:blue;" >Utilisateurs en ligne</a>
+/ <a href="intro" style="color:blue;" >Retour à L'observatoire d'habitat</a>
+
+<form name="mainForm" action="application" method="post">
+<input type="hidden" name="action" value="structure"  >
+<table cellspacing="0" cellpadding="0" border="1" >
+<th>&nbsp;Connexion actuelle&nbsp;</td>
+<th>&nbsp;Nouvelle connexion</td>
+<tr><td align="center" valign="top">
+<table cellspacing="0" cellpadding="0" border="0" >
+<tr>
+   <td>&nbsp;Adresse&nbsp;</td>
+   <td>&nbsp;$!url1&nbsp;</td>
+</tr>
+<tr>
+ <td>&nbsp;Login&nbsp;</td>
+ <td>&nbsp;$!user1</td>
+</tr>
+<tr>
+ <td>&nbsp;Password&nbsp;</td>
+ <td>&nbsp;$!pwd1&nbsp;</td>
+</tr>
+</table>
+</td>
+<td>
+<table cellspacing="0" cellpadding="0" border="0" >
+<tr>
+   <td>&nbsp;IP&nbsp;</td>
+   <td>&nbsp;<input type="text" name="ip2" value="$!ip2" size="40" >&nbsp;</td>
+</tr>
+<tr>
+ <td>&nbsp;Port&nbsp;</td>
+ <td>&nbsp;<input type="text" name="port2" value="$!port2" size="40"  >&nbsp;</td>
+</tr>
+<tr>
+ <td>&nbsp;Nom de la base de donnée&nbsp;</td>
+ <td>&nbsp;<input type="text" name="base2" value="$!base2" size="40"  >&nbsp;</td>
+</tr>
+<tr>
+ <td>&nbsp;Login&nbsp;</td>
+ <td>&nbsp;<input type="text" name="user2" value="$!user2" size="40"  >&nbsp;</td>
+</tr>
+<tr>
+ <td>&nbsp;Password&nbsp;</td>
+ <td>&nbsp;<input type="password" name="pwd2" value="$pwd2" size="40" >&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+ <td >&nbsp;&nbsp;
+ #if($message1 == 'Connected')
+ <font color="green" size="3">$!message1</font>
+ #else
+ <font color="red" size="3">$!message1</font>
+ #end
+ </td>
+ <td >&nbsp;&nbsp;
+ #if($message2 == 'Connected')
+ <font color="green" size="3">$!message2</font>
+ #else
+ <font color="red" size="3">$!message2</font>
+ #end
+ </td>
+</tr>
+<tr><td colspan="2">
+<table border="0" width="100%" >
+<tr>
+<td width="100%" ><font color="red" size="3">$!message</font></td><td align="right">&nbsp;<input type="submit" name="comparer" value="Comparer" >&nbsp;</td>
+</tr>
+</table>
+</td></tr>
+</table>
+</form>
+
+#if($req.getParameter("comparer"))
+<p>
+<font color="#800000" size="3">Diff&eacute;rences de structure : $!differences.size() diff&eacute;rences </font>
+<br>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr height="25" >
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Table</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Etat</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Propriet&eacute;</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Valeur actuelle</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nouvelle valeur</font></strong></td>
+  </tr>
+  #set($counter = 0 )
+  #foreach($item in $differences)
+  <tr>
+    <td align="right" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$counter</font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!item.fileName</font></strong></td>
+    <td align="center" background="images/fond_liste.gif" nowrap><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+    #if(!$item.oldFileName)
+        Nouvelle table
+    #elseif(!$item.newFileName)
+        Ancienne table
+    #else
+      #if($item.propertyStatus == 3)
+          Ancienne propriet&eacute;
+      #elseif($item.propertyStatus == 4)
+          Nouvelle propriet&eacute;
+      #elseif($item.propertyStatus == 2)
+          Chang&eacute;
+      #end
+    #end
+
+    </font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    &nbsp;&nbsp;$!item.propertyName
+    </font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    <input value="$!item.propertyOldValue" size="40" style="width:100%" >
+    </font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    <input value="$!item.propertyNewValue" size="40" style="width:100%" >
+    </font></strong></td>
+    #set($counter = $counter + 1)
+   </tr>
+  #end
+</table>
+  <br>
+  <br>
+<font color="#800000" size="3">Structure actuelle </font>
+<br>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr height="25" >
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Table</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Propriet&eacute;</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Valeur actuelle</font></strong></td>
+  </tr>
+  #set($counter = 0 )
+  #foreach($item in $configuration)
+  <tr>
+    <td align="right" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$counter</font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!item.fileName</font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    &nbsp;&nbsp;$!item.propertyName
+    </font></strong></td>
+    <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+    $!item.propertyOldValue
+    </font></strong></td>
+    #set($counter = $counter + 1)
+   </tr>
+  #end
+</table>
+#end
+</body>
+</head>
+</html>

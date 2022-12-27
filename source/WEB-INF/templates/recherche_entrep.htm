@@ -1,0 +1,251 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.rechercheForm.dispatcher.value='DELETE';document.rechercheForm.submit();
+   }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pDispatcher = $req.getParameter("dispatcher"))
+#set($pChooser = $req.getParameter("chooser"))
+#if(!$pChooser || $pChooser.equals(""))
+  #parse("menu.htm")
+#end
+<form name="rechercheForm" method="post" action="entrep_list">
+<input type="hidden" name="dispatcher" value="$!pDispatcher" >
+<input type="hidden" name="query_string" value="$!query_string" >
+<input type="hidden" name="offset" value="0" >
+<input type="hidden" name="chooser" value="$!pChooser" >
+  <p>&nbsp;</p>
+<center>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td colspan="9"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font><strong><font size="2">&nbsp;Maintenance / Recherche
+        entreprise
+        &nbsp;/&nbsp;
+        <a href="entrep_form?chooser=$!req.getParameter('chooser')" style="color:blue;"> Cr&eacute;ation entreprise </a>
+        </font></strong></strong></font>
+        </div></td>
+    </tr>
+    <tr>
+      <td colspan="9" align="center" > <p>
+        <font face="Times New Roman" size="4" color="#800000">
+             #if($null)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted)
+                 #if($deleted < $toDelete)
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                    <br>
+                    #set($toRem = $toDelete - $deleted)
+                    $toRem enregistrement(s) gard&eacute;s pour maintenir l'integrit&eacute; r&eacute;f&eacute;rentielle.
+                 #else
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                 #end
+            #end
+        </font>
+      </td>
+    </tr>
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<table width="90%" border="1" cellspacing="0" cellpadding="0">
+#if($pageableResults.getQueryCount() > 0 )
+  <tr>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right">&nbsp;</div></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Code</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Description</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Adresse</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CP</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Ville</font></strong></td>
+  </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td><div align="right"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>
+    #set($indexTo = $pageableResults.getIndexTo() + 1)
+    #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+    #set($counter = $indexFrom)
+    #foreach($item in $pageableResults.getResults())
+      <tr>
+          <td width="2%" align="center" nowrap>&nbsp;
+           #if(!$pChooser || $pChooser.equals(""))
+              <input name="oden_id" type="checkbox" value="$!item.oden_id">
+            #end
+            </td>
+        <td align="right" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+        <td align="center" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.oden_code</font></td>
+        <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+           #if(!$pChooser || $pChooser.equals(""))
+              <a href="entrep_form?dispatcher=FOR_UPDATE&oden_id=$!item.oden_id" style="color:blue;" >
+                $!item.oden_nom
+             </a>
+           #else
+                <a href="#" onClick="with(window.opener.document.objectForm){
+                  odtr_entrep.value='$!item.oden_id';
+                  odtr_entr.value=unescape('$!item.encodeISO($!item.oden_nom)');
+                  };window.close();return false;" style="color:blue;">
+                  $!item.oden_nom
+                  </a>
+           #end
+        </font></td>
+        <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.oden_comment</font></td>
+        <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.oden_addr1  $item.oden_addr2&nbsp;</font></td>
+        <td  align="center" width="5%" background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.zeroFillToStart($item.oden_codeposte.toString(), 5)&nbsp;</font></td>
+        <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.oden_ville&nbsp;</font></td>
+      </tr>
+      #set($counter = $counter + 1)
+    #end
+</table>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td colspan="4" nowrap>
+            <a href="#" onClick="deleteObject()">
+              <img src="images/supprimer.gif" width="130" height="17" border="0" ></a>
+          <a href="intro"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<br><br>
+          <table width="90%" cellspacing="3" cellpadding="0" border="0"><tr >
+          <td width="50" valign="top"> <div align="right"></div></td>
+          <td width="50%" nowrap>
+           &nbsp;&nbsp;$pageableResults.getQueryCount() réponse(s)
+          </td>
+          #if($query_string != '')
+            <td valign="middle" nowrap>
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+          #end
+          #set($pagesList = $pageableResults.getHandlers(5))
+             <td valign="middle">
+              <a href="#" onClick="document.rechercheForm.offset.value='FIRST';document.rechercheForm.submit();"><img src="images/fleche_g_02.gif" border="0" ></a>
+             </td>
+          #if($pageableResults.getCurrentPage() > 0)
+            <td valign="middle">
+             <a href="#" onClick="document.rechercheForm.offset.value=-1;document.rechercheForm.submit();"><img src="images/fleche_g_01.gif" border="0"></a>
+            </td>
+          #end
+          #foreach($page in $pagesList)
+            #set($shownPage = $page + 1)
+            #set($offsetValue = $page - $pageableResults.getCurrentPage())
+            #if($offsetValue == 0)
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+            #else
+              <td>
+              <a href="#" onClick="document.rechercheForm.offset.value=$offsetValue;document.rechercheForm.submit();" style="color:blue;"> $shownPage</a>
+              </td>
+            #end
+          #end
+          #if($pageableResults.getCurrentPage() < $pageableResults.getPagesCount() - 1)
+          <td>
+          <a href="#" onClick="document.rechercheForm.offset.value=1;document.rechercheForm.submit();" ><img src="images/fleche_d_01.gif" border="0" ></a>
+          </td>
+          #end
+             <td>
+              <a href="#" onClick="document.rechercheForm.offset.value='LAST';document.rechercheForm.submit();"><img src="images/fleche_d_02.gif" border="0" ></a>
+             </td>
+             <td width="50%" align="right" nowrap>
+              #set($crtPage = $pageableResults.getCurrentPage() + 1)
+               Page  $crtPage / $pageableResults.getPagesCount()
+             </td>
+          </tr></table>
+ #else
+ </table>
+  <center>
+  <font color="#800000"><b>
+  Aucune donnée ne correspond à ces ce critère.
+  </b></font>
+  <br><br>
+          <table cellspacing="3" cellpadding="0" border="0"><tr >
+          #if($query_string != '')
+            <td valign="middle">
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+          #end
+          </tr></table>
+ #end
+</form>
+<p>&nbsp;</p>
+</center>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pDispatcher = $req.getParameter("dispatcher"))
+#set($pChooser = $req.getParameter("chooser"))
+#if(!$pChooser || $pChooser.equals(""))
+  #parse("menu.htm")
+#end
+<form name="rechercheForm" method="post" action="lot_list">
+<input type="hidden" name="dispatcher" value="$!pDispatcher" >
+<input type="hidden" name="query_string" value="$!query_string" >
+<input type="hidden" name="offset" value="0" >
+<input type="hidden" name="chooser" value="$!pChooser" >
+<input type="hidden" name="odlot_immeuble" value="$!lot.odlot_immeuble.odim_id" >
+<input type="hidden" name="for_object" value="$!for_object" >
+<input type="hidden" name="odlot_proprietaire" value="$!req.getParameter('odlot_proprietaire')" >
+<input type="hidden" name="odlot_locataire" value="$!req.getParameter('odlot_locataire')" >
+
+  <p>&nbsp;</p>
+<center>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td colspan="7"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font><strong><font size="2">&nbsp;Immeuble
+      #if($for_object.equals("immeuble"))
+        <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;" >$!lot.odlot_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&odim_id=$!lot.odlot_immeuble.odim_id" style="color:blue;">Globale</a>
+        / Lots $!lot.odlot_immeuble.odim_lots.size()&nbsp;/ <a href="lot_form?for_object=immeuble&odlot_immeuble=$!lot.odlot_immeuble.odim_id" style="color:blue;" >Ajout d'un lot (Pour cet immeuble)</a>
+      #end
+      </font></strong></strong></font></div></td>
+    </tr>
+    <tr>
+      <td valign="top" colspan="8">&nbsp;&nbsp;&nbsp;&nbsp;<b>
+      #if($for_object.equals("immeuble"))
+          RECHERCHE DE LOTS DE L'IMMEUBLE <font color="#800000">$!lot.odlot_immeuble.notNullName</font>
+      #elseif($for_object.equals("proprietaire"))
+          RECHERCHE DE LOTS DU PROPRIETAIRE <font color="#800000">$!lot.odlot_proprietaire.odpro_civil $!lot.odlot_proprietaire.odpro_pren $!lot.odlot_proprietaire.odpro_nom</font> <br>
+      #elseif($for_object.equals("locataire"))
+          RECHERCHE DE LOTS DU LOCATAIRE <font color="#800000">$!lot.odlot_locataire.odloc_civil $!lot.odlot_locataire.odloc_pren $!lot.odlot_locataire.odloc_nom</font>
+      #end
+      </b></td>
+    </tr>
+    <tr>
+      <td colspan="7" align="center" > <p>
+        <font face="Times New Roman" size="4" color="#800000">
+             #if($null)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted)
+                $deleted enregistrement(s) supprim&eacute;(s)
+             #end
+        </font>
+      </td>
+    </tr>
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<table width="90%" border="1" cellspacing="0" cellpadding="0">
+#if($pageableResults.getQueryCount() > 0 )
+  <tr>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right">&nbsp;</div></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Lot</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Immeuble</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Historique</font></strong></td>
+
+    #if($for_object.equals("proprietaire"))
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+       Adresse
+    </font></strong></td>
+    #else
+    <!--<td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+       Propriétaire
+    </font></strong></td>   -->
+    #end
+
+
+    #if($for_object.equals("locataire"))
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+      Adresse
+     </font></strong></td>
+    #else
+    <!--
+      Locataire-->
+    #end
+
+  </tr>
+   <!-- <tr>
+      <td><div align="right"></div></td>
+      <td><div align="right"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>  -->
+    #set($indexTo = $pageableResults.getIndexTo() + 1)
+    #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+    #set($counter = $indexFrom)
+    #foreach($item in $pageableResults.getResults())
+      <tr>
+          <td width="2%" align="center" nowrap>&nbsp;
+            #if(!$pChooser || $pChooser.equals(""))
+              <input name="odlot_id" type="checkbox" value="$!item.odlot_id">
+            #end
+            </td>
+             <td align="right" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+            <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+             #if($for_object.equals("immeuble"))
+                <a href="lot_form?dispatcher=FOR_UPDATE&for_object=$!for_object&odlot_immeuble=$!req.getParameter('odlot_immeuble')&odlot_id=$!item.odlot_id" style="color:blue;" >
+             #elseif($for_object.equals("proprietaire"))
+                <a href="lot_form?dispatcher=FOR_UPDATE&for_object=$!for_object&odlot_proprietaire=$!req.getParameter('odlot_proprietaire')&odlot_id=$!item.odlot_id" style="color:blue;" >
+             #elseif($for_object.equals("locataire"))
+                <a href="lot_form?dispatcher=FOR_UPDATE&for_object=$!for_object&odlot_locataire=$!req.getParameter('odlot_locataire')&odlot_id=$!item.odlot_id" style="color:blue;" >
+             #else
+
+             #end
+             $!item.odlot_code
+             #if($for_object.equals("immeuble") || $for_object.equals("proprietaire") || $for_object.equals("locataire"))
+                </a>
+             #else
+
+             #end
+              </font></td>
+           <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+             <a href="im_form?dispatcher=FOR_UPDATE&for_object=$!for_object&odim_id=$!item.odlot_immeuble.odim_id" style="color:blue;" >
+                 $!item.odlot_immeuble.notNullName
+             </a>
+            </font></td>
+
+        <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          $!item.odlot_type.odnt_nom
+        </font></td>
+        <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <a href="hist?for_object=$!for_object&odlot_immeuble=$!item.odlot_immeuble.odim_id&odpl_lot=$!item.odlot_id&odlot_id=$!item.odlot_id" style="color:blue;" >voir</a>
+        </td>
+               #if($for_object.equals("proprietaire"))
+         <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+
+            $!item.odlot_proprietaire.odpro_adr1  $!item.odlot_proprietaire.odpro_adr2
+            </font></td>
+        #else
+        <!--    <a href="prop_form?dispatcher=FOR_UPDATE&odim_id=$!lot.odlot_immeuble.odim_id&for_object=$!pForObject&odpro_id=$!item.odlot_proprietaire.odpro_id" style="color:blue;">
+            $!item.odlot_proprietaire.odpro_pren $!item.odlot_proprietaire.odpro_nom
+            </a>  -->
+        #end
+
+             #if($for_object.equals("locataire"))
+        <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+
+          $!item.odlot_locataire.odloc_adr1  $!item.odlot_locataire.odloc_adr2
+          </font></td>
+        #else
+    <!--     <a href="loc_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odloc_id=$!item.odlot_locataire.odloc_id" style="color:blue;" >
+           $!item.odlot_locataire.odloc_pren $!item.odlot_locataire.odloc_nom
+         </a>     -->
+        #end
+
+      </tr>
+      #set($counter = $counter + 1)
+    #end
+</table>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td colspan="5" nowrap>
+            <a href="#" onClick="document.rechercheForm.dispatcher.value='DELETE';document.rechercheForm.submit();">
+              <img src="images/supprimer.gif" width="130" height="17" border="0" ></a>
+        #if($for_object.equals("proprietaire"))
+        <a href="prop_form?dispatcher=FOR_UPDATE&odpro_id=$!lot.odlot_proprietaire.odpro_id" style="color:blue;" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        #elseif($for_object.equals("locataire"))
+           <a href="loc_form?dispatcher=FOR_UPDATE&odloc_id=$!lot.odlot_locataire.odloc_id" style="color:blue;" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        #else
+           <a href="recherche"><img src="images/annuler.gif" width="130" height="17" border="0"></a></td>
+        #end
+
+    </tr>
+</table>
+<br><br>
+          <table width="90%" cellspacing="3" cellpadding="0" border="0"><tr >
+          <td width="50" valign="top"> <div align="right"></div></td>
+          <td width="50%" nowrap>
+           &nbsp;&nbsp;$pageableResults.getQueryCount() réponse(s)
+          </td>
+          #if($query_string != '')
+            <td valign="middle" nowrap>
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+          #end
+          #set($pagesList = $pageableResults.getHandlers(5))
+             <td valign="middle">
+              <a href="#" onClick="document.rechercheForm.offset.value='FIRST';document.rechercheForm.submit();"><img src="images/fleche_g_02.gif" border="0" ></a>
+             </td>
+          #if($pageableResults.getCurrentPage() > 0)
+            <td valign="middle">
+             <a href="#" onClick="document.rechercheForm.offset.value=-1;document.rechercheForm.submit();"><img src="images/fleche_g_01.gif" border="0"></a>
+            </td>
+          #end
+          #foreach($page in $pagesList)
+            #set($shownPage = $page + 1)
+            #set($offsetValue = $page - $pageableResults.getCurrentPage())
+            #if($offsetValue == 0)
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+            #else
+              <td>
+              <a href="#" onClick="document.rechercheForm.offset.value=$offsetValue;document.rechercheForm.submit();" style="color:blue;"> $shownPage</a>
+              </td>
+            #end
+          #end
+          #if($pageableResults.getCurrentPage() < $pageableResults.getPagesCount() - 1)
+          <td>
+          <a href="#" onClick="document.rechercheForm.offset.value=1;document.rechercheForm.submit();" ><img src="images/fleche_d_01.gif" border="0" ></a>
+          </td>
+          #end
+             <td>
+              <a href="#" onClick="document.rechercheForm.offset.value='LAST';document.rechercheForm.submit();"><img src="images/fleche_d_02.gif" border="0" ></a>
+             </td>
+             <td width="50%" align="right" nowrap>
+              #set($crtPage = $pageableResults.getCurrentPage() + 1)
+               Page  $crtPage / $pageableResults.getPagesCount()
+             </td>
+          </tr></table>
+ #else
+ </table>
+  <center>
+  <font color="#800000"><b>
+  #if($query_string != '')
+        Aucune donnée ne correspond à ce critère.
+  #else
+      #if($for_object.equals("immeuble"))
+         Aucun lot pour cet immeuble.
+      #elseif($for_object.equals("proprietaire"))
+         Aucun lot pour ce proprietaire.
+      #elseif($for_object.equals("locataire"))
+        Aucun lot pour ce locataire.
+      #end
+  #end
+  </b></font>
+  <br><br>
+          <table cellspacing="3" cellpadding="0" border="0"><tr >
+          #if($query_string != '')
+            <td valign="middle">
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+          #end
+          </tr></table>
+ #end
+</form>
+<p>&nbsp;</p>
+</center>
+</body>
+</html>

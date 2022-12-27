@@ -1,0 +1,732 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odimr_entreprises.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odimr_entreprises.options[i].selected=true;
+}
+
+function initFields(){
+    document.objectForm.odar_datearrete.value="";
+    document.objectForm.odar_datevisite.value="";
+    document.objectForm.odar_observations.value="";
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+ <script>
+ function openNewSession(windObject, sessionStatus){
+   if(windObject != null)
+       windObject.close();
+   window.location="/odh1v/proced_form?session_status="+sessionStatus;
+ }
+
+ </script>
+<div id="barre" style="position:absolute; visibility: visible; left: 0px; top: 32px;">
+  <table width="100%" height="22" border="0" align="center" cellpadding="0" cellspacing="0" background="images/fond_menu.gif">
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+      <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">&nbsp;&nbsp;<strong>Immeuble</strong></a>&nbsp;&nbsp;</div></td>
+      <!--<td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">&nbsp;&nbsp;<strong>Procédure</strong></a>&nbsp;&nbsp;</div></td> -->
+	  <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')" onClick="window.location.href='recherche';return false;" >&nbsp;&nbsp;<strong>Recherche</strong></a>&nbsp;&nbsp;</div></td>
+	  <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')" onClick="window.location.href='listing';return false;" >&nbsp;&nbsp;<strong>Listing</strong></a>&nbsp;&nbsp;</div></td>
+	  <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">&nbsp;&nbsp;<strong>Maintenance</strong></a>&nbsp;&nbsp;</div></td>
+      <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu5','','show')" onMouseOut="MM_showHideLayers('menu5','','hide')">&nbsp;&nbsp;<strong>Administration</strong></a>&nbsp;&nbsp;</div></td>
+            <!--<td width="115"><div align="center"><a href="login" target="_top" class="menu" onMouseOver="MM_showHideLayers('menu1','','show')" onMouseOut="MM_showHideLayers('menu1','','hide')">&nbsp;&nbsp;<strong>Connexion</strong></a>&nbsp;&nbsp;</div></td>-->
+      <td width="115"><div align="center"><a href="#" class="menu" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">&nbsp;&nbsp;<strong>Deconnexion</strong></a>&nbsp;&nbsp;</div></td>
+      <td width="115"><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="menu1" style="position:absolute; visibility: hidden; left: 0; top: 48;" onMouseOver="MM_showHideLayers('menu1','','show')" onMouseOut="MM_showHideLayers('menu1','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+    <tr>
+      <td height="5" align="left" valign="middle" background="images\transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+<div id="menu2" style="position:absolute; visibility: hidden; left: 0; top: 48;" onMouseOver="MM_showHideLayers('menu2','','show')" onMouseOut="MM_showHideLayers('menu2','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+      <td width="30" height="5"></td>
+	  <td width="170" height="5"></td>
+      <td height="5"></td>
+    </tr>
+    <tr>
+      <td width="30"><img src="images/transparent01.gif" width="30"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="im_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création immeuble</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+	<tr>
+     <td width="30"><img src="images/transparent01.gif" width="30"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="prop_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création
+        propriétaire</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+     <td width="30"><img src="images/transparent01.gif" width="30"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="loc_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;Création
+        locataire</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"><img src="images/transparent01.gif" width="30"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="prop_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche&nbsp;propriétaire</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"><img src="images/transparent01.gif" width="30"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="loc_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;Recherche locataire</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+<div id="menu3" style="position:absolute; left: 0; top: 48; visibility: hidden" onMouseOver="MM_showHideLayers('menu3','','show')" onMouseOut="MM_showHideLayers('menu3','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+    <tr>
+      <td width="30" height="5"></td>
+	    <td width="115" height="5"></td>
+      <td width="170" height="5"></td>
+      <td height="5"></td>
+    </tr>
+	<tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="proced_form?module=insert" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création proc&eacute;dure</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+<div id="menu4" style="position:absolute; left: 0; top: 48; visibility: hidden;" onMouseOver="MM_showHideLayers('menu4','','show')" onMouseOut="MM_showHideLayers('menu4','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+     <tr>
+      <td width="30" height="5"></td>
+	  <td width="115" height="5"></td>
+	  <td width="290" height="5"></td>
+      <td width="170" height="5"></td>
+      <td height="5"></td>
+    </tr>
+	<tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+	    <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="synd_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        syndic</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+	    <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="synd_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche syndic</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="exp_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        expert</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="exp_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche expert</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="suiv_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        suiveur</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="suiv_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche suiveur</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="rue_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        rue</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="rue_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche rue</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="entrep_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        entreprise</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="entrep_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;entreprise</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="nat_form"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        option</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="nat_list" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche option</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="290"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="seuil" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Gestion seuil</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="menu5" style="position:absolute; left: 0; top: 48; visibility: hidden" onMouseOut="MM_showHideLayers('menu5','','hide')" onMouseOver="MM_showHideLayers('menu5','','show')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+   <tr>
+      <td width="30" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="300" height="5"></td>
+      <td width="170" height="5"></td>
+      <td height="5"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="300"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="util_form" class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Création
+        utilisateur</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="300"></td>
+      <td width="170" align="left" valign="middle" background="images\bt_sous_menu01.gif"><a href="util_list"  class="menu"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Recherche&nbsp;utilisateur</strong></a></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="menu6" style="position:absolute; left: 0; top: 48; visibility: hidden" onMouseOver="MM_showHideLayers('menu6','','show')" onMouseOut="MM_showHideLayers('menu6','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+   <tr>
+      <td width="30" height="5"></td>
+      <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+      <td width="170" height="5"></td>
+      <td height="5"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+      <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+      <td width="115" ></td>
+      <td width="170" ><img src="images/transparent01.gif" width="30"></td>
+      <td><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="menu7" style="position:absolute; left: 0; top: 48; visibility: hidden" onMouseOver="MM_showHideLayers('menu7','','show')" onMouseOut="MM_showHideLayers('menu7','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+   <tr>
+      <td width="30" height="5"></td>
+      <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+      <td width="115" height="5"></td>
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+      <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+	    <td width="115"></td>
+      <td width="115" ></td>
+      <td width="115" ></td>
+      <td width="115" ></td>
+      <td width="115" ><img src="images/transparent01.gif" width="30"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="menu8" style="position:absolute; left: 0; top: 48; visibility: hidden;width:1130;" onMouseOver="MM_showHideLayers('menu8','','show')" onMouseOut="MM_showHideLayers('menu8','','hide')">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+   <tr>
+      <td width="30" height="5"></td>
+      <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+	    <td width="115" height="5"></td>
+      <td width="115" height="5"></td>
+      <td width="50" height="5"></td>
+      <td width="50" height="5"></td>
+      <td width="170" height="5"></td>
+      <td  height="5"></td>
+
+    </tr>
+    <tr>
+      <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+      <td width="115"></td>
+	  <td width="115"></td>
+	  <td width="115"></td>
+	  <td width="115"></td>
+      <td width="115" ></td>
+      <td width="50" ></td>
+      <td width="50" ></td>
+      <td width="170" align="center" valign="top" background="images\bt_sous_menu01.gif">
+        <a href="login?session_status=closed&dispatcher=DECONNECT" class="menu" title=""><strong><span style="color:#800000;">admin</span></strong></a></td>
+      <td ><img src="images/transparent01.gif"></td>
+    </tr>
+  </table>
+</div>
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="30"> <img src="images/transparent01.gif" width="30"></td>
+    <td width="115"><div align="center"><img src="images/immeuble01.gif" width="60" height="30"></div></td>
+	<!--<td width="115"><div align="center"><img src="images/procedure01.gif" width="60" height="30"></div></td>-->
+    <td width="115"><div align="center"><img src="images/moteur01.gif" width="60" height="30"></div></td>
+    <td width="115"><div align="center"><img src="images/listing01.gif" width="60" height="30"></div></td>
+    <td width="115"><div align="center"><img src="images/maintenance01.gif" width="60" height="30"></div></td>
+    <td width="115"><div align="center"><img src="images/administration01.gif" width="60" height="30"></div></td>
+    <!--<td width="115"><div align="center"><img src="images/signature01.gif" width="60" height="30"></div></td>-->
+    <td width="115"><div align="center"><img src="images/deconnexion01.gif" width="60" height="30"></div></td>
+    <td width="115"><img src="images/transparent01.gif"></td>
+  </tr>
+</table><form name="objectForm" method="post" action="proced_form" onSubmit="document.objectForm.dispatcher.value='UPDATE_MD';selectItems();document.objectForm.submit();return false;">
+<input type="hidden" name="odimr_id" value="2">
+<input type="hidden" name="dispatcher" value="FOR_UPDATE_MD" >
+<input type="hidden" name="for_object" value="" >
+<input type="hidden" name="odim_id" value="" >
+<input type="hidden" name="odtr_id" value="" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="4"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<font face="Verdana, Arial, Helvetica, sans-serif"><strong><img src="images/procedure01.gif" width="60" height="30" align="absmiddle"></strong></font></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Proc&eacute;dures</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  / Immeuble <a href="im_form?dispatcher=FOR_UPDATE&odim_id=9" style="color:blue;" >Les clarinettes</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=&odim_id=9" style="color:blue;">Globale</a>
+                  /
+                  Modification mesure definitive
+                  </font></strong></div></td>
+    </tr>
+        <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="3">
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>PROC&Eacute;DURE&nbsp;&nbsp;<font color="#800000">2</font>
+                  - MESURE DEFINITIVE
+              </td>
+    </tr>
+
+    <tr>
+      <td colspan=4 align="center">
+          <font color="#800000"><b>
+                                          
+                                    </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="249" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<table  border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg; dossier&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date proc&eacute;dure&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Type proc&eacute;dure&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Nature d'intervention&nbsp;</font></strong></td>
+  </tr>
+  <tr>
+    <td align="center" bgcolor="#FFFFFF"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;2</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;11/10/2005</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Péril imminent</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                                   &nbsp;&nbsp;démolition <br>
+                
+    </font></strong></td>
+  </tr>
+</table>
+</center>
+<p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div>
+      </td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date de l'arrete
+         </em></strong></font>
+      </td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_datearrete" value="" maxlength=10 size="10"> (jj/mm/aaaa)</font>
+       </td>
+      
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Num arrete
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_numarrete" value="" maxlength=10 size="10">
+        </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Travaux &agrave; realiser avant le
+               </em></strong>(jj/mm/aaaa)</font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_datelimrealis" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date r&eacute;alisation
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_daterealis" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Travaux non realis&eacute; au
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_datetravnonrealis" value="" maxlength=10 size="10">
+        (jj/mm/aaaa)</font>
+        </td>
+      <td rowspan="8" valign="top">
+               <table border="0"  >
+             <tr>
+             <td colspan="4"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>DELAIS COMPLEMENTAIRES</strong></font></td>
+             </tr>
+             <tr>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date arrete 1&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datearr1" value="" size="10"maxlength="10" ></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date visite 1&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datevis1" value="" size="10" maxlength="10" ></font></td>
+             </tr>
+             <tr>
+             <td ><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Observations 1</em></strong></font></td>
+             </tr>
+             <tr>
+             <td colspan="4" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+               <textarea name="odmd_observ1" cols="70" rows="3" ></textarea>
+             </font></td>
+             </tr>
+             <tr>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date arrete 2&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datearr2" value="" size="10"maxlength="10" ></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date visite 2&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datevis2" value="" size="10" maxlength="10" ></font></td>
+             </tr>
+             <tr>
+             <td ><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Observations 2</em></strong></font></td>
+             </tr>
+             <tr>
+             <td colspan="4" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+               <textarea name="odmd_observ2" cols="70" rows="3" ></textarea>
+             </font></td>
+             </tr>
+             <tr>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date arrete 3&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datearr3" value="" size="10"maxlength="10" ></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date visite 3&nbsp;</em></strong></font></td>
+             <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="odmd_datevis3" value="" size="10" maxlength="10" ></font></td>
+             </tr>
+             <tr>
+             <td ><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Observations 3</em></strong></font></td>
+             </tr>
+             <tr>
+             <td colspan="4" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+               <textarea name="odmd_observ3" cols="70" rows="3" ></textarea>
+               </font>
+             </td>
+             </tr>
+          </table>
+<!--
+        <iframe src="proced_list?dispatcher=LIST_ARRETES" frameborder=no border="0" marginwidth="0" marginheight="0" style="width:450;height:130;" > </iframe>
+-->
+            </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date PV de carence
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datepvcar" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date saisie T.A
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datesaisie" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date jugement T.A
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datejug1" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date 2<sup>&eacute;me</sup> jugement T.A
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datejug2" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date ordre de service
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_dateordreserv" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date r&eacute;alisation des travaux par commune
+         </em></strong></font></td>
+      <td width="133" valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmp_daterealparcomm" value="" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+        </td>
+    </tr>
+    <tr>
+    <td colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+    <td colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top" colspan="3">
+      &nbsp;&nbsp;&nbsp;&nbsp;<b>TRAVAUX&nbsp;&nbsp;</b><font color="#800000"></font>
+    </td>
+  </tr>
+        <tr>
+      <td valign="top" colspan="4" align="center"><div>
+                                                                                                                                                                         </div>
+</td>
+</tr>
+</table>
+  <center>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Entreprise*&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Description*&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Num OS</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Num facture&nbsp;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Montant TTC&nbsp;</font></strong></td>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right"></div></td>
+  </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td nowrap valign="top" >
+        <input name="odtr_entr" type="text" value="" size="15" maxlength="60" readonly>&nbsp;
+        <a href = "#" onClick ="objectWin = window.open('entrep_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/fleche_g_01.gif" border="0"></a>
+        <a href = "#" onClick ="document.objectForm.odtr_entr.value='';document.objectForm.odtr_entrep.value='';return false;" ><img src="images/fleche_d_01.gif" border="0"></a>
+        <input type="hidden" name="odtr_entrep" value="">
+      </td>
+      <td width="100%" valign="top">
+      <input type="text" name="odtr_desc"  value="" style="width:100%;" ><br>
+      <input type="text" name="odtr_desc2"  value="" style="width:100%;" >
+      </td>
+      <td valign="top"><div align="center"><input type="text" name="odtr_numos" value="" maxlength=20 size="15"></div></td>
+      <td valign="top" ><div align="center"><input type="text" name="odtr_numfact" value="" maxlength=15 size="15"></div></td>
+      <td valign="top"><div align="center"><input type="text" name="odtr_montant" value="" maxlength=12 size="12"></div></td>
+      <td valign="top"><div align="right">
+          <a href="#"  onClick="document.objectForm.dispatcher.value='ADD_WORK';document.objectForm.submit();return false;" ><img src="images/ajouter.gif"  border="0"></a>
+      </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="right"></div></td>
+      <td><div align="right"></div></td>
+      <td><div align="right"></div></td>
+    </tr>
+              <tr>
+        <td align="right" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">1&nbsp;&nbsp;&nbsp;</font></td>
+        <td align="left" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          &nbsp;&nbsp;KEG
+        </font></td>
+        <td align="left" width="30%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              &nbsp;&nbsp;Goudron<br>
+              &nbsp;&nbsp;
+        </font></td>
+        <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              
+        &nbsp;</font></td>
+        <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              
+        &nbsp;</font></td>
+        <td align="right" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+              6788,00
+        &nbsp;</font></td>
+          <td width="2%" align="center" nowrap>&nbsp;
+            <a href="#"  onClick="document.objectForm.odtr_id.value='1';document.objectForm.dispatcher.value='DELETE_WORK';document.objectForm.submit();return false;" ><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+            </td>
+      </tr>
+          </table>
+
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td >&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Observations </em></strong></font></td>
+</tr>
+<tr>
+      <td colspan="3" width="100%" >&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><textarea name="odmp_commentaire" cols="100" rows="3" >aucune</textarea>
+      </font></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="249" valign="top">&nbsp;</td>
+    <td>
+              <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_MD';document.objectForm.submit();return false;">
+            <img src="images/modifier.gif" width="130" height="17" border="0">
+      </a>
+      <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=2" style="color:blue;" >
+      <img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+</table>
+</center>
+</form>
+<p>&nbsp;</p>
+<!--
+$procedure.getFirstFieldWithError()
+$procedure.getFirstFieldError()
+-->
+</body>
+</html>

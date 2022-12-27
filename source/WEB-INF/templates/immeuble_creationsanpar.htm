@@ -1,0 +1,386 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odim_experts.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odim_experts.options[i].selected=true;
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.indexOf('UPDATE') >= 0)
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+#set($etatPar = $immeuble.odim_etatpar)
+<br><br>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="100"><div align="right"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font></td>
+      <td colspan="2">
+      <strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($!dispatcher.equals("UPDATE"))
+           / <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!immeuble.odim_id" style="color:blue;"> Globale</a>
+           / Modification immeuble
+           / <a href="synd_form?dispatcher=FOR_UPDATE&odsyn_id=$!immeuble.odim_syndic.odsyn_id&odim_id=$!immeuble.odim_id" style="color:blue;">Syndic</a>
+           #if($!immeuble.odim_lots.size() > 0)
+             /  <a href="lot_list?for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;" >
+                Lots $!immeuble.odim_lots.size()
+              </a>
+           #end
+           / <a href="lot_form?dispatcher=FOR_INSERT&for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;">Ajout d'un lot</a>
+           #if($!immeuble.odim_procedures.size() > 0)
+             /  <a href="proced_list?odim_id=$!immeuble.odim_id" style="color:blue;" >
+                Proc&eacute;dures $!immeuble.odim_procedures.size()
+              </a>
+           #end
+           / <a href="proced_form?dispatcher=FOR_INSERT&odim_id=$!immeuble.odim_id" style="color:blue;">Ajout d'une proc&eacute;dure</a>
+        #else
+          / Cr&eacute;ation
+        #end
+     </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="170" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!dispatcher.equals("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>
+          #if(!$immeuble.odim_nom.equals(""))
+             IMMEUBLE
+          #else
+            SECTION / PARCELLE 1
+          #end
+          <font color="#800000">$!immeuble.notNullName</font>&nbsp;&nbsp;-&nbsp;&nbsp;SANITAIRE / PARASITAIRE
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="170" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    #set($seuil = $etatPar.odet_seuil)
+    #set($colorForStylePb = "black")
+    #set($colorForStyleAm = "black")
+    #if($etatPar.odet_plomb && $seuil.odet_plomb && $etatPar.odet_plomb.compareTo($seuil.odet_plomb) > 0)
+      #set($colorForStylePb = "red")
+    #end
+    #if($etatPar.odet_amiante && $seuil.odet_amiante && $etatPar.odet_amiante.compareTo($seuil.odet_amiante) > 0)
+      #set($colorForStyleAm = "red")
+    #end
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($etatPar.hasErrors())
+                 Impossible de valider : Il y a $!etatPar.getErrorsCount() erreur(s).
+                 <br><br>
+
+               #if ($etatPar.hasError("odde_datedec", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date de d&eacute;claration est obligatoire.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_datedec", "IS_DATA_VALIDE"))
+                    <font color="red">La date de d&eacute;claration n'est pas correcte.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_typedecl", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le d&eacute;clarant est obligatoire.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_typedecl", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">Le d&eacute;clarant n'est pas valide.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_datevis", "IS_BLANK_OR_NULL"))
+                 <font color="red">La date de visite est obligatoire.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_datevis", "IS_DATA_VALIDE"))
+                    <font color="red">La date de visite n'est pas correcte.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_datetrait", "IS_DATA_VALIDE"))
+                    <font color="red">La date de traitement n'est pas correcte.</font><br>
+               #end
+               #if ($etatPar.hasError("odde_typetrait", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">Le type traitement n'est pas valide.</font><br>
+               #end
+          #end
+
+      </td>
+    </tr>
+</table>
+<center>
+<form name="objectForm" method="post" action="im_form">
+<input type="hidden" name="odim_id" value="$!immeuble.odim_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher">
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Plomb
+        </font></strong></em></td>
+      <td><input name="odet_plomb" type="text" value="$!etatPar.getAltValue($etatPar.odet_plomb, 'odet_plomb')" style="color:$!colorForStylePb;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($etatPar.hasError("odet_plomb", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($etatPar.hasError("odet_plomb", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($etatPar.hasError("odet_plomb", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Amiante
+        </font></strong></em></td>
+      <td><input name="odet_amiante" type="text" value="$!etatPar.getAltValue($etatPar.odet_amiante, 'odet_amiante')" style="color:$!colorForStyleAm;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($etatPar.hasError("odet_amiante", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($etatPar.hasError("odet_amiante", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($etatPar.hasError("odet_amiante", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Moisissure
+        </font></strong></em></td>
+      <td>
+          <input name="odet_moisissure" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_moisissure, true)> Oui
+          <input name="odet_moisissure" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_moisissure, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+                #if ($etatPar.hasError("odet_moisissure", "MOISISSURE_FOUND"))
+                   <font color="red">Impossible de déclarer cet immeuble sans moisissure, le lot
+                   #set($contLot = $!immeuble.odim_etatpar.getAltValue($!immeuble.odim_etatpar.odet_moisissure, "odet_moisissure"))
+                   <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_id=$!contLot.odlot_id&odim_id=$!immeuble.odim_id" style="color:blue;" > $!contLot.odlot_id</a>
+                    est encore contaminé.</font><br/>
+                #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Salpêtre
+        </font></strong></em></td>
+      <td>
+          <input name="odet_salpetre" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_salpetre, true)> Oui
+          <input name="odet_salpetre" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_salpetre, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+                #if ($etatPar.hasError("odet_salpetre", "SALPETRE_FOUND"))
+                   <font color="red">Impossible de déclarer cet immeuble sans salpêtre, le lot
+                   #set($contLot = $!immeuble.odim_etatpar.getAltValue($!immeuble.odim_etatpar.odet_salpetre, "odet_salpetre"))
+                   <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_id=$!contLot.odlot_id&odim_id=$!immeuble.odim_id" style="color:blue;" > $!contLot.odlot_id</a>
+                    est encore contaminé.</font><br/>
+                #end
+      </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Humidit&eacute;
+        </font></strong></em></td>
+      <td>
+          <input name="odet_humidite" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_humidite, true)> Oui
+          <input name="odet_humidite" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_humidite, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+                #if ($etatPar.hasError("odet_humidite", "HUMIDITE_FOUND"))
+                   <font color="red">Impossible de déclarer cet immeuble sans humidit&eacute;, le lot
+                   #set($contLot = $!immeuble.odim_etatpar.getAltValue($!immeuble.odim_etatpar.odet_humidite, "odet_humidite"))
+                   <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_id=$!contLot.odlot_id&odim_id=$!immeuble.odim_id" style="color:blue;" > $!contLot.odlot_id</a>
+                    est encore contaminé.</font><br/>
+                #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="170" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Termite
+        </font></strong></em></td>
+      <td>
+          <input name="odet_termite" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_termite, true)> Oui
+          <input name="odet_termite" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_termite, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+                #if ($etatPar.hasError("odet_termite", "TERMITE_FOUND"))
+                   <font color="red">Impossible de déclarer cet immeuble sans termite, le lot
+                   #set($contLot = $immeuble.odim_etatpar.getAltValue($!immeuble.odim_etatpar.odet_termite, "odet_termite"))
+                   <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_id=$!contLot.odlot_id&odim_id=$!immeuble.odim_id" style="color:blue;" > $contLot.odlot_id</a>
+                    est encore contaminé.</font><br/>
+                #end
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3" align="center">&nbsp;
+          <table cellspacing="0" cellpadding="0" border="1">
+             <tr><td align="center" colspan="10" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">TERMITES</font></strong></td></tr>
+             <tr>
+             <td rowspan="2" align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date d&eacute;claration*</font></strong><br><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em>(jj/mj/aaaa)</em></font></td>
+             <td rowspan="2" align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">D&eacute;clarant*</font></strong></td>
+             <td rowspan="2" align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Expert</font></strong></td>
+             <td rowspan="2" align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date visite*</font></strong><br><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em>(jj/mj/aaaa)</em></font></td>
+             <td colspan="2" align="center"  ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localisation</font></strong></td>
+             <td rowspan="2" align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bati</font></td>
+             <td rowspan="2" align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Non<br>bati</font></td>
+             <td rowspan="2" align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date traitement</font></strong></td>
+             <td rowspan="2" align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type traitement</font></strong></td>
+             </tr>
+             <tr>
+                <td align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bois<br>Ext.</font></strong></td>
+                <td align="center"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Sous<br>terrain</font></strong></td>
+
+             </tr>
+             #set($counter = 0)
+             #foreach($item in $etatPar.allDeclarations)
+             <tr>
+                 <td align="center" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  <input type ="hidden" name="odde_declid$counter" value="$!item.odde_declid" >
+                  <input type="text" name="odde_datedec$counter"  value="$!item.getAltValue($!item.getDateAsString($!item.odde_datedec),'odde_datedec')" maxlength=10 size="10">
+                   </font>
+                 </td>
+                 <td align="center" >&nbsp;<select name="odde_typedecl$counter" >
+                    <option value="">
+                    #foreach($itemd in $!etatPar.allTypesDeclarant)
+                       <option value="$itemd.odnt_id" $itemd.getSelectedAttribute($itemd.getOdnt_id().toString(), $!item.getOdde_typedecl().getOdnt_id().toString())>$!itemd.odnt_nom
+                    #end
+                  </select>
+                 </td>
+                 <td align="center" >&nbsp;<select name="odde_expert$counter" >
+                        <option value="">
+                     #foreach($iteme in $etatPar.allExperts)
+                         <option value='$!iteme.odexp_id' $iteme.getSelectedAttribute($iteme.getOdexp_id().toString(), $!item.getOdde_expert().getOdexp_id().toString()) > $!iteme.odexp_pren $!iteme.odexp_nom
+                      #end
+                    </select>
+                 </td>
+                 <td align="center" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  <input type="text" name="odde_datevis$counter"  value="$!item.getAltValue($!item.getDateAsString($!item.odde_datevis),'odde_datevis')" maxlength=10 size="10">
+                   </font></td>
+                 <td align="center" width="30" ><input name="odde_bois$counter" type="checkbox" value="true" $!item.getCheckedAttribute($item.odde_bois, true)></td>
+                 <td align="center" width="30" ><input name="odde_ster$counter" type="checkbox" value="true" $!item.getCheckedAttribute($item.odde_ster, true)></td>
+                 <td align="center" width="30" ><input name="odde_bati$counter" type="checkbox" value="true" $!item.getCheckedAttribute($item.odde_bati, true)></td>
+                 <td align="center" width="30" ><input name="odde_nbati$counter" type="checkbox" value="true" $!item.getCheckedAttribute($item.odde_nbati, true)></td>
+
+                 <td align="center" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  <input type="text" name="odde_datetrait$counter"  value="$!item.getAltValue($!item.getDateAsString($!item.odde_datetrait),'odde_datetrait')" maxlength=10 size="10">
+                   </font></td>
+                 <td align="center" >&nbsp;<select name="odde_typetrait$counter" >
+                    <option value="">
+                    #foreach($itemt in $!etatPar.allTypesTraitement)
+                       <option value="$itemt.odnt_id" $itemt.getSelectedAttribute($itemt.getOdnt_id().toString(), $!item.getOdde_typetrait().getOdnt_id().toString())>$!itemt.odnt_nom
+                    #end
+                  </select>
+                 </td>
+             </tr>
+              #set($counter = $counter + 1)
+             #end
+          </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="170" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td valign="top" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire
+           </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+      <td >&nbsp; <textarea name="odet_commentaire" cols="40" rows="2" >$!immeuble.getAltValue($etatPar.odet_commentaire, 'odet_commentaire')</textarea>
+                 #if ($etatPar.hasError("odet_commentaire", "MAX_LENGTH"))
+                   <font color="red">Le commentaire est trop long. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="170" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="170" valign="top">&nbsp;</td>
+      <td>
+          <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_SANPAR';document.objectForm.submit();">
+        <img src="images/modifier.gif" width="130" height="17" border="0" ></a>
+        <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$immeuble.odim_id" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+    </tr>
+</table>
+</center>
+</form>
+</body>
+</html>

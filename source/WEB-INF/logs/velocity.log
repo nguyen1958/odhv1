@@ -1,0 +1,69 @@
+Fri Dec 16 16:04:01 CET 2022  [debug] AvalonLogSystem initialized using logfile 'C:\Program Files\Apache Software Foundation\Tomcat 6.0\webapps\odh\WEB-INF\logs\velocity.log'
+Fri Dec 16 16:04:01 CET 2022   [info] ************************************************************** 
+Fri Dec 16 16:04:01 CET 2022   [info] Starting Jakarta Velocity v1.3.1
+Fri Dec 16 16:04:01 CET 2022   [info] RuntimeInstance initializing.
+Fri Dec 16 16:04:01 CET 2022   [info] Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+Fri Dec 16 16:04:01 CET 2022   [info] Trying to use logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Dec 16 16:04:01 CET 2022   [info] Using logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Dec 16 16:04:01 CET 2022   [info] Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+Fri Dec 16 16:04:01 CET 2022   [info] Resource Loader Instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:01 CET 2022   [info] FileResourceLoader : initialization starting.
+Fri Dec 16 16:04:01 CET 2022   [info] FileResourceLoader : adding path 'C:\Program Files\Apache Software Foundation\Tomcat 6.0\webapps\odh\WEB-INF\templates'
+Fri Dec 16 16:04:01 CET 2022   [info] FileResourceLoader : initialization complete.
+Fri Dec 16 16:04:01 CET 2022   [info] ResourceCache : initialized. (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+Fri Dec 16 16:04:01 CET 2022   [info] Default ResourceManager initialization complete.
+Fri Dec 16 16:04:01 CET 2022   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+Fri Dec 16 16:04:01 CET 2022   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+Fri Dec 16 16:04:01 CET 2022   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+Fri Dec 16 16:04:01 CET 2022   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Include
+Fri Dec 16 16:04:01 CET 2022   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+Fri Dec 16 16:04:01 CET 2022   [info] Created: 20 parsers.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : initialization starting.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : adding VMs from VM library template : VM_global_library.vm
+Fri Dec 16 16:04:01 CET 2022  [error] ResourceManager : unable to find resource 'VM_global_library.vm' in any resource loader.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : error using  VM library template VM_global_library.vm : org.apache.velocity.exception.ResourceNotFoundException: Unable to find resource 'VM_global_library.vm'
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro :  VM library template macro registration complete.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : allowInline = true : VMs can be defined inline in templates
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : allowInlineLocal = false : VMs defined inline will be  global in scope if allowed.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : messages on  : VM system will output logging messages
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : autoload off  : VM system will not automatically reload global library macros
+Fri Dec 16 16:04:01 CET 2022   [info] Velocimacro : initialization complete.
+Fri Dec 16 16:04:01 CET 2022   [info] Velocity successfully started.
+Fri Dec 16 16:04:02 CET 2022   [info] ResourceManager : found login.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:02 CET 2022  [error] RHS of #set statement is null. Context will not be modified. login.htm [line 1, column 1]
+Fri Dec 16 16:04:02 CET 2022  [error] RHS of #set statement is null. Context will not be modified. login.htm [line 17, column 3]
+Fri Dec 16 16:04:02 CET 2022   [info] ResourceManager : found login.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:02 CET 2022  [error] Left side ($tries) of '>' operation has null value. Operation not possible. login.htm [line 36, column 18]
+Fri Dec 16 16:04:02 CET 2022  [error] RHS of #set statement is null. Context will not be modified. login.htm [line 55, column 7]
+Fri Dec 16 16:04:02 CET 2022   [info] ResourceManager : found logos.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:02 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = login.htm [line 136,column 14] : $tries is not a valid reference.
+Fri Dec 16 16:04:02 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = login.htm [line 140,column 6] : $authenticateResult is not a valid reference.
+Fri Dec 16 16:04:02 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = login.htm [line 142,column 6] : $sessions.size() is not a valid reference.
+Fri Dec 16 16:04:02 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = login.htm [line 144,column 6] : $sessions.values().size() is not a valid reference.
+Fri Dec 16 16:04:03 CET 2022   [info] ResourceManager : found accueil.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:03 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:09 CET 2022   [info] ResourceManager : found recherche_immeubles.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:09 CET 2022   [info] ResourceManager : found recherche_immeubles.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:09 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:09 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:09 CET 2022  [error] RHS of #set statement is null. Context will not be modified. recherche_immeubles.htm [line 55, column 1]
+Fri Dec 16 16:04:09 CET 2022  [error] RHS of #set statement is null. Context will not be modified. recherche_immeubles.htm [line 55, column 1]
+Fri Dec 16 16:04:09 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = recherche_immeubles.htm [line 323,column 1] : $pageableResults.getListCommand() is not a valid reference.
+Fri Dec 16 16:04:09 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = recherche_immeubles.htm [line 323,column 1] : $pageableResults.getListCommand() is not a valid reference.
+Fri Dec 16 16:04:09 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = recherche_immeubles.htm [line 329,column 1] : $hibernateError is not a valid reference.
+Fri Dec 16 16:04:09 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = recherche_immeubles.htm [line 329,column 1] : $hibernateError is not a valid reference.
+Fri Dec 16 16:04:14 CET 2022   [info] ResourceManager : found recherche_immeubles.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:14 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:14 CET 2022  [error] RHS of #set statement is null. Context will not be modified. recherche_immeubles.htm [line 55, column 1]
+Fri Dec 16 16:04:14 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = recherche_immeubles.htm [line 329,column 1] : $hibernateError is not a valid reference.
+Fri Dec 16 16:04:20 CET 2022   [info] ResourceManager : found immeuble_creationmenu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:20 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:20 CET 2022   [info] ResourceManager : found immeuble_creationmenu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:20 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:25 CET 2022   [info] ResourceManager : found immeuble_globale.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:25 CET 2022   [info] ResourceManager : found menu.htm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Dec 16 16:04:25 CET 2022  [error] RHS of #set statement is null. Context will not be modified. immeuble_globale.htm [line 433, column 5]
+Fri Dec 16 16:04:25 CET 2022  [error] RHS of #set statement is null. Context will not be modified. immeuble_globale.htm [line 434, column 1]
+Fri Dec 16 16:04:25 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = immeuble_globale.htm [line 805,column 1] : $immeuble.getFirstFieldWithError() is not a valid reference.
+Fri Dec 16 16:04:25 CET 2022   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = immeuble_globale.htm [line 806,column 1] : $immeuble.getFirstFieldError() is not a valid reference.

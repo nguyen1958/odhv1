@@ -1,0 +1,196 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odim_experts.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odim_experts.options[i].selected=true;
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('INSERT'))
+ #set($dispatcher = "INSERT")
+#elseif($actionparam.indexOf('UPDATE') >= 0)
+ #set($dispatcher = 'UPDATE')
+#end
+<form name="objectForm" method="post" action="im_form">
+<input type="hidden" name="odim_id" value="$!immeuble.odim_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher">
+  <p>&nbsp;</p>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td ><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font></td>
+      <td colspan="2">
+      <strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($!dispatcher.equals("UPDATE"))
+           / <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!immeuble.odim_id" style="color:blue;"> Globale</a>
+           / Modification
+           / <a href="synd_form?dispatcher=FOR_UPDATE&odsyn_id=$!immeuble.odim_syndic.odsyn_id&odim_id=$!immeuble.odim_id" style="color:blue;">Syndic</a>
+           #if($!immeuble.odim_lots.size() > 0)
+             /  <a href="lot_list?for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;" >
+                Lots $!immeuble.odim_lots.size()
+              </a>
+           #end
+           / <a href="lot_form?dispatcher=FOR_INSERT&for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;">Ajout d'un lot</a>
+           #if($!immeuble.odim_procedures.size() > 0)
+             /  <a href="proced_list?odim_id=$!immeuble.odim_id" style="color:blue;" >
+                IMR $!immeuble.odim_procedures.size()
+              </a>
+           #end
+           / <a href="proced_form?dispatcher=FOR_INSERT&odim_id=$!immeuble.odim_id" style="color:blue;">Ajout d'un IMR</a>
+        #else
+          / Cr&eacute;ation
+        #end
+     </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!dispatcher.equals("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>IMMEUBLE <font color="#800000">$!immeuble.odim_nom</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($immeuble.hasErrors())
+                 Impossible de valider : Il y a $!immeuble.getErrorsCount() erreur(s).
+                 <br><br>
+          #end
+      </td>
+    </tr>
+   <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td valign="top" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Expert(s)
+           </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+        <td nowrap valign="top" >
+          <table width="50%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>&nbsp;&nbsp;</td>
+              <td valign="top">
+                <select size="3" name="odim_experts_all" style="width:200;height:80;" >
+                #foreach($item in $immeuble.all_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+                </select>
+                </td>
+              <td><a href="javascript:DeplacerCopier(document.objectForm.odim_experts_all,document.objectForm.odim_experts);"><img src="images/fleche_d_01.gif" border="0" width="27" height="20"></a><br><br>
+                <a href="javascript:DeplacerSupprimer(document.objectForm.odim_experts);"><img src="images/fleche_g_01.gif" border="0" width="27" height="20"></a>
+              </td>
+              <td nowrap>
+              <select size="3" name="odim_experts" multiple="true" style="width:200;height:80;" >
+               #foreach($item in $immeuble.odim_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+              </select>
+              </td>
+                <td nowrap valign="bottom">
+                </td>
+            </tr>
+          </table>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>
+          <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_EXPERTS';selectItems();document.objectForm.submit();">
+        <img src="images/modifier.gif" width="130" height="17" border="0" ></a>
+        <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$immeuble.odim_id" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>

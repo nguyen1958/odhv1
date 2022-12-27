@@ -1,0 +1,713 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odim_experts.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odim_experts.options[i].selected=true;
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  >
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="im_form">
+<input type="hidden" name="odim_id" value="$!immeuble.odim_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher">
+  <p>&nbsp;</p>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td ><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font></td>
+      <td colspan="2">
+      <strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($!actionparam.indexOf("_UPDATE_") > 0)
+           / <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!immeuble.odim_id" style="color:blue;"> Globale</a>
+           / Modification
+           / <a href="synd_form?dispatcher=FOR_UPDATE&odsyn_id=$!immeuble.odim_syndic.odsyn_id&odim_id=$!immeuble.odim_id" style="color:blue;">Syndic</a>
+           #if($!immeuble.odim_lots.size() > 0)
+             /  <a href="lot_list?for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;" >
+                Lots $!immeuble.odim_lots.size()
+              </a>
+           #end
+           / <a href="lot_form?dispatcher=FOR_INSERT&for_object=immeuble&odlot_immeuble=$!immeuble.odim_id" style="color:blue;">Ajout d'un lot</a>
+           #if($!immeuble.odim_procedures.size() > 0)
+             /  <a href="proced_list?odim_id=$!immeuble.odim_id" style="color:blue;" >
+                IMR $!immeuble.odim_procedures.size()
+              </a>
+           #end
+           / <a href="proced_form?dispatcher=FOR_INSERT&odim_id=$!immeuble.odim_id" style="color:blue;">Ajout d'un IMR</a>
+        #else
+          / Cr&eacute;ation
+        #end
+     </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>IMMEUBLE <font color="#800000">$!immeuble.notNullName</font>
+      #end
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($immeuble.hasErrors())
+                 Impossible de valider : Il y a $!immeuble.getErrorsCount() erreur(s)."
+                 <br><br>
+                #if ($immeuble.hasError("odim_cadsct", "IS_BLANK_OR_NULL"))
+                   <font color="red">La section est obligatoire. </font><br/>
+                #end
+                 #if ($immeuble.hasError("odim_cadsct", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 2 caractères.</font><br/>
+                 #end
+                #if ($immeuble.hasError("odim_cadp1", "IS_BLANK_OR_NULL"))
+                   <font color="red">La parcelle 1 est obligatoire. </font><br/>
+                #end
+                 #if ($immeuble.hasError("odim_cadp1", "MAX_LENGTH"))
+                   <font color="red">Le texte pour la parcelle 1 est trop long. Maximum 4 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_cadp2", "MAX_LENGTH"))
+                   <font color="red">Le texte pour la parcelle 2 est trop long. Maximum 4 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_cadp3", "MAX_LENGTH"))
+                   <font color="red">Le texte pour la parcelle 3 est trop long. Maximum 4 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_cadp4", "MAX_LENGTH"))
+                   <font color="red">Le texte pour la parcelle 4 est trop long. Maximum 4 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_ilsct", "MAX_LENGTH"))
+                   <font color="red">Le texte pour la section est trop long. Maximum 2 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_ililot", "MAX_LENGTH"))
+                   <font color="red">Le texte pour l'ilot est trop long. Maximum 3 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_ilbat", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 2 caractères.</font><br/>
+                 #end
+               #if ($immeuble.hasError("odim_groupe", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+                 #if ($immeuble.hasError("odim_nom", "IS_BLANK_OR_NULL"))
+                   <font color="red">Le nom est obligatoire.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_nom", "MAX_LENGTH"))
+                   <font color="red">Le nom est trop long. Maximum 30 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_nom","ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà un immeuble dontle nom est '$!immeuble.odim_nom'.</font><br/>
+                 #end
+               #if ($immeuble.hasError("odim_type", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+                 #if ($immeuble.hasError("odim_desc", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 250 caractères.</font><br/>
+                 #end
+                #if ($immeuble.hasError("odim_num", "MAX_LENGTH"))
+                   <font color="red">Le numéro de voie est trop long.Maximum 10 caractères.</font><br/>
+                #end
+                #if ($immeuble.hasError("odim_rue", "IS_BLANK_OR_NULL"))
+                   <font color="red">La rue est obligatoire. </font><br/>
+                #end
+                #if ($immeuble.hasError("odim_rue", "NOT_EXISTS"))
+                   <font color="red">Le rue choisi n'existe plus. </font><br/>
+                #end
+                 #if ($immeuble.hasError("odim_position", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_alignement", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 15 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_niv", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 2 chiffres.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_niv", "IS_INT"))
+                   <font color="red">Il faut introduire seulement des chiffres. </font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_haut", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_haut", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_surfacesol", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_surfacesol", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_surfacetot", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_surfacetot", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                #if ($immeuble.hasError("odim_syndic", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($immeuble.hasError("odim_syndic", "NOT_EXISTS"))
+                   <font color="red">Le syndic choisi n'existe plus. </font><br/>
+                #end
+          #else
+              #if($actionparam.equalsIgnoreCase("INSERT"))
+              #if($executed)
+                L'enregistrement a été effectué.
+              #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+                L'enregistrement a été actualisé.
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Cadastre
+        </font></strong></em></td>
+      <td valign="top"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Section
+        *
+        <input name="odim_cadsct" type="text" value="$!immeuble.getAltValue($immeuble.odim_cadsct, 'odim_cadsct')"  size="2" maxlength="2">
+        *
+        <input name="odim_cadp1" type="text" value="$!immeuble.getAltValue($immeuble.odim_cadp1, 'odim_cadp1')" size="4" maxlength="4">
+        &nbsp;Parcelle2
+        <input name="odim_cadp2" type="text" value="$!immeuble.getAltValue($immeuble.odim_cadp2, 'odim_cadp2')" size="4" maxlength="4">
+        &nbsp;Parcelle3
+        <input name="odim_cadp3" type="text" value="$!immeuble.getAltValue($immeuble.odim_cadp3, 'odim_cadp3')"  size="4" maxlength="4">
+        &nbsp;Parcelle4
+        <input name="odim_cadp4" type="text" value="$!immeuble.getAltValue($immeuble.odim_cadp4, 'odim_cadp4')"  size="4" maxlength="4">
+        </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Il&ocirc;t
+        :</font></strong></em></td>
+      <td valign="top">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif">Section
+        </font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input name="odim_ilsct" value="$!immeuble.getAltValue($immeuble.odim_ilsct, 'odim_ilsct')"  type="text" size="2" maxlength="2">
+        Il&ocirc;t&nbsp;<input name="odim_ililot" type="text" value="$!immeuble.getAltValue($immeuble.odim_ililot, 'odim_ililot')" size="3" maxlength="3">
+        B&acirc;tit&nbsp;<input name="odim_ilbat" type="text" value="$!immeuble.getAltValue($immeuble.odim_ilbat, 'odim_ilbat')"  size="2" maxlength="2">
+        </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right" ><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Groupe
+        immeuble </font></strong></em></td>
+      <td>&nbsp;&nbsp;<select name="odim_groupe" >
+          <option value="">
+          #foreach($item in $!immeuble.getBuildingGroups())
+             <option value="$item.odnt_id" $immeuble.getSelectedAttribute($item.getOdnt_id().toString(), $!immeuble.getOdim_groupe().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+
+        </td>
+    </tr>
+    <tr>
+      <td  valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+        immeuble *</font></strong></em></td>
+      <td>&nbsp; <input name="odim_nom" type="text" value="$!immeuble.getAltValue($immeuble.odim_nom, 'odim_nom')" size="60" maxlength="60">
+                 <!-- error message -->
+
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type
+        </font></strong></em></td>
+      <td>&nbsp; <select name="odim_type" >
+          <option value="">
+          #foreach($item in $!immeuble.getBuildingTypes())
+             <option value="$item.odnt_id" $immeuble.getSelectedAttribute($item.getOdnt_id().toString(), $!immeuble.getOdim_type().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+               <!-- validate error message -->
+
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Description
+        :</strong></em></font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td><p>&nbsp;
+          <textarea name="odim_desc" cols="50" rows="5">$!immeuble.getAltValue($immeuble.odim_desc, 'odim_desc')</textarea>
+
+        </p>
+        #if($dispatcher.equals("UPDATE"))
+        <p><em><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Documents et Photos 
+          </strong></em></font>
+          <a href="immeuble_upload?odim_id=$!immeuble.odim_id" ><img src="images/photo01.jpg" width="25" height="25" align="absmiddle"></a><br>
+        #end
+        </td>
+    </tr>
+
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;N&deg;
+        de rue / Rue *</font></strong></em></td>
+      <td>&nbsp;
+        #set($rue = $!immeuble.odim_rue)
+        <input name="odim_num" type="text" value="$!immeuble.getAltValue($immeuble.odim_num, 'odim_num')" size="6" maxlength="6" >
+        <input name="ruenom" type="text" size="40" value="$!rue.getAltValue($!rue.getOdrue_type(),'odrue_type') $!rue.getAltValue($!rue.getOdrue_liaison(),'odrue_liaison') $!rue.getAltValue($!rue.getOdrue_nom(), 'odrue_nom')" maxlength="100" readonly >
+        <input type="hidden" name="odim_rue" value="$!rue.odrue_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('rue_list?chooser=YES','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Alignement / Orientation
+        :</font></strong></em></td>
+      <td>&nbsp;
+      <input name="odim_alignement" type="text" value="$!immeuble.getAltValue($immeuble.odim_alignement, 'odim_alignement')" size="15" maxlength="15">
+      <input name="odim_position" type="text" value="$!immeuble.getAltValue($immeuble.odim_position, 'odim_position')"size="7" maxlength="7">
+        <font size="1" face="Verdana, Arial, Helvetica, sans-serif">(N / NO /
+        NE / S / SO /SE etc...)</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Etages / Hauteur
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odim_niv" type="text" value="$!immeuble.getAltValue($immeuble.odim_niv, 'odim_niv')" size="2" maxlength="2">
+      <input name="odim_haut" type="text" value="$!immeuble.getAltValue($immeuble.odim_haut, 'odim_haut')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">m </font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Surface
+        au sol / Surface totale </font></strong></em></td>
+      <td>&nbsp; <input name="odim_surfacesol" type="text" value="$!immeuble.getAltValue($immeuble.odim_surfacesol, 'odim_surfacesol')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">m2 </font>
+        <input name="odim_surfacetot" type="text" value="$!immeuble.getAltValue($immeuble.odim_surfacetot, 'odim_surfacetot')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">m2 </font>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Syndic
+        *</font></strong></em></td>
+      <td>&nbsp;
+        #set($syndic = $!immeuble.getOdim_syndic())
+        <input name="synd" type="text" value="$!syndic.getAltValue($!syndic.odsyn_rpren, 'odsyn_rpren') $!syndic.getAltValue($!syndic.odsyn_rnom, 'odsyn_rnom')" size="40" maxlength="60" readonly>
+        <input type="hidden" name="odim_syndic" value="$!syndic.odsyn_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('synd_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();">
+          <img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+          <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';selectItems();document.objectForm.submit();">
+        <img src="images/modifier.gif" width="130" height="17" border="0" ></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';selectItems();document.objectForm.submit();">
+      <img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="im_list" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        de caves </font></strong></em></td>
+      <td>&nbsp; <input name="odim_ncaves" type="text" value="$!immeuble.getAltValue($immeuble.odim_ncaves, 'odim_ncaves')" size="3" maxlength="3">
+                 #if ($immeuble.hasError("odim_ncaves", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 3 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_ncaves", "IS_INT"))
+                   <font color="red">Il faut introduire seulement des chiffres. </font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Description
+        </strong></em></font>
+
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odim_desccav" cols="50" rows="5" >$!immeuble.getAltValue($immeuble.odim_desccav, 'odim_desccav')</textarea>
+                 #if ($immeuble.hasError("odim_desccav", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Local
+        poubelles </font></strong></em></td>
+      <td>&nbsp; <input name="odim_locpoub" type="text" value="$!immeuble.getAltValue($immeuble.odim_locpoub, 'odim_locpoub')" size="60" maxlength="60">
+                 #if ($immeuble.hasError("odim_locpoub", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 60 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        de parking </font></strong></em></td>
+      <td>&nbsp; <input name="odim_parking" type="text" value="$!immeuble.getAltValue($immeuble.odim_parking, 'odim_parking')" size="3" maxlength="3">
+                 #if ($immeuble.hasError("odim_parking", "MAX_LENGTH"))
+                   <font color="red">La valeur est trop grande. Maximum 3 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_parking", "IS_INT"))
+                   <font color="red">Il faut introduire seulement des chiffres. </font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Description
+        </strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odim_descpark" cols="50" rows="5" maxlength="250" >$!immeuble.getAltValue($immeuble.odim_descpark, 'odim_deskpark')</textarea>
+                 #if ($immeuble.hasError("odim_descpark", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        d'all&eacute;es :</font></strong></em></td>
+      <td>&nbsp; <input name="odim_allee" type="text" value="$!immeuble.getAltValue($immeuble.odim_allee, 'odim_allee')"  size="3" maxlength="3">
+                 #if ($immeuble.hasError("odim_parking", "MAX_LENGTH"))
+                   <font color="red">La valeur est trop grande. Maximum 3 chiffres.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_parking", "IS_INT"))
+                   <font color="red">Il faut introduire seulement des chiffres. </font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nombre
+        d'ascenseurs </font></strong></em></td>
+      <td>&nbsp; <input name="odim_ascenseur" type="text" value="$!immeuble.getAltValue($immeuble.odim_ascenseur, 'odim_ascenseur')" size="3" maxlength="3">
+                 #if ($immeuble.hasError("odim_ascenseur", "MAX_LENGTH"))
+                   <font color="red">La valeur est trop grande. Maximum 3 chiffres.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odim_ascenseur", "IS_INT"))
+                   <font color="red">Il faut introduire seulement des chiffres. </font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em>&nbsp;<strong>Description
+        parties communes </strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odim_desccom" cols="50" rows="5" maxlength="250" >$!immeuble.getAltValue($immeuble.odim_desccom, 'odim_desccom')</textarea>
+                 #if ($immeuble.hasError("odim_desccom", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em>&nbsp;<strong>Description
+        abords ext&eacute;rieurs :</strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odim_descabord" cols="50" rows="5" >$!immeuble.getAltValue($immeuble.odim_descabord, 'odim_descabord')</textarea>
+                  #if ($immeuble.hasError("odim_descabord", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Chauffage
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odim_chauffage" type="text" value="$!immeuble.getAltValue($immeuble.odim_chauffage, 'odim_chauffage')" size="60" maxlength="60">
+                 #if ($immeuble.hasError("odim_chauffage", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 60 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Gaz
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odim_gaz" type="text" value="$!immeuble.getAltValue($immeuble.odim_gaz, 'odim_gaz')" size="60" maxlength="60">
+                 #if ($immeuble.hasError("odim_gaz", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 60 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Eau
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odim_eau" type="text" value="$!immeuble.getAltValue($immeuble.odim_eau, 'odim_eau')" size="60" maxlength="60">
+                 #if ($immeuble.hasError("odim_eau", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 60 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Description
+        environnement </strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odim_environ" cols="50" rows="5" >$!immeuble.getAltValue($immeuble.odim_environ, 'odim_environ')</textarea>
+                 #if ($immeuble.hasError("odim_environ", "MAX_LENGTH"))
+                   <font color="red">La description est trop longue. Maximum 60 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+
+
+    #set($etatPar = $immeuble.odim_etatpar)
+    #set($seuil = $etatPar.odet_seuil)
+    #set($colorForStylePb = "black")
+    #set($colorForStyleAm = "black")
+    #if($etatPar.odet_plomb && $seuil.odet_plomb && $etatPar.odet_plomb.compareTo($seuil.odet_plomb) > 0)
+      #set($colorForStylePb = "red")
+    #end
+    #if($etatPar.odet_amiante && $seuil.odet_amiante && $etatPar.odet_amiante.compareTo($seuil.odet_amiante) > 0)
+      #set($colorForStyleAm = "red")
+    #end
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Etat parasitaire
+        </font></strong></em></td>
+      <td>&nbsp;Termite :
+          <input name="odet_termite" type="radio" value="true" $!etatPar.getCheckedAttribute($etatPar.odet_termite, true)> Oui
+          <input name="odet_termite" type="radio" value="false" $!etatPar.getCheckedAttribute($etatPar.odet_termite, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+                #if ($immeuble.hasError("odet_termite", "TERMITE_FOUND"))
+                   <font color="red">Impossible de déclarer cet immeuble sans termite, le lot
+                   #set($contLot = $!immeuble.getAltValue($!immeuble.odim_etatpar.odet_termite, "odet_termite"))
+                   <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odlot_id=$!contLot.odlot_id&odim_id=$!immeuble.odim_id" style="color:blue;" > $!contLot.odlot_code</a>
+                    est encore contaminé.</font><br/>
+                #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>Commentaire
+        </strong></em></font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top">
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; <textarea name="odet_commentaire" cols="50" rows="5" >$!immeuble.getAltValue($etatPar.odet_commentaire, 'odet_commentaire')</textarea>
+                 #if ($immeuble.hasError("odet_commentaire", "MAX_LENGTH"))
+                   <font color="red">Le commentaire est trop long. Maximum 250 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top" >
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; Plomb <input name="odet_plomb" type="text" value="$!immeuble.getAltValue($etatPar.odet_plomb, 'odet_plomb')" style="color:$!colorForStylePb;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($immeuble.hasError("odet_plomb", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odet_plomb", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($immeuble.hasError("odet_plomb", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td width="210" valign="top" >
+        <div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></div></td>
+      <td>&nbsp; Amiante <input name="odet_amiante" type="text" value="$!immeuble.getAltValue($etatPar.odet_amiante, 'odet_amiante')" style="color:$!colorForStyleAm;" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($immeuble.hasError("odet_amiante", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($immeuble.hasError("odet_amiante", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($immeuble.hasError("odet_amiante", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+
+
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td valign="top" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Expert(s)
+           </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+        <td nowrap valign="top" >
+          <table width="50%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>&nbsp;&nbsp;</td>
+              <td valign="top">
+                <select size="3" name="odim_experts_all" style="width:200;height:80;" >
+                #foreach($item in $immeuble.all_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+                </select>
+                </td>
+              <td><a href="javascript:DeplacerCopier(document.objectForm.odim_experts_all,document.objectForm.odim_experts);"><img src="images/fleche_d_01.gif" border="0" width="27" height="20"></a><br><br>
+                <a href="javascript:DeplacerSupprimer(document.objectForm.odim_experts);"><img src="images/fleche_g_01.gif" border="0" width="27" height="20"></a>
+              </td>
+              <td nowrap>
+              <select size="3" name="odim_experts" multiple="true" style="width:200;height:80;" >
+               #foreach($item in $immeuble.odim_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+              </select>
+              </td>
+                <td nowrap valign="bottom">
+                </td>
+            </tr>
+          </table>
+        </td>
+    </tr>
+
+  </table>
+</form>
+<p>
+<p>
+<!--
+  count =  $immeuble.getErrorsCount()
+$immeuble.getFirstFieldWithError()
+$immeuble.getFirstFieldError()
+-->
+</body>
+</html>

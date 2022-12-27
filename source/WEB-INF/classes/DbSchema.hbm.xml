@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+
+ <class name="fr.analogon.odh.pojo.Utilisateur" table = "odh_utilisateurs" >
+      <id name="oduti_id" column="oduti_id" sql-type="int" unsaved-value="0">
+              <generator class="native"/>
+      </id>
+  <property name="oduti_utilisateur" sql-type="varchar(8)" unique="true" not-null = "true" />
+  <property name="oduti_password" sql-type="varchar(8)" not-null = "true" />
+  <property name="oduti_valide" sql-type="char(1)" not-null = "true" />
+  <property name="oduti_type" sql-type="char(1)" not-null = "true" />
+  <property name="oduti_civil" sql-type="varchar(4)" />
+  <property name="oduti_nom" sql-type="varchar(30)" not-null = "true" />
+  <property name="oduti_prenom" sql-type="varchar(30)" not-null = "true" />
+  <property name="oduti_adresse1" sql-type="varchar(60)"  not-null = "true" />
+  <property name="oduti_adresse2" sql-type="varchar(60)"  />
+  <property name="oduti_adresse3" sql-type="varchar(60)"  />
+  <property name="oduti_codeposte" sql-type="int(5)"  />
+  <property name="oduti_ville" sql-type="varchar(30)"  />
+  <property name="oduti_tel" sql-type="varchar(20)"  />
+  <property name="oduti_fax" sql-type="varchar(20)"  />
+  <property name="oduti_mail" sql-type="varchar(60)"  />
+  <property name="oduti_module" sql-type="int(1)" not-null = "true" />
+  <property name="oduti_lect" sql-type="int(1)" not-null = "true" />
+  <property name="oduti_crea" sql-type="int(1)" not-null = "true" />
+  <property name="oduti_modif" sql-type="int(1)" not-null = "true" />
+  <property name="oduti_libelle" sql-type="varchar(60)" />
+ </class>
+
+
+  <class name="fr.analogon.odh.pojo.Syndic" table = "odh_syndics" lazy="true" >
+        <id name="odsyn_id"  sql-type="int" unsaved-value="0">
+                <generator class="native"/>
+        </id>
+       <property name="odsyn_code"  sql-type = "varchar(3)" not-null="true" />
+       <property name="odsyn_raison"  sql-type = "varchar(60)" not-null="true" />
+       <property name="odsyn_adr1"  sql-type = "varchar(80)" not-null="true" />
+       <property name="odsyn_adr2"  sql-type = "varchar(80)"  />
+       <property name="odsyn_cpost"  sql-type = "int(5)"  />
+       <property name="odsyn_ville"  sql-type = "varchar(60)"  />
+       <property name="odsyn_com"  sql-type = "varchar(80)"  />
+       <property name="odsyn_telfix"  sql-type = "varchar(20)" />
+       <property name="odsyn_fax"  sql-type = "varchar(20)"  />
+       <property name="odsyn_mail"  sql-type = "varchar(60)"  />
+       <property name="odsyn_rcivil"  sql-type = "varchar(4)" />
+       <property name="odsyn_rpren"  sql-type = "varchar(30)" not-null="true" />
+       <property name="odsyn_rnom"   sql-type = "varchar(30)" not-null="true" />
+       <property name="odsyn_rtelfix"  sql-type = "varchar(20)" />
+       <property name="odsyn_rtelport"  sql-type = "varchar(20)" />
+       <property name="odsyn_rmail"  sql-type = "varchar(60)" />
+       <set name="odsyn_immeubles" table="odh_immeubles" >
+             <key column="odim_syndic" />
+             <one-to-many class="fr.analogon.odh.pojo.Immeuble" />
+       </set>
+   </class>
+
+ <class name="fr.analogon.odh.pojo.Expert" table = "odh_experts" discriminator-value="E">
+      <id name="odexp_id" sql-type="int" unsaved-value="0">
+              <generator class="native"/>
+      </id>
+     <discriminator column="odexp_type" sql-type="varchar(1)" />
+     <property name="odexp_code"  sql-type = "varchar(4)"  not-null = "true" />
+     <property name="odexp_raison"  sql-type = "varchar(60)"  />
+     <property name="odexp_civil"  sql-type = "varchar(4)"  />
+     <property name="odexp_pren"  sql-type = "varchar(30)" not-null = "true" />
+     <property name="odexp_nom"  sql-type = "varchar(30)" not-null = "true" />
+     <property name="odexp_adr1"  sql-type = "varchar(80)" not-null = "true" />
+     <property name="odexp_adr2"  sql-type = "varchar(80)" />
+     <property name="odexp_cpost"  sql-type = "int(5)"  />
+     <property name="odexp_ville"  sql-type = "varchar(60)" />
+     <property name="odexp_com"  sql-type = "varchar(80)"  />
+     <property name="odexp_telfix"  sql-type = "varchar(20)"  />
+     <property name="odexp_telport"  sql-type = "varchar(20)"  />
+     <property name="odexp_fax"  sql-type = "varchar(20)"  />
+     <property name="odexp_mail"  sql-type = "varchar(60)"  />
+     <subclass name="fr.analogon.odh.pojo.ExpertImmeuble" discriminator-value="I">
+       <set name="odexp_immeubles" table="odh_expimmeubles"  cascade="save-update" >
+               <key column="odei_expert" />
+               <many-to-many class="fr.analogon.odh.pojo.Immeuble" />
+       </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.ExpertIMR" discriminator-value="P">
+       <set name="odexp_procedures" table="odh_expproc" cascade="save-update" >
+               <key column="odep_expert" />
+               <many-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+       </set>
+     </subclass>
+ </class>
+
+  <class name="fr.analogon.odh.pojo.Suiveur" table = "odh_suiveurs" >
+       <id name="odsu_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odsu_civil"  sql-type = "varchar(4)" />
+      <property name="odsu_pren"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odsu_nom"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odsu_adr1"  sql-type = "varchar(80)" not-null = "true" />
+      <property name="odsu_adr2"  sql-type = "varchar(80)"  />
+      <property name="odsu_cpost"  sql-type = "int(5)"  />
+      <property name="odsu_ville"  sql-type = "varchar(60)" />
+      <property name="odsu_libelle"  sql-type = "varchar(80)" />
+      <property name="odsu_telfix"  sql-type = "varchar(20)"  />
+      <property name="odsu_telport"  sql-type = "varchar(20)"  />
+      <property name="odsu_mail"  sql-type = "varchar(20)" />
+      <set name="odsu_procedures" table="odh_proceduresimr" >
+             <key column="odimr_suiveur" />
+             <one-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+      </set>
+  </class>
+
+  <class name="fr.analogon.odh.pojo.Locataire" table = "odh_locataires" >
+       <id name="odloc_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odloc_civil"  sql-type = "varchar(4)" />
+      <property name="odloc_pren"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odloc_nom"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odloc_num"  sql-type = "varchar(8)" />
+      <property name="odloc_adr1"  sql-type = "varchar(80)" not-null = "true" />
+      <property name="odloc_adr2"  sql-type = "varchar(80)"  />
+      <property name="odloc_cpost"  sql-type = "int(5)"  />
+      <property name="odloc_ville"  sql-type = "varchar(60)" />
+      <property name="odloc_com"  sql-type = "varchar(80)" />
+      <property name="odloc_telfix"  sql-type = "varchar(20)"  />
+      <property name="odloc_telport"  sql-type = "varchar(20)"  />
+      <property name="odloc_mail"  sql-type = "varchar(20)" />
+      <set name="odloc_lots" table="odh_lots" >
+             <key column="odlot_locataire" />
+             <one-to-many class="fr.analogon.odh.pojo.Lot" />
+      </set>
+    <many-to-one name="odloc_bienloue" class="fr.analogon.odh.pojo.BienLoue" />
+  </class>
+
+  <class name="fr.analogon.odh.pojo.Proprietaire" table = "odh_proprietaires" >
+       <id name="odpro_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odpro_raison"  sql-type = "varchar(60)" />
+      <property name="odpro_civil"  sql-type = "varchar(4)" />
+      <property name="odpro_pren"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odpro_nom"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odpro_num"  sql-type = "varchar(8)" />
+      <property name="odpro_adr1"  sql-type = "varchar(80)" not-null = "true" />
+      <property name="odpro_adr2"  sql-type = "varchar(80)" />
+      <property name="odpro_cpost"  sql-type = "int(5)"  />
+      <property name="odpro_ville"  sql-type = "varchar(60)" />
+      <property name="odpro_fisc" sql-type="varchar(15)" />
+      <property name="odpro_com"  sql-type = "varchar(80)" />
+      <property name="odpro_telfix"  sql-type = "varchar(20)"  />
+      <property name="odpro_telport"  sql-type = "varchar(20)"  />
+      <property name="odpro_fax"  sql-type = "varchar(20)" />
+      <property name="odpro_mail"  sql-type = "varchar(60)"  />
+      <set name="odpro_lots" table="odh_lots">
+             <key column="odlot_proprietaire" />
+             <one-to-many class="fr.analogon.odh.pojo.Lot" />
+      </set>
+  </class>
+
+ <class name="fr.analogon.odh.pojo.Rue" table = "odh_rues" >
+      <id name="odrue_id"  sql-type="int" unsaved-value="0">
+              <generator class="native"/>
+      </id>
+     <property name="odrue_code" sql-type="int(5)" not-null="true" />
+     <property name="odrue_type" sql-type="varchar(20)" not-null="true" />
+     <property name="odrue_liaison" sql-type="varchar(10)" not-null="true" />
+     <property name="odrue_nom" sql-type="varchar(60)" not-null="true" />
+     <property name="odrue_nomrech" sql-type="varchar(60)" not-null="true" />
+     <property name="odrue_ville" sql-type="varchar(30)" not-null="true" />
+     <property name="odrue_codeposte" sql-type="int(5)" not-null="true" />
+     <set name="odrue_immeubles" table="odh_immeubles" >
+             <key column="odim_rue" />
+             <one-to-many class="fr.analogon.odh.pojo.Immeuble" />
+     </set>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Nature" table="odh_natures" discriminator-value="N">
+      <id name="odnt_id"  sql-type="int" unsaved-value="0" >
+              <generator class="native"/>
+      </id>
+     <discriminator column="odnt_type" sql-type="varchar(1)" />
+     <property name="odnt_nom"  sql-type = "varchar(255)" not-null = "true" />
+     <property name="odnt_niveau"  sql-type = "int" not-null = "true" />
+
+     <subclass name="fr.analogon.odh.pojo.NatureIntervention" discriminator-value="V">
+      <set name="odnt_procedures" table="odh_natproc" >
+             <key column="odnp_nat" />
+             <many-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+      </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.GroupeImmeuble" discriminator-value="G">
+      <set name="odnt_immeubles" table="odh_immeubles">
+             <key column="odim_groupe" />
+             <one-to-many class="fr.analogon.odh.pojo.Immeuble" />
+      </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeImmeuble" discriminator-value="T">
+      <set name="odnt_immeubles" table="odh_immeubles">
+             <key column="odim_type" />
+             <one-to-many class="fr.analogon.odh.pojo.Immeuble" />
+      </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.EtatGenerale" discriminator-value="E">
+      <set name="odeg_immeubles" table="odh_immeubles">
+             <key column="odim_type" />
+             <one-to-many class="fr.analogon.odh.pojo.Immeuble" />
+      </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.Peril" discriminator-value="P">
+      <set name="odnt_procedures" table="odh_proceduresimr" >
+             <key column="odimr_peril" />
+             <one-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+      </set>
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.ActiviteLot" discriminator-value="A">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeLot" discriminator-value="L">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.BienLoue" discriminator-value="B">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeEntreprise" discriminator-value="S">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.Quartier" discriminator-value="Q">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeDeclarant" discriminator-value="D">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeTraitement" discriminator-value="R">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.NaturePropriete" discriminator-value="U">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.TypeRelogement" discriminator-value="H">
+     </subclass>
+     <subclass name="fr.analogon.odh.pojo.Remediabilite" discriminator-value="M">
+     </subclass>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Entreprise" table="odh_entreprises" >
+      <id name="oden_id"  sql-type="int" unsaved-value="0" >
+              <generator class="native"/>
+      </id>
+   <many-to-one name="oden_type" class="fr.analogon.odh.pojo.TypeEntreprise" />
+   <property name="oden_code" sql-type="varchar(4)" unique = "true" not-null = "true" />
+   <property name="oden_nom" sql-type="varchar(60)" unique = "true" not-null = "true" />
+   <property name="oden_addr1" sql-type="varchar(60)"  />
+   <property name="oden_addr2" sql-type="varchar(60)"  />
+   <property name="oden_codeposte" sql-type="int(5)"  />
+   <property name="oden_ville" sql-type="varchar(30)"  />
+   <property name="oden_tel" sql-type="varchar(20)"  />
+   <property name="oden_fax" sql-type="varchar(20)"  />
+   <property name="oden_mail" sql-type="varchar(60)"  />
+   <property name="oden_comment" sql-type="text"  />
+   <set name="oden_procedures" table="odh_imrentrep" cascade="save-update">
+       <key column="odie_entrep" />
+       <many-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+   </set>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.ProcedureIMR" table = "odh_proceduresimr" >
+      <id name="odimr_id"  sql-type="int" unsaved-value="0" >
+              <generator class="native"/>
+      </id>
+     <property name="odimr_date"  type = "date" />
+     <property name="odimr_datefin"  type = "date" />
+     <many-to-one name="odimr_immeuble" class="fr.analogon.odh.pojo.Immeuble" />
+     <many-to-one name="odimr_peril" class="fr.analogon.odh.pojo.Peril" />
+     <many-to-one name="odimr_suiveur" class="fr.analogon.odh.pojo.Suiveur" />
+     <property name="odimr_mestype" sql-type="char(1)"  />
+     <property name="odimr_commentaire"  sql-type = "varchar(100)" />
+     <property name="odimr_relog" type="boolean" />
+     <set name="odimr_natinterv" table="odh_natproc" cascade="save-update">
+             <key column="odnp_proc" />
+             <many-to-many class="fr.analogon.odh.pojo.NatureIntervention" />
+     </set>>
+     <set name="odimr_experts" table="odh_expproc" cascade="save-update">
+             <key column="odep_proc" />
+             <many-to-many class="fr.analogon.odh.pojo.ExpertIMR" />
+     </set>
+     <set name="odimr_entreprises" table="odh_imrentrep" cascade="save-update">
+             <key column="odie_imr" />
+             <many-to-many class="fr.analogon.odh.pojo.Entreprise" />
+     </set>
+     <component name="odimr_mesdef" class="fr.analogon.odh.pojo.MesureDef" >
+       <property name="odmd_datepvcar"  type = "date" />
+       <property name="odmd_datesaisie"  type = "date" />
+       <property name="odmd_datejug1"  type = "date" />
+       <property name="odmd_datejug2"  type = "date" />
+       <property name="odmd_datearr1"  type = "date" />
+       <property name="odmd_datevis1"  type = "date" />
+       <property name="odmd_observ1" sql-type="text" />
+       <property name="odmd_datearr2"  type = "date" />
+       <property name="odmd_datevis2"  type = "date" />
+       <property name="odmd_observ2" sql-type="text" />
+       <property name="odmd_datearr3"  type = "date" />
+       <property name="odmd_datevis3"  type = "date" />
+       <property name="odmd_observ3" sql-type="text" />
+     </component>
+      <component name="odimr_mesprov" class="fr.analogon.odh.pojo.MesureProv" >
+          <property name="odmp_numarrete" sql-type="int" />
+          <property name="odmp_datearrete"  type = "date" />
+          <property name="odmp_datelimrealis"  type = "date" />
+          <property name="odmp_daterealis"  type = "date" />
+          <property name="odmp_datetravnonrealis"  type = "date" />
+          <property name="odmp_dateordreserv"  type = "date" />
+          <property name="odmp_daterealparcomm" type = "date" />
+          <property name="odmp_commentaire" sql-type="text" />
+      </component>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Lot" table = "odh_lots" >
+      <id name="odlot_id" sql-type="int" unsaved-value="0">
+              <generator class="native"/>
+      </id>
+     <many-to-one name="odlot_type" class="fr.analogon.odh.pojo.TypeLot" />
+     <property name="odlot_situ" sql-type="decimal(10,2)" />
+     <many-to-one name="odlot_activ" class="fr.analogon.odh.pojo.ActiviteLot"/>
+     <property name="odlot_avgarage" type="boolean" />
+     <property name="odlot_garage" sql-type="varchar(20)"  />
+     <property name="odlot_avcave" type="boolean" />
+     <property name="odlot_cave" sql-type="varchar(20)" />
+     <property name="odlot_com" sql-type="varchar(80)" />
+     <property name="odlot_info1" sql-type="varchar(20)" />
+     <property name="odlot_info2" sql-type="varchar(20)"  />
+     <property name="odlot_info3" sql-type="varchar(20)"  />
+     <many-to-one name="odlot_immeuble" class="fr.analogon.odh.pojo.Immeuble" not-null="true"/>
+     <many-to-one name="odlot_locataire" class="fr.analogon.odh.pojo.Locataire"/>
+     <many-to-one name="odlot_proprietaire" class="fr.analogon.odh.pojo.Proprietaire" />
+     <component name="odlot_codelot" class="fr.analogon.odh.pojo.CodeLot">
+       <property name="odlot_codebat">
+         <column name="odlot_codebat" sql-type="varchar(2)" unique-key="odlot_codelot" />
+       </property>
+       <property name="odlot_codeesc">
+         <column name="odlot_codeesc" sql-type="varchar(2)"  />
+       </property>
+       <property name="odlot_codeniv">
+         <column name="odlot_codeniv" sql-type="int(2)" />
+       </property>
+       <property name="odlot_codeimm">
+         <column name="odlot_codeimm" sql-type="int(5)" unique-key="odlot_codelot" />
+       </property>
+     </component>
+     <set name="odlot_locslot" table="odh_locslot" cascade="delete">
+             <key column="odll_lot" />
+             <one-to-many class="fr.analogon.odh.pojo.LocatairesLot" />
+     </set>
+     <set name="odlot_propslot" table="odh_propslot" cascade="delete">
+             <key column="odpl_lot" />
+             <one-to-many class="fr.analogon.odh.pojo.ProprietairesLot" />
+     </set>
+     <set name="odlot_insalubrites" table="odh_insalimms" cascade="delete">
+             <key column="odii_lot" />
+             <one-to-many class="fr.analogon.odh.pojo.InsalubriteLot" />
+     </set>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Immeuble" table = "odh_immeubles" lazy="true" >
+      <id name="odim_id" sql-type="int" unsaved-value="0">
+              <generator class="native"/>
+      </id>
+     <property name="odim_cadsct" >
+         <column name="odim_cadsct" sql-type="varchar(2)" unique-key="odim_cadsctp1" />
+     </property>
+     <property name="odim_cadp1" >
+         <column name="odim_cadp1" sql-type="varchar(4)" unique-key="odim_cadsctp1" />
+     </property>
+     <property name="odim_cadp2" sql-type="varchar(4)" />
+     <property name="odim_cadp3" sql-type="varchar(4)" />
+     <property name="odim_cadp4" sql-type="varchar(4)" />
+     <property name="odim_ilsct" sql-type="varchar(2)" />
+     <property name="odim_ililot" sql-type="varchar(3)" />
+     <property name="odim_ilbat" sql-type="varchar(2)" />
+     <property name="odim_datecrea"  type = "date" />
+     <many-to-one name="odim_quartier" class="fr.analogon.odh.pojo.Quartier" />
+     <many-to-one name="odim_groupe" class="fr.analogon.odh.pojo.GroupeImmeuble" />
+     <property name="odim_nom" sql-type="varchar(60)" not-null="true" />
+     <many-to-one name="odim_type" class="fr.analogon.odh.pojo.TypeImmeuble" />
+     <many-to-one name="odim_etgen" class="fr.analogon.odh.pojo.EtatGenerale" />
+     <property name="odim_desc" sql-type="varchar(250)" />
+     <property name="odim_num"  sql-type = "varchar(10)" />
+     <many-to-one name="odim_rue" class="fr.analogon.odh.pojo.Rue" not-null="true"/>
+     <property name="odim_canton"  sql-type = "varchar(2)" />
+     <property name="odim_position" sql-type="varchar(8)" />
+     <property name="odim_alignement" sql-type="varchar(15)" />
+     <property name="odim_nbap" sql-type="int(4)" />
+     <property name="odim_niv" sql-type="int(2)" />
+     <property name="odim_haut" sql-type="decimal(5,2)"  />
+     <property name="odim_surfacesol" sql-type="decimal(10,2)" />
+     <property name="odim_surfacetot" sql-type="decimal(10,2)" />
+     <component name="odim_partcoms" class="fr.analogon.odh.pojo.ImmeublePartComs"  >
+       <property name="odim_ncaves" sql-type="int(3)"/>
+       <property name="odim_parking" sql-type="int(3)" />
+       <property name="odim_grenier" type="boolean" />
+       <property name="odim_locpoub" type="boolean" />
+       <property name="odim_ascenseur" sql-type="int(2)" />
+       <property name="odim_partscomscom" type="string" />
+       <property name="odim_chauffage" type="boolean" />
+       <property name="odim_gaz" type="boolean"  />
+       <property name="odim_eau" type="boolean" />
+     </component>
+     <component name="odim_env" class="fr.analogon.odh.pojo.ImmeubleEnv" >
+       <property name="odim_terjeux" type="boolean" />
+       <property name="odim_pelouse" type="boolean" />
+       <property name="odim_enventr" type="boolean" />
+       <property name="odim_envcomment" sql-type="varchar(255)" />
+     </component>
+     <many-to-one name="odim_syndic" class="fr.analogon.odh.pojo.Syndic" />
+     <set name="odim_lots" table="odh_lots" cascade="delete">
+           <key column="odlot_immeuble" />
+           <one-to-many class="fr.analogon.odh.pojo.Lot" />
+     </set>
+     <set name="odim_experts" table="odh_expimmeubles" cascade="save-update" >
+           <key column="odei_immeuble" />
+           <many-to-many class="fr.analogon.odh.pojo.ExpertImmeuble" />
+     </set>
+     <set name="odim_procedures" table="odh_proceduresimr" cascade="delete">
+           <key column="odimr_immeuble" />
+           <one-to-many class="fr.analogon.odh.pojo.ProcedureIMR" />
+     </set>
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Seuil" table="odh_etatpar" discriminator-value="S">
+      <id name="odet_id"  sql-type="int" unsaved-value="0" >
+              <generator class="native"/>
+      </id>
+     <discriminator column="odet_type" sql-type="varchar(1)" />
+     <property name="odet_type" sql-type="varchar(1)" insert="false" update="false"/>
+     <property name="odet_plomb"  sql-type = "decimal(5,2)" />
+     <property name="odet_amiante"  sql-type = "decimal(5,2)" />
+     <subclass name="fr.analogon.odh.pojo.EtatParasitaire" discriminator-value="E">
+       <many-to-one name="odet_lot" class="fr.analogon.odh.pojo.Lot" cascade="delete" />
+       <many-to-one name="odet_immeuble" class="fr.analogon.odh.pojo.Immeuble" />
+       <property name="odet_termite" type="boolean" />
+       <property name="odet_moisissure" type="boolean" />
+       <property name="odet_salpetre" type="boolean" />
+       <property name="odet_humidite" type="boolean" />
+       <property name="odet_commentaire" sql-type="varchar(250)" />
+       <many-to-one name="odet_seuil" class="fr.analogon.odh.pojo.Seuil" />
+     </subclass>
+ </class>
+
+
+ <class name="fr.analogon.odh.pojo.Travail" table="odh_travaux" >
+   <id name="odtr_id"  sql-type="int" unsaved-value="0" >
+          <generator class="native"/>
+   </id>
+   <property name="odtr_desc" sql-type="varchar(80)"  />
+   <property name="odtr_desc2" sql-type="varchar(80)"  />
+   <many-to-one name="odtr_suiveur" class="fr.analogon.odh.pojo.Suiveur" />
+   <many-to-one name="odtr_entrep" class="fr.analogon.odh.pojo.Entreprise" />
+   <many-to-one name="odtr_procedure" class="fr.analogon.odh.pojo.ProcedureIMR" />
+   <property name="odtr_datesatisf"  type = "date" />
+   <property name="odtr_dateverif"  type = "date" />
+   <property name="odtr_datefin"  type = "date" />
+   <property name="odtr_comment" sql-type="text"  />
+   <property name="odtr_numos" sql-type="varchar(20)"  />
+   <property name="odtr_numfact" sql-type="varchar(15)"  />
+   <property name="odtr_montant"  sql-type = "decimal(11,2)" />
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Declaration" table="odh_declarations" >
+   <id name="odde_declid"  sql-type="int" unsaved-value="0" >
+          <generator class="native"/>
+   </id>
+
+   <many-to-one name="odde_expert" class="fr.analogon.odh.pojo.ExpertIMR" />
+   <many-to-one name="odde_typedecl" class="fr.analogon.odh.pojo.TypeDeclarant" />
+   <many-to-one name="odde_typetrait" class="fr.analogon.odh.pojo.TypeTraitement" />
+   <many-to-one name="odde_etatpar" class="fr.analogon.odh.pojo.EtatParasitaire" />
+
+   <property name="odde_bois" type="boolean" />
+   <property name="odde_bati" type="boolean" />
+   <property name="odde_nbati" type="boolean" />
+   <property name="odde_ext" type="boolean" />
+   <property name="odde_ster" type="boolean" />
+   <property name="odde_datedec"  type = "date"  />
+   <property name="odde_datevis"  type = "date"  />
+   <property name="odde_datetrait"  type = "date" />
+
+ </class>
+
+ <class name="fr.analogon.odh.pojo.LocatairesLot" table="odh_locslot" >
+   <id name="odll_id"  sql-type="int" unsaved-value="0" >
+          <generator class="native"/>
+   </id>
+   <many-to-one name="odll_locataire" class="fr.analogon.odh.pojo.Locataire" />
+   <many-to-one name="odll_lot" class="fr.analogon.odh.pojo.Lot" not-null="true" />
+   <property name="odll_datede"  type = "date" not-null="true" />
+   <property name="odll_datea"  type = "date" />
+   <property name="odll_observations" sql-type="text"  />
+ </class>
+
+ <class name="fr.analogon.odh.pojo.ProprietairesLot" table="odh_propslot" >
+   <id name="odpl_id"  sql-type="int" unsaved-value="0" >
+          <generator class="native"/>
+   </id>
+   <many-to-one name="odpl_proprietaire" class="fr.analogon.odh.pojo.Proprietaire" not-null="true" />
+   <many-to-one name="odpl_lot" class="fr.analogon.odh.pojo.Lot" not-null="true" />
+   <many-to-one name="odpl_nature" class="fr.analogon.odh.pojo.NaturePropriete" />
+   <property name="odpl_datede"  type = "date" not-null="true" />
+   <property name="odpl_datea"  type = "date" />
+   <property name="odpl_observations" sql-type="text"  />
+ </class>
+
+ <class name="fr.analogon.odh.pojo.Relogement" table = "odh_relogements" >
+       <id name="odre_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odre_nom"  sql-type = "varchar(30)" not-null = "true" />
+      <many-to-one name="odre_type" class="fr.analogon.odh.pojo.TypeRelogement" />
+      <property name="odre_adr1"  sql-type = "varchar(80)" not-null = "true" />
+      <property name="odre_adr2"  sql-type = "varchar(80)" />
+      <property name="odre_cpost"  sql-type = "int(5)"  />
+      <property name="odre_ville"  sql-type = "varchar(60)" />
+      <property name="odre_tel"  sql-type = "varchar(20)"  />
+      <property name="odre_fax"  sql-type = "varchar(20)" />
+      <property name="odre_mail"  sql-type = "varchar(60)"  />
+      <property name="odre_gerciv"  sql-type = "varchar(4)" />
+      <property name="odre_gernom"  sql-type = "varchar(30)" />
+      <property name="odre_gerprenom"  sql-type = "varchar(30)" />
+      <property name="odre_commentaire"  sql-type = "varchar(255)" />
+      <property name="odre_prix"  sql-type = "decimal(11,2)" />
+  </class>
+
+ <class name="fr.analogon.odh.pojo.RelogementProcedure" table = "odh_relogsproc" >
+       <id name="odrp_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odrp_nom"  sql-type = "varchar(30)" not-null = "true" />
+      <property name="odrp_nbp"  sql-type = "int(2)"  />
+      <property name="odrp_datedu"  type = "date" />
+      <property name="odrp_dateau"  type = "date" />
+      <many-to-one name="odrp_relogement" class="fr.analogon.odh.pojo.Relogement" />
+      <many-to-one name="odrp_procedure" class="fr.analogon.odh.pojo.ProcedureIMR" />
+      <property name="odrp_rest"  sql-type = "varchar(60)"  />
+      <property name="odrp_coutloyer"  sql-type = "decimal(11,2)" />
+      <property name="odrp_coutrest"  sql-type = "decimal(11,2)" />
+      <set name="odrp_recettes" table="odh_recettes" cascade="delete">
+           <key column="odrc_relogproc" />
+           <one-to-many class="fr.analogon.odh.pojo.Recette" />
+      </set>
+  </class>
+
+ <class name="fr.analogon.odh.pojo.Recette" table = "odh_recettes" >
+       <id name="odrc_id"  sql-type="varchar(32)" >
+               <generator class="uuid.hex"/>
+       </id>
+      <property name="odrc_daterecouv"  type="date" />
+      <property name="odrc_daterec"  type="date" />
+      <property name="odrc_titre"  sql-type = "varchar(20)"  />
+      <property name="odrc_somme"  sql-type = "decimal(11,2)" />
+      <many-to-one name="odrc_relogproc" class="fr.analogon.odh.pojo.RelogementProcedure" />
+  </class>
+
+ <class name="fr.analogon.odh.pojo.Insalubrite" table = "odh_insalubrites" >
+       <id name="odins_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <property name="odins_annee"  sql-type = "int(2)" />
+      <property name="odins_code"  sql-type = "varchar(3)" />
+      <property name="odins_libelle"  sql-type = "varchar(60)"  />
+      <property name="odins_cfc"  sql-type = "int(2)" />
+      <property name="odins_maxi"  sql-type = "int(2)" />
+      <property name="odins_danger" type="boolean" />
+      <property name="odins_critere"  sql-type = "varchar(60)"  />
+      <property name="odins_bon1"  sql-type = "text"  />
+      <property name="odins_mediocre1"  sql-type = "text"  />
+      <property name="odins_mauvais1"  sql-type = "text"  />
+      <property name="odins_tmauvais1"  sql-type = "text"  />
+      <property name="odins_eleminfl"  sql-type = "text"  />
+      <property name="odins_precision"  sql-type = "text"  />
+ </class>
+
+ <class name="fr.analogon.odh.pojo.InsalubriteLocation" table = "odh_insalimms" discriminator-value="P" >
+       <id name="odii_id"  sql-type="int" unsaved-value="0">
+               <generator class="native"/>
+       </id>
+      <discriminator column="odii_type" sql-type="varchar(1)" />
+      <many-to-one name="odii_insalubrite" class="fr.analogon.odh.pojo.Insalubrite" />
+      <many-to-one name="odii_remediabilite" class="fr.analogon.odh.pojo.Remediabilite" />
+      <property name="odii_annee"  sql-type="int(4)" />
+      <property name="odii_date"  type="date" />
+      <property name="odii_valeur"  sql-type="int(2)" />
+      <property name="odii_observation"  sql-type = "varchar(20)"  />
+      <subclass name="fr.analogon.odh.pojo.InsalubriteImmeuble" discriminator-value="I">
+        <many-to-one name="odii_immeuble" class="fr.analogon.odh.pojo.Immeuble" />
+      </subclass>
+      <subclass name="fr.analogon.odh.pojo.InsalubriteLot" discriminator-value="L">
+        <many-to-one name="odii_lot" class="fr.analogon.odh.pojo.Lot" />
+      </subclass>
+  </class>
+
+ </hibernate-mapping>

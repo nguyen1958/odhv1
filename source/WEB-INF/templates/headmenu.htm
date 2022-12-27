@@ -1,0 +1,103 @@
+<style type="text/css">
+
+#csstopmenu, #csstopmenu ul{
+padding: 0;
+margin: 0;
+list-style: none;
+}
+
+#csstopmenu li{
+float: left;
+position: relative;
+}
+
+#csstopmenu a{
+text-decoration: none;
+}
+
+.mainitems{
+border: 1px solid black;
+border-left-width: 0;
+background-color: #D8FE89;
+}
+
+.headerlinks a{
+margin: auto 8px;
+font-weight: bold;
+color: black;
+}
+
+.submenus{
+display: none;
+width: 10em;
+position: absolute;
+top: 1.2em;
+left: 0;
+background-color: #EEFFCC;
+border: 1px solid black;
+}
+
+.submenus li{
+width: 170;
+background-image:url(images/bt_sous_menu01.gif);
+}
+
+.submenus li a{
+display: block;
+width: 100%;
+text-indent: 3px;
+}
+
+html>body .submenus li a{ /* non IE browsers */
+width: auto;
+}
+
+.submenus li a:hover{
+color: red;
+}
+
+#csstopmenu li>ul {/* non IE browsers */
+top: auto;
+left: auto;
+}
+
+#csstopmenu li:hover ul, li.over ul {
+display: block;
+}
+
+html>body #clearmenu{ /* non IE browsers */
+height: 3px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+// CSS Top Menu- By JavaScriptKit.com (http://www.javascriptkit.com)
+// Adopted from SuckerFish menu
+// For this and over 400+ free scripts, visit JavaScript Kit- http://www.javascriptkit.com/
+// Please keep this credit intact
+
+startMenu = function() {
+if (document.all&&document.getElementById) {
+cssmenu = document.getElementById("csstopmenu");
+for (i=0; i<cssmenu.childNodes.length; i++) {
+node = cssmenu.childNodes[i];
+if (node.nodeName=="LI") {
+node.onmouseover=function() {
+this.className+=" over";
+}
+node.onmouseout=function(){
+this.className=this.className.replace(" over", "")
+}
+}
+}
+}
+}
+
+if (window.attachEvent)
+window.attachEvent("onload", startMenu)
+else
+window.onload=startMenu;
+
+</script>

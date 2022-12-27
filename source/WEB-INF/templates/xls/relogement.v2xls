@@ -1,0 +1,61 @@
+
+##  Template to generate the listing for procedures into format xls
+
+   #set($sheet = $workbook.getSheetAt(0))
+   $sheet
+   #set($rowCount = 0)
+   $pageableResults
+   $pageableResults.results.size()
+	 #foreach ($recordrel in $pageableResults.getResults())
+        #set($crtList = $!listing.asList($recordrel))
+        #set($relogement = $crtList.get(0))
+        #set($nbre = $crtList.get(1))
+        #set($cout = $crtList.get(2))
+	    #set($record = $relogement.odrp_procedure)
+
+	    #set($transCount = $rowCount + 5)
+	    #set($crtRow = $sheet.createRow($transCount))
+        $crtRow.createCell($record.getShortValue(1)).setCellValue($rowCount)
+        $crtRow.createCell($record.getShortValue(2)).setCellValue($record.odimr_id)
+
+      #if($record.odimr_immeuble)
+	        #set($immeuble = $record.odimr_immeuble)
+          $crtRow.createCell($record.getShortValue(3)).setCellValue($record.getNotNullValue($immeuble.odim_syndic.odsyn_code,""))
+          $crtRow.createCell($record.getShortValue(4)).setCellValue($record.getNotNullValue("$immeuble.odim_syndic.odsyn_rpren $immeuble.odim_syndic.odsyn_rnom",""))
+
+          $crtRow.createCell($record.getShortValue(5)).setCellValue($record.getNotNullValue($immeuble.notNullName,""))
+          $crtRow.createCell($record.getShortValue(6)).setCellValue($record.getNotNullValue($immeuble.odim_groupe.odnt_nom,""))
+          $crtRow.createCell($record.getShortValue(7)).setCellValue($record.getNotNullValue($immeuble.odim_type.odnt_nom,""))
+          $crtRow.createCell($record.getShortValue(8)).setCellValue($record.getNotNullValue($!immeuble.odim_num,""))
+          $crtRow.createCell($record.getShortValue(9)).setCellValue($record.getNotNullValue("$immeuble.odim_rue.odrue_type $immeuble.odim_rue.odrue_liaison $immeuble.odim_rue.odrue_nom",""))
+     #end
+
+      $crtRow.createCell($record.getShortValue(10)).setCellValue($!record.odimr_peril.odnt_nom)
+      $crtRow.createCell($record.getShortValue(11)).setCellValue($!record.getNaturesInterventionBuffer())
+      #if($record.odimr_suiveur)
+        $crtRow.createCell($record.getShortValue(12)).setCellValue("$!record.odimr_suiveur.odsu_pren $!record.odimr_suiveur.odsu_nom")
+      #end
+
+     #set($cStyleDate = $workbook.createCellStyle())
+     #set($formatDate = $workbook.createDataFormat())
+     #set($datePattern = "d-mmm-yy")
+     #set($indexPattern = $formatDate.getBuiltinFormat($datePattern))
+     $cStyleDate.setDataFormat($indexPattern)
+
+      $crtRow.createCell($record.getShortValue(13)).setCellValue($!record.getExpertsBuffer())
+      #if($record.odimr_date)
+        #set($dateCell = $crtRow.createCell($record.getShortValue(14)))
+        $dateCell.setCellStyle($cStyleDate)
+        $dateCell.setCellValue($!record.odimr_date)
+      #end
+      #if($record.odimr_datefin)
+        #set($dateFinCell = $crtRow.createCell($record.getShortValue(15)))
+        $dateFinCell.setCellStyle($cStyleDate)
+        $dateFinCell.setCellValue($!record.odimr_datefin)
+      #end
+       $crtRow.createCell($record.getShortValue(16)).setCellValue($record.getNotNullValue($!record.odimr_commentaire,""))
+       $crtRow.createCell($record.getShortValue(17)).setCellValue($nbre)
+       $crtRow.createCell($record.getShortValue(18)).setCellValue($!cout)
+
+      #set($rowCount = $rowCount + 1)
+  #end

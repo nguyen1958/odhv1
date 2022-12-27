@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>Utilisateurs en ligne - Gestion de Demarches Administratives </title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+
+function reloadPage(){
+  window.location ="application?action=sessions";
+}
+
+
+</script>
+</head>
+<body background="images/fond03.gif" link="#FFFFFF" leftmargin="10" topmargin="10" marginwidth="10" marginheight="10" onLoad="javascript:setInterval('reloadPage()', 30000)" >
+<p>
+<font color="#800000" size="4"><b>Gestionnaire d'Application</b></font>
+- <a href="application?action=mmode" style="color:blue;" >Mode maintenance</a>
+/ <a href="application" style="color:blue;" >Configuration</a>
+/ <a href="application?action=structure" style="color:blue;" >Structure SQL</a>
+/ <font color="#800000" size="4">Utilisateurs en ligne </font>
+/ <a href="intro" style="color:blue;" >Retour à L'observatoire d'habitat</a>
+
+<br>
+<font color="#800000" size="3">
+<br>
+#set($properties_manager = $req.getSession().getServletContext().getAttribute("properties_manager"))
+Nombre maximum de connections authorisées : $!properties_manager.getProperty("authenticator", "maxConnections")
+<br>
+Nombre de connections : $!sessions_list.size()
+<br>
+Temps d'inactivité admis : $!inactif min.
+</font>
+<br>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr height="25" >
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Utilisateur</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom et pr&eacute;nom</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">En ligne depuis</font></strong></td>
+    <td align="center" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Inactif depuis</font></strong></td>
+  </tr>
+  #set($counter = 0 )
+  #foreach($item in $sessions_list)
+    #if($item)
+      #set($counter = $counter + 1)
+    <tr>
+      <td align="right" ><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$counter</font></strong></td>
+      #set($crtUser = $item.getAttribute("remoteUser"))
+      <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!crtUser.oduti_utilisateur</font></strong></td>
+      <td align="left" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp; $!crtUser.oduti_prenom $!crtUser.oduti_nom</font></strong></td>
+      <td align="center" background="images/fond_liste.gif"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;
+	    	  #if($!crtUser.oduti_type.toString() == 'a')
+	    	     Administration
+	    	  #elseif($!crtUser.oduti_type.toString()== 'c')
+	    	     Utilisation
+	    	  #elseif($!crtUser.oduti_type.toString()== 'l')
+	    	     Consultation
+	    	  #end
+      </font></strong></td>
+      <td align="center" background="images/fond_liste.gif" nowrap><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!crtUser.getOnLineTimeToMin($item) min. </font></strong></td>
+      <td align="center" background="images/fond_liste.gif" nowrap><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;$!crtUser.getTimeoutToMin($item) min. </font></strong></td>
+     </tr>
+    #end
+   #end
+</table>
+<!--
+Le repas : $!item.getMaxInactiveInterval()
+-->
+  <br>
+  <br>
+</body>
+</html>

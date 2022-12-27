@@ -1,0 +1,291 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();
+ }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pChooser = $req.getParameter('chooser'))
+#if($pChooser.equals('yes'))
+
+#else
+#parse("menu.htm")
+#end
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="entrep_form">
+<input type="hidden" name="oden_id" value="$!entreprise.oden_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+<input type="hidden" name="chooser" value="$!pChooser" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Maintenance</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          /
+        #if($!actionparam.endsWith("UPDATE"))
+          Modification entreprise
+        #else
+          Cr&eacute;ation entreprise
+        #end
+        </font></strong></div></td>
+    </tr>
+
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>ENTREPRISE <font color="#800000">$!entreprise.oden_nom</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($entreprise.hasErrors())
+                  Impossible de valider : Il y a $!entreprise.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($entreprise.hasErrors())
+                  Impossible de valider : Il y a $!entreprise.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+</table>
+</center>
+  <table width="98%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+      &nbsp;&nbsp;Code entreprise *</font></strong></em></td>
+      <td>&nbsp; <input name="oden_code" type="text" value="$!entreprise.getAltValue($entreprise.oden_code, 'oden_code')" size="4" maxlength="4">
+              <!-- error message -->
+                 #if ($entreprise.hasError("oden_code", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire.</font><br/>
+                 #end
+                 #if ($entreprise.hasError("oden_code", "MIN_LENGTH"))
+                   <font color="red">Le code est trop court. Il faut avoir 4 caractères.</font><br/>
+                 #end
+                 #if ($entreprise.hasError("oden_code", "MAX_LENGTH"))
+                   <font color="red">Le code est trop long. Il faut avoir 4 caractères.</font><br/>
+                 #end
+                 #if ($entreprise.hasError("oden_code","ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà une entreprise avec le code '$!entreprise.oden_code'.</font><br/>
+                 #end
+      </td>
+    </tr>
+   <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+         *</font></strong></em></td>
+      <td>&nbsp; <input name="oden_nom" type="text" value="$!entreprise.getAltValue($entreprise.oden_nom, 'oden_nom')" size="40" maxlength="60">
+              <!-- error message -->
+                 #if ($entreprise.hasError("oden_nom", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire.</font><br/>
+                 #end
+                 #if ($entreprise.hasError("oden_nom", "MAX_LENGTH"))
+                   <font color="red">Le nom est trop long. Il faut avoir 60 caractères.</font><br/>
+                 #end
+                 #if ($entreprise.hasError("oden_nom","ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà une entreprise avec le nom '$!entreprise.oden_nom'.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right" ><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="middle" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type
+       * </font></strong></em></td>
+      <td>&nbsp;&nbsp;<select name="oden_type" >
+          <option value="">
+          #foreach($item in $!entreprise.getAll_types())
+             <option value="$item.odnt_id" $entreprise.getSelectedAttribute($item.getOdnt_id().toString(), $!entreprise.getOden_type().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse1
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_addr1" type="text" value="$!entreprise.getAltValue($entreprise.oden_addr1, 'oden_addr1')" size="40" maxlength="60">
+           <!-- validate error message -->
+           #if ($entreprise.hasError("oden_addr1", "IS_BLANK_OR_NULL"))
+             <font color="red">Ce champ est obligatoire.</font><br/>
+           #end
+           #if ($entreprise.hasError("oden_addr1", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 60 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse2
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_addr2" type="text"  value="$!entreprise.getAltValue($entreprise.oden_addr2, 'oden_addr2')" size="40" maxlength="60">
+           <!-- validate error message -->
+           #if ($entreprise.hasError("oden_addr2", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 80 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        postal </font></strong></em></td>
+      <td>&nbsp; <input name="oden_codeposte" type="text" value="$!entreprise.getAltValue($!entreprise.zeroFillToStart($entreprise.oden_codeposte.toString(), 5), 'oden_codeposte')" size="5" maxlength="5">
+           #if ($entreprise.hasError("oden_codeposte", "IS_FRENCH_CODEPOSTE"))
+             <font color="red">La valeur introduite n'est pas celle d'un code postal.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ville
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_ville" type="text"  value="$!entreprise.getAltValue($entreprise.oden_ville, 'oden_ville')" size="40" maxlength="60">
+          #if ($entreprise.hasError("oden_ville", "MAX_LENGTH"))
+             <font color="red">La valeur pour la ville est trop longue. Maximum 60 caractères.</font>
+          #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;T&eacute;l
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_tel" type="text" value="$!entreprise.getAltValue($entreprise.oden_tel, 'oden_tel')" size="20" maxlength="20">
+              #if ($entreprise.hasError("oden_tel", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($entreprise.hasError("oden_tel", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de téléphone.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Fax
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_fax" type="text" value="$!entreprise.getAltValue($entreprise.oden_fax, 'oden_fax')" size="20" maxlength="20">
+              #if ($entreprise.hasError("oden_fax", "MAX_LENGTH"))
+                 <font color="red">Le numéro de fax est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($entreprise.hasError("oden_fax", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de fax.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mail
+        </font></strong></em></td>
+      <td>&nbsp; <input name="oden_mail" type="text"   value="$!entreprise.getAltValue($entreprise.oden_mail, 'oden_mail')" size="40" maxlength="60">
+              #if ($entreprise.hasError("oden_mail", "IS_EMAIL"))
+                 <font color="red">La valeur introduite n'est pas celle d'une adresse de mail.</font>
+               #end
+              #if ($entreprise.hasError("oden_mail", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" ><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+       <td valign="top" width="210" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Description
+              </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+      <td >&nbsp; <textarea name="oden_comment" cols="40" rows="5" maxlength="250" >$!entreprise.getAltValue($entreprise.oden_comment, 'oden_comment')</textarea>
+              #if ($entreprise.hasError("oden_comment", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 500 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="deleteObject()"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="entrep_list?chooser=$!pChooser" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+</body>
+</html>

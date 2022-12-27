@@ -1,0 +1,259 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function changeNature(){
+   document.rechercheForm.odnt_type.value=document.rechercheForm.natures.value;
+   document.rechercheForm.submit();
+   document.rechercheForm.natures.disabled = yes;
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pDispatcher = $req.getParameter("dispatcher"))
+#set($pType = $req.getParameter("odnt_type"))
+#if(!$pType)
+  #set($pType = "A")
+#end
+#if(!$pDispatcher.equalsIgnoreCase("CHOOSE"))
+  #parse("menu.htm")
+#end
+<form name="rechercheForm" method="post" action="nat_list">
+<input type="hidden" name="dispatcher" value="$!pDispatcher">
+<input type="hidden" name="query_string" value="$!query_string" >
+<input type="hidden" name="offset" value="0" >
+<input type="hidden" name="odnt_type" value="$!pType" >
+  <p>&nbsp;</p>
+<center>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td colspan="4" valign="absmiddle"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font><strong><font size="2">&nbsp;Maintenance / Recherche
+        </font></strong></strong></font>
+        <select name="natures" onChange="changeNature()">
+                <option value="A" $!nature.getSelectedAttribute("A", $!req.getParameter("odnt_type"))>Activit&eacute; lot
+                <option value="B" $!nature.getSelectedAttribute("B", $!req.getParameter("odnt_type"))>Bien lou&eacute;
+                <option value="E" $!nature.getSelectedAttribute("E", $!req.getParameter("odnt_type"))>Etat g&eacute;n&eacute;ral
+                <option value="V" $!nature.getSelectedAttribute("V", $!req.getParameter("odnt_type"))>Nature intervention
+                <option value="U" $!nature.getSelectedAttribute("U", $!req.getParameter("odnt_type"))>Nature propriete
+                <option value="M" $!nature.getSelectedAttribute("M", $!req.getParameter("odnt_type"))>Remédiabilité
+                <option value="Q" $!nature.getSelectedAttribute("Q", $!req.getParameter("odnt_type"))>Quartier
+                <option value="D" $!nature.getSelectedAttribute("D", $!req.getParameter("odnt_type"))>Type d&eacute;clarant
+                <option value="T" $!nature.getSelectedAttribute("T", $!req.getParameter("odnt_type"))>Type de propriété
+                <option value="L" $!nature.getSelectedAttribute("L", $!req.getParameter("odnt_type"))>Type lot
+                <option value="S" $!nature.getSelectedAttribute("S", $!req.getParameter("odnt_type"))>Type entreprise
+                <option value="P" $!nature.getSelectedAttribute("P", $!req.getParameter("odnt_type"))>Type de proc&eacute;dure
+                <option value="H" $!nature.getSelectedAttribute("H", $!req.getParameter("odnt_type"))>Type relogement
+                <option value="R" $!nature.getSelectedAttribute("R", $!req.getParameter("odnt_type"))>Type traitement
+                <option value="G" $!nature.getSelectedAttribute("G", $!req.getParameter("odnt_type"))>Usage
+          </select>
+          &nbsp;/&nbsp;<a href="nat_form?dispatcher=FOR_INSERT&odnt_type=$!pType" style="color:blue;" >Ajout d'une option</a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" align="center" > <p>
+        <font face="Times New Roman" size="4" color="#800000">
+             #if($null)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted)
+                 #if($deleted < $toDelete)
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                    <br>
+                    #set($toRem = $toDelete - $deleted)
+                    $toRem enregistrement(s) gard&eacute;s pour maintenir l'integrit&eacute; r&eacute;f&eacute;rentielle.
+                 #else
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                 #end
+            #end
+        </font>
+      </td>
+    </tr>
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+<table width="90%" border="1" cellspacing="0" cellpadding="0">
+#if($pageableResults.getQueryCount() > 0 )
+  <tr>
+    <td width="50" bgcolor="#FFFFFF"> <div align="right">&nbsp;</div></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Defaut</font></strong></td>
+  </tr>
+    <tr>
+      <td><div align="right"></div></td>
+      <td><div align="right"></div></td>
+      <td><div align="center"></div></td>
+      <td><div align="center"></div></td>
+    </tr>
+    #set($indexTo = $pageableResults.getIndexTo() + 1)
+    #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+    #set($counter = $indexFrom)
+    #foreach($item in $pageableResults.getResults())
+      <tr>
+          <td width="2%" align="center" nowrap>&nbsp;
+            #if(!$pDispatcher.equalsIgnoreCase("CHOOSE"))
+              <input name="odnt_id" type="checkbox" value="$!item.odnt_id">
+            #end
+            </td>
+        <td align="right" width="8%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;</font></td>
+        <td align="center" width="90%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+         #if($req.getParameter('dispatcher').equalsIgnoreCase('CHOOSE'))
+         <!--
+              <a href="#" onClick="with(window.opener.document.objectForm){
+                odim_rue.value='$!item.odrue_id';
+                ruenom.value=''+unescape('$!item.encodeISO($!item.odrue_type)')+' '+unescape('$!item.encodeISO($!item.odrue_liaison)')+' '+unescape('$!item.encodeISO($!item.odrue_nom)');
+                };window.close();return false;" style="color:blue;">
+                $!item.odrue_nom
+                </a>
+         -->
+         #else
+            <a href="nat_form?dispatcher=FOR_UPDATE&odnt_type=$!pType&odnt_id=$!item.odnt_id" style="color:blue;" >
+               $!item.odnt_nom
+            </a>
+         #end
+        </font></td>
+          <td align="center" width="2%" nowrap background ="images/fond_liste.gif">
+              <input name="odnt_id_defaut" type="radio" value="$!item.odnt_id" $!nature.getCheckedAttribute($nature.odnt_id.toString(), $item.odnt_id.toString()) onClick="document.rechercheForm.dispatcher.value='SET_DEFAULT';document.rechercheForm.submit();">
+
+            </td>
+      </tr>
+      #set($counter = $counter + 1)
+    #end
+</table>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" height="20" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"></div></td>
+      <td>&nbsp;</td>
+      <td colspan="2">
+        #if(!$pDispatcher.equalsIgnoreCase("CHOOSE"))
+            <a href="#" onClick="document.rechercheForm.dispatcher.value='DELETE';document.rechercheForm.submit();">
+              <img src="images/supprimer.gif" width="130" height="17" border="0" ></a>
+          <a href="intro"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        #else
+          <a href="javascript:window.close();"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        #end
+       </td>
+    </tr>
+</table>
+<br><br>
+          <table width="90%" cellspacing="3" cellpadding="0" border="0"><tr >
+          <td width="50" valign="top"> <div align="right"></div></td>
+          <td width="50%" nowrap>
+           &nbsp;&nbsp;$pageableResults.getQueryCount() réponse(s)
+          </td>
+          #if($query_string != '')
+            <td valign="middle" nowrap>
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+          #end
+          #set($pagesList = $pageableResults.getHandlers(5))
+             <td valign="middle">
+              <a href="#" onClick="document.rechercheForm.offset.value='FIRST';document.rechercheForm.submit();"><img src="images/fleche_g_02.gif" border="0" ></a>
+             </td>
+          #if($pageableResults.getCurrentPage() > 0)
+            <td valign="middle">
+             <a href="#" onClick="document.rechercheForm.offset.value=-1;document.rechercheForm.submit();"><img src="images/fleche_g_01.gif" border="0"></a>
+            </td>
+          #end
+          #foreach($page in $pagesList)
+            #set($shownPage = $page + 1)
+            #set($offsetValue = $page - $pageableResults.getCurrentPage())
+            #if($offsetValue == 0)
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+            #else
+              <td>
+              <a href="#" onClick="document.rechercheForm.offset.value=$offsetValue;document.rechercheForm.submit();" style="color:blue;"> $shownPage</a>
+              </td>
+            #end
+          #end
+          #if($pageableResults.getCurrentPage() < $pageableResults.getPagesCount() - 1)
+          <td>
+          <a href="#" onClick="document.rechercheForm.offset.value=1;document.rechercheForm.submit();" ><img src="images/fleche_d_01.gif" border="0" ></a>
+          </td>
+          #end
+             <td>
+              <a href="#" onClick="document.rechercheForm.offset.value='LAST';document.rechercheForm.submit();"><img src="images/fleche_d_02.gif" border="0" ></a>
+             </td>
+             <td width="50%" align="right" nowrap>
+              #set($crtPage = $pageableResults.getCurrentPage() + 1)
+               Page  $crtPage / $pageableResults.getPagesCount()
+             </td>
+          </tr></table>
+ #else
+ </table>
+  <center>
+  <font color="#800000"><b>
+  Aucune donnée ne correspond à ce critère.
+  </b></font>
+  <br><br>
+          <table cellspacing="3" cellpadding="0" border="0"><tr >
+          #if($query_string != '')
+            <td valign="middle">
+                <font color="#000080">Critère : $!query_string</font>
+            </td>
+            <td width="50">&nbsp;</td>
+                <td valign="middle">
+                <input name="req_page" size=2 value="$!shownPage">
+                </td>
+                <td>
+                  <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                </td>
+          #end
+          </tr></table>
+ #end
+</form>
+<p>&nbsp;</p>
+</center>
+<!--
+$pageableResults.listCommand
+<br>
+$pageableResults.countCommand
+<!--
+$hibernateError
+-->
+</body>
+</html>

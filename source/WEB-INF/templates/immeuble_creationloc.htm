@@ -1,0 +1,312 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();
+ }
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pChooser = $req.getParameter("chooser"))
+#if(!$pChooser || $pChooser.equals(""))
+  #parse("menu.htm")
+#end
+#set($pForObject = $req.getParameter("for_object"))
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="loc_form" onSubmit="" >
+<input type="hidden" name="odloc_id" value="$!locataire.odloc_id">
+<input type="hidden" name="odlot_locataire" value="$!locataire.odloc_id" >
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+<input type="hidden" name="chooser" value="$!pChooser" >
+<input type="hidden" name="for_object" value="$!pForObject" >
+<input type="hidden" name="odim_id" value="$!req.getParameter('odim_id')" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" bg-color="red" >
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($immeuble)
+          <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!immeuble.odim_id" style="color:blue;" >$!immeuble.odim_nom</a>
+        #end
+          /
+        #if($!actionparam.endsWith("UPDATE"))
+           Modification locataire
+        #else
+          Cr&eacute;ation locataire
+        #end
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top" colspan="2">&nbsp;</td>
+      <td valign="top"  >
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>LOCATAIRE <font color="#800000">$!locataire.odloc_civil $!locataire.odloc_pren $!locataire.odloc_nom</font>
+         #if($!locataire.odloc_lots.size() > 0)
+            / <a href="lot_list?for_object=locataire&odlot_locataire=$!locataire.odloc_id" style="color:blue;" >Voir le lots</a>
+         #end
+      #end
+      <br><br>
+      </td>
+    </tr>
+</table>
+</center>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($locataire.hasErrors())
+                  Impossible de valider : Il y a $!locataire.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($locataire.hasErrors())
+                  Impossible de valider : Il y a $!locataire.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Civilit&eacute;
+        </font></strong></em></td>
+       <td>&nbsp;
+        <select size="1" name="odloc_civil">
+           <option value="M." $!locataire.getSelectedAttribute("M.", $!locataire.odloc_civil) >M.</option>
+           <option value="Mme" $!locataire.getSelectedAttribute("Mme", $!locataire.odloc_civil)>Mme</option>
+           <option value="Mlle" $!locataire.getSelectedAttribute("Mlle", $!locataire.odloc_civil)>Mlle</option>
+        </select>
+               <!-- validate error message -->
+               #if ($locataire.hasError("odloc_civil", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+       </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Pr&eacute;nom
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_pren" type="text" value="$!locataire.getAltValue($locataire.odloc_pren, 'odloc_pren')" size="40" maxlength="40">
+               #if ($locataire.hasError("odloc_pren", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le prénom est obligatoire.</font>
+               #end
+               #if ($locataire.hasError("odloc_pren", "MAX_LENGTH"))
+                 <font color="red">Le prénom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($locataire.hasError("odloc_pren", "MIN_LENGTH"))
+                 <font color="red">Le prénom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+        *</font></strong></em></td>
+      <td>&nbsp; <input name="odloc_nom" type="text" value="$!locataire.getAltValue($locataire.odloc_nom, 'odloc_nom')" size="40" maxlength="40">
+               #if ($locataire.hasError("odloc_nom", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le nom est obligatoire.</font>
+               #end
+               #if ($locataire.hasError("odloc_nom", "MAX_LENGTH"))
+                 <font color="red">Le nom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($locataire.hasError("odloc_nom", "MIN_LENGTH"))
+                 <font color="red">Le nom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+  <tr>
+      <td valign="top"> <div align="right" ><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Bien
+       lou&eacute; </font></strong></em></td>
+      <td>&nbsp;&nbsp;<select name="odloc_bienloue" >
+          <option value="">
+          #foreach($item in $!locataire.getBiensLoues())
+             <option value="$item.odnt_id" $locataire.getSelectedAttribute($item.getOdnt_id().toString(), $!locataire.getOdloc_bienloue().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;N&deg;
+        de rue </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_num" type="text" value="$!locataire.getAltValue($locataire.odloc_num, 'odloc_num')" size="8" maxlength="8">
+           <!-- validate error message -->
+           #if ($locataire.hasError("odloc_num", "MAX_LENGTH"))
+             <font color="red">Le n&deg; de rue est trop long. Maximum 8 caractères.</font>
+           #end
+
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse1
+        *</font></strong></em></td>
+      <td>&nbsp; <input name="odloc_adr1" type="text" value="$!locataire.getAltValue($locataire.odloc_adr1, 'odloc_adr1')" size="40" maxlength="80">
+           <!-- validate error message -->
+           #if ($locataire.hasError("odloc_adr1", "IS_BLANK_OR_NULL"))
+             <font color="red">Ce champ est obligatoire.</font><br/>
+           #end
+           #if ($locataire.hasError("odloc_adr1", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 80 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse2
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_adr2" type="text"  value="$!locataire.getAltValue($locataire.odloc_adr2, 'odloc_adr2')" size="40" maxlength="80">
+           <!-- validate error message -->
+           #if ($locataire.hasError("odloc_adr2", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 80 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        postal </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_cpost" type="text" value="$!locataire.getAltValue($!locataire.zeroFillToStart($locataire.odloc_cpost.toString(), 5), 'odloc_cpost')" size="5" maxlength="5">
+           #if ($locataire.hasError("odloc_cpost", "IS_FRENCH_CODEPOSTE"))
+             <font color="red">La valeur introduite n'est pas celle d'un code postal.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ville
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_ville" type="text"  value="$!locataire.getAltValue($locataire.odloc_ville, 'odloc_ville')" size="40" maxlength="60">
+          #if ($locataire.hasError("odloc_ville", "MAX_LENGTH"))
+             <font color="red">La valeur pour la ville est trop longue. Maximum 60 caractères.</font>
+          #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaires
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_com" type="text"   value="$!locataire.getAltValue($locataire.odloc_com, 'odloc_com')" size="40" maxlength="80">
+            #if ($locataire.hasError("odloc_com", "MAX_LENGTH"))
+             <font color="red">La valeur pour ce champ est trop longue. Maximum 80 caractères.</font>
+            #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;T&eacute;l
+         </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_telfix" type="text" value="$!locataire.getAltValue($locataire.odloc_telfix, 'odloc_telfix')" size="20" maxlength="20">
+              #if ($locataire.hasError("odloc_telfix", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($locataire.hasError("odloc_telfix", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de téléphone.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;T&eacute;l-port
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_telport" type="text"   value="$!locataire.getAltValue($locataire.odloc_telport, 'odloc_telport')" size="20" maxlength="20">
+            #if ($locataire.hasError("odloc_telport", "MAX_LENGTH"))
+               <font color="red">Le numéro de mobile est trop long. Maximum 20 caractères.</font>
+             #end
+             #if ($locataire.hasError("odloc_telport", "IS_FRENCH_MOBILE"))
+               <font color="red">La valeur introduite n'est pas celle d'un numéro de mobile.</font>
+             #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mail
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odloc_mail" type="text"   value="$!locataire.getAltValue($locataire.odloc_mail, 'odloc_mail')" size="40" maxlength="60">
+              #if ($locataire.hasError("odloc_mail", "IS_EMAIL"))
+                 <font color="red">La valeur introduite n'est pas celle d'une adresse de mail.</font>
+               #end
+              #if ($locataire.hasError("odloc_mail", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="deleteObject()"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="loc_list?chooser=$!pChooser" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();
+ }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="nat_form" onSubmit="document.objectForm.dispatcher.value='$!dispatcher';document.objectForm.submit();" >
+<input type="hidden" name="odnt_id" value="$!nature.odnt_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Maintenance</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          /
+        #if($!actionparam.endsWith("UPDATE"))
+           Modification option
+        #else
+           Cr&eacute;ation option
+        #end
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>OPTION <font color="#800000">$!nature.odnt_nom</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.<br><br>
+            #else
+              #if($nature.hasErrors())
+                  Impossible de valider : Il y a $!nature.getErrorsCount() erreur(s).<br><br>
+              #else
+                $!hibernateError<br><br>
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.<br><br>
+            #else
+              #if($nature.hasErrors())
+                  Impossible de valider : Il y a $!nature.getErrorsCount() erreur(s).<br><br>
+              #else
+                $!hibernateError<br><br>
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+</table>
+</center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type *
+        </font></strong></em></td>
+      <td>&nbsp;
+      #if($dispatcher.equals("UPDATE"))
+          <input type="hidden" name="odnt_type" value="$!nature.getOdnt_type()">
+          #if($nature.odnt_type.equals("V"))
+             Nature intervention
+          #elseif($nature.odnt_type.equals("U"))
+             NaturePropriete
+          #elseif($nature.odnt_type.equals("G"))
+             Usage
+          #elseif($nature.odnt_type.equals("E"))
+             Etat g&eacute;n&eacute;ral
+          #elseif($nature.odnt_type.equals("T"))
+             Type immeuble
+          #elseif($nature.odnt_type.equals("L"))
+             Type lot
+          #elseif($nature.odnt_type.equals("S"))
+             Type entreprise
+          #elseif($nature.odnt_type.equals("P"))
+             Type de proc&eacute;dure
+          #elseif($nature.odnt_type.equals("B"))
+             Bien lou&eacute;
+          #elseif($nature.odnt_type.equals("Q"))
+             Quartier
+          #elseif($nature.odnt_type.equals("D"))
+             Type d&eacute;clarant
+          #elseif($nature.odnt_type.equals("H"))
+             Type relogement
+          #elseif($nature.odnt_type.equals("A"))
+             Activit&eacute; lot
+          #elseif($nature.odnt_type.equals("M"))
+             Remédiabilité
+          #end
+      #else
+        <select name="odnt_type" >
+                <option value="A" $nature.getSelectedAttribute("A", $!nature.getOdnt_type())>Activit&eacute; lot
+                <option value="B" $nature.getSelectedAttribute("B", $!nature.getOdnt_type())>Bien lou&eacute;
+                <option value="E" $nature.getSelectedAttribute("E", $!nature.getOdnt_type())>Etat g&eacute;n&eacute;ral
+                <option value="V" $nature.getSelectedAttribute("V", $!nature.getOdnt_type())>Nature intervention
+                <option value="U" $nature.getSelectedAttribute("U", $!nature.getOdnt_type())>Nature propriete
+                <option value="M" $nature.getSelectedAttribute("M", $!nature.getOdnt_type())>Remédiabilité
+                <option value="Q" $nature.getSelectedAttribute("Q", $!nature.getOdnt_type())>Quartier
+                <option value="D" $nature.getSelectedAttribute("D", $!nature.getOdnt_type())>Type d&eacute;clarant
+                <option value="T" $nature.getSelectedAttribute("T", $!nature.getOdnt_type())>Type de propriété
+                <option value="L" $nature.getSelectedAttribute("L", $!nature.getOdnt_type())>Type lot
+                <option value="S" $nature.getSelectedAttribute("S", $!nature.getOdnt_type())>Type entreprise
+                <option value="P" $nature.getSelectedAttribute("P", $!nature.getOdnt_type())>Type de proc&eacute;dure
+                <option value="H" $nature.getSelectedAttribute("H", $!nature.getOdnt_type())>Type relogement
+                <option value="R" $nature.getSelectedAttribute("R", $!nature.getOdnt_type())>Type traitement
+                <option value="G" $nature.getSelectedAttribute("G", $!nature.getOdnt_type())>Usage
+          </select>
+      #end
+             <!-- validate error message -->
+               #if($nature.hasError("odnt_type", "IS_BLANK_OR_NULL"))
+                 <font color="red">Ce champ est obligatoire.</font>
+               #end
+               #if ($nature.hasError("odnt_type", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Libell&eacute;
+         *</font></strong></em></td>
+      <td>&nbsp; <input name="odnt_nom" type="text" value="$!nature.getAltValue($nature.odnt_nom, 'odnt_nom')" size="40" maxlength="255">
+            <!-- error message -->
+                 #if ($nature.hasError("odnt_nom", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire.</font>
+                 #end
+                 #if ($nature.hasError("odnt_nom", "ALREADY_EXISTS"))
+                       <font color="red">Ce code existe déjà.</font>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="deleteObject()"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="nat_list?odnt_type=$!nature.odnt_type" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+<!--
+$nature.getFirstFieldWithError()
+$nature.getFirstFieldError()
+-->
+</body>
+</html>

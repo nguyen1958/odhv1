@@ -1,0 +1,252 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="trav_form" >
+<input type="hidden" name="odtr_id" value="$!travail.odtr_id">
+<input type="hidden" name="odimr_id" value="$!req.getParameter('odimr_id')" >
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+  <p>&nbsp;</p>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong>
+         <font size="2">&nbsp;&nbsp;<img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Immeuble
+           <a href="im_form?dispatcher=FOR_UPDATE2&odim_id=$!procedure_crt.odimr_immeuble.odim_id" style="color:blue;" >$!procedure_crt.odimr_immeuble.odim_nom</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&odim_id=$!procedure_crt.odimr_immeuble.odim_id" style="color:blue;">Globale</a>
+           &nbsp;/&nbsp;Procedure&nbsp;<a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!procedure_crt.odimr_id" style="color:blue;" >$!procedure_crt.odimr_id</a> &nbsp;/&nbsp;
+          </font></strong></font>
+          <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          #if($actionparam.endsWith("UPDATE"))
+            Modification travail
+            &nbsp;/ <a href="trav_form?dispatcher=FOR_INSERT&odimr_id=$!procedure_crt.odimr_id" style="color:blue;" >Ajout d'un travail</a>
+          #else
+            Ajout d'un travail
+          #end
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>TRAVAIL <font color="#800000">$!travail.odtr_id</font>
+      #end
+      </td>
+    </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($lot.hasErrors())
+                  Impossible de valider : Il y a $!travail.getErrorsCount() erreur(s)."
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($travail.hasErrors())
+                  Impossible de valider : Il y a $!travail.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Description *
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odtr_desc" type="text" value="$!travail.getAltValue($travail.odtr_desc, 'odtr_desc')" size="40" maxlength="160">
+                 #if ($travail.hasError("odtr_desc", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 160 caractères.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Suiveur
+        </font></strong></em></td>
+     <td>&nbsp; <select name="odtr_suiveur" >
+          <option value="">
+          #foreach($item in $!travail.getAll_suiveurs())
+             <option value="$item.odsu_id" $!travail.getSelectedAttribute($item.getOdsu_id().toString(), $!travail.getOdtr_suiveur().getOdsu_id().toString())>$!item.odsu_prenom $!item.odsu_nom
+          #end
+        </select>
+               #if ($travail.hasError("odtr_suiveur", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($travail.hasError("odtr_suiveur", "NOT_EXISTS"))
+                   <font color="red">Le type choisi n'existe plus. </font><br/>
+                #end
+        </td>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Entreprise
+        *</font></strong></em></td>
+      <td>&nbsp;
+        #set($entreprise = $!travail.odtr_entrep)
+        <input name="odtr_entr" type="text" value="$!travail.getAltValue($!entreprise.oden_nom, '')" size="40" maxlength="60" readonly>
+        <input type="hidden" name="odtr_entrep" value="$!travail.odtr_entrep.oden_id">
+        &nbsp;<a href = "#" onClick ="objectWin = window.open('entrep_list?chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" ><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+                #if ($travail.hasError("odtr_entrep", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire. </font><br/>
+                #end
+                #if ($travail.hasError("odtr_entrep", "NOT_EXISTS"))
+                   <font color="red">L'entreprise choisi n'existe plus. </font><br/>
+                #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>A satisfait avant le
+          </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odtr_datesatisf" value="$!travail.getAltValue($!travail.getDateAsString($!travail.odtr_datesatisf),'odtr_datesatisf')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($travail.hasError("odtr_datesatisf", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Verifi&eacute; le
+          </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odtr_dateverif" value="$!travail.getAltValue($!travail.getDateAsString($!travail.odtr_dateverif),'odtr_dateverif')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($travail.hasError("odtr_dateverif", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Termin&eacute; le
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odtr_datefin" value="$!travail.getAltValue($!travail.getDateAsString($!travail.odtr_datefin),'odtr_datefin')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($travail.hasError("odtr_datefin", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top" ><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+       <td valign="top" width="210" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire
+              </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+      <td width="90%" >&nbsp; <textarea name="odtr_comment" cols="50" rows="5" maxlength="250" >$!travail.getAltValue($travail.odtr_comment, 'odtr_comment')</textarea>
+              #if ($travail.hasError("odtr_comment", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 500 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Num facture
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odtr_numfact" type="text" value="$!travail.getAltValue($travail.odtr_numfact, 'odtr_numfact')" size="15" maxlength="15">
+               #if ($travail.hasError("odtr_numfact", "MAX_LENGTH"))
+                  <font color="red">Le texte est trop long. Maximum 15 caractères.</font><br/>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Montant
+        </font></strong></em></td>
+      <td>&nbsp;&nbsp;<input name="odtr_montant" type="text" value="$!travail.getAltValue($travail.odtr_montant, 'odtr_montant')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif"></font>
+                 #if ($travail.hasError("odtr_montant", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($travail.hasError("odtr_montant", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($travail.hasError("odtr_montant", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 000000000,00 et 999999999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="trav_list?odimr_id=$!req.getParameter('odimr_id')" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+</body>
+</html>

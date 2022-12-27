@@ -1,0 +1,343 @@
+#if($req.getSession().getAttribute("Listing.pojo"))
+      #if($pageableResults.getQueryCount() > 0 )
+     <table width="100%" cellspacing="0" celpadding="0" border="0">
+        <tr>
+          <td width="100%"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/moteur01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;
+          Résultat de votre recherche: $!pageableResults.getQueryCount() réponse(s)
+          </font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+           </font></strong></div></td>
+        </tr>
+      </table>
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" >
+            #if($listing.list_type == 0)
+                <tr>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Syndic</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Usage</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type de propriet&eacute;</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">N&deg; de rue</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Rue</font></strong></td>
+                  #if($req.getParameter("printer").equals("RESULTS"))
+
+                  #else
+                    <!--
+                    <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Vision globale</font></strong></td>
+                    -->
+                  #end
+                </tr>
+                  #set($indexTo = $pageableResults.getIndexTo() + 1)
+                  #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+                  #set($counter = $indexFrom)
+                  #foreach($item in $pageableResults.getResults())
+                    #set($immeuble = $item.odet_immeuble)
+                    #set($rue = $immeuble.odim_rue)
+                    <tr>
+                      <td align="right" height="20" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                      <td width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!immeuble.odim_syndic.odsyn_code
+                        #if($!immeuble.getOdim_syndic().odsyn_raison != "")
+                        - $!immeuble.getOdim_syndic().getAltValue($!immeuble.getOdim_syndic().odsyn_raison, '')
+                        #end
+                        &nbsp;
+                      </font></td>
+                      <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                      #if($req.getParameter("printer").equals("RESULTS"))
+                         $!immeuble.notNullName
+                      #else
+                         $!immeuble.notNullName
+                         <!--
+                          <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!immeuble.odim_id" style="color:blue;" >
+                            $!immeuble.notNullName
+                          </a>
+                          -->
+                      #end
+                          </font></td>
+                      <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!immeuble.odim_groupe.odnt_nom
+                      </font></td>
+                      <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!immeuble.odim_type.odnt_nom
+                      </font></td>
+                      <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!immeuble.odim_num&nbsp;</font></td>
+                      <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!rue.odrue_type $!rue.odrue_liaison $!rue.odrue_nom&nbsp;</font></td>
+                  #if($req.getParameter("printer").equals("RESULTS"))
+
+                  #else
+                      <!--
+                      <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                          <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!immeuble.odim_id" style="color:blue;" >
+                            voir
+                          </a>
+                      </font></td>
+                      -->
+                  #end
+                    </tr>
+                    #set($counter = $counter + 1)
+                  #end
+             #elseif($listing.list_type == 1)
+                <tr>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Syndic</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Immeuble</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Lot</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Proprietaire</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Locataire</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Termite</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Plomb</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Amiante</font></strong></td>
+                  #if($req.getParameter("printer").equals("RESULTS"))
+
+                  #else
+                     <!--
+                      <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Vision globale</font></strong></td>
+                      -->
+                  #end
+                </tr>
+                  #set($pattern = '000.00')
+                  #set($indexTo = $pageableResults.getIndexTo() + 1)
+                  #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+                  #set($counter = $indexFrom)
+                  #foreach($item in $pageableResults.getResults())
+                    #set($seuil = $item.odet_seuil)
+                    #set($colorForStylePb = "black")
+                    #set($colorForStyleAm = "black")
+                    #if($item.odet_plomb && $seuil.odet_plomb && $item.odet_plomb.compareTo($seuil.odet_plomb) > 0)
+                      #set($colorForStylePb = "red")
+                    #end
+                    #if($item.odet_amiante && $seuil.odet_amiante && $item.odet_amiante.compareTo($seuil.odet_amiante) > 0)
+                      #set($colorForStyleAm = "red")
+                    #end
+                    <tr>
+                      <td align="right" height="20" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                      <td align="center" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!item.odet_immeuble.odim_syndic.odsyn_code&nbsp;
+                      </font></td>
+                      <td align="left" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                      #if($req.getParameter("printer").equals("RESULTS"))
+                         $!item.odet_immeuble.notNullName
+                      #else
+                      <!--
+                          <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!item.odet_immeuble.odim_id" style="color:blue;" >
+                            $!item.odet_immeuble.notNullName</a>
+                            -->
+                         $!item.odet_immeuble.notNullName
+                      #end
+                      &nbsp;</font></td>
+                      <td align="center" width="8%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                      #if($req.getParameter("printer").equals("RESULTS"))
+                         <div>
+                         #if($item.odet_lot)
+                         <table cellspacing=0 cellpadding=0 border=1 width="100%" >
+                           <tr>
+                             <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.odlot_codelot.odlot_codebat</font></td>
+                             <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeesc.toString(),2)</font></td>
+                             <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeniv.toString(), 2)</font></td>
+                             <td width="35%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeimm.toString(), 5)</font></td>
+                           </tr>
+                         </table>
+                         #end
+                         </div>
+                      #else
+                         <!--
+                          <a href="lot_form?dispatcher=FOR_UPDATE&for_object=immeuble&odim_id=$!item.odet_lot.odlot_immeuble.odim_id&odlot_id=$!item.odet_lot.odlot_id" >
+                          -->
+                             <div>
+                        #if($item.odet_lot)
+                             <table cellspacing=0 cellpadding=0 border=1 width="100%" >
+                               <tr>
+                                 <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.odlot_codelot.odlot_codebat</font></td>
+                                 <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeesc.toString(),2)</font></td>
+                                 <td width="18%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeniv.toString(), 2)</font></td>
+                                 <td width="35%" align="right" ><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;$!item.odet_lot.zeroFillToStart($!item.odet_lot.odlot_codelot.odlot_codeimm.toString(), 5)</font></td>
+                               </tr>
+                             </table>
+                        #end
+                             </div>
+                          <!--  </a> -->
+                      #end
+                      </font></td>
+                      <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!item.odet_lot.odlot_proprietaire.odpro_pren  $!item.odet_lot.odlot_proprietaire.odpro_nom&nbsp;
+                      </font></td>
+                      <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.odet_lot.odlot_locataire.odloc_pren  $!item.odet_lot.odlot_locataire.odloc_nom&nbsp;</font></td>
+                      <td nowrap align="center" width="7%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                          #if($item.odet_termite)
+                            Oui
+                          #else
+                            Non
+                          #end
+                      </font></td>
+                      <td align="center" width="7%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" style="color:$!colorForStylePb;">$item.getDoubleAsString($!item.odet_plomb, $!pattern)</font></td>
+                      <td align="center" width="7%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" style="color:$!colorForStyleAm;">$item.getDoubleAsString($item.odet_amiante, $!pattern)</font></td>
+                  #if($req.getParameter("printer").equals("RESULTS"))
+
+                  #else
+                  <!--
+                      <td align="center" width="16%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                          <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!item.odet_immeuble.odim_id" style="color:blue;" >
+                            voir
+                          </a>
+                      </font></td>
+                      -->
+                  #end
+                    </tr>
+                    #set($counter = $counter + 1)
+                  #end
+             #elseif($listing.list_type == 2)
+                <tr>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Syndic</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Immeuble</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Procedure</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Suiveur</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type de proc&eacute;dure</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date fin</font></strong></td>
+                </tr>
+                  #set($indexTo = $pageableResults.getIndexTo() + 1)
+                  #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+                  #set($counter = $indexFrom)
+                  #foreach($item in $pageableResults.getResults())
+                    <tr>
+                      <td align="right" height="20" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                      <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!item.odimr_immeuble.odim_syndic.odsyn_code&nbsp;
+                      </font></td>
+                      <td align="left" width="21%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                      #if($req.getParameter("printer").equals("RESULTS"))
+                          $!item.odimr_immeuble.notNullName
+                      #else
+                        <!--
+                          <a href="im_form?dispatcher=SHOW&odim_id=$!item.odimr_immeuble.odim_id" style="color:blue;" >
+                            $!item.odimr_immeuble.notNullName</a>
+                            -->
+                          $!item.odimr_immeuble.notNullName
+                      #end
+                      &nbsp;</font></td>
+                      <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                      #if($req.getParameter("printer").equals("RESULTS"))
+                          $!item.odimr_id
+                      #else
+                        <!--
+                        <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!item.odimr_id" style="color:blue;" >
+                        -->
+                          $!item.odimr_id
+                        <!--  </a>  -->
+                      #end
+                      </font></td>
+                      <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                        $!item.odimr_suiveur.odsu_pren  $!item.odimr_suiveur.odsu_nom
+                      </font></td>
+                      <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.odimr_peril.odnt_nom</font></td>
+                      <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.getDateAsString($!item.odimr_date)&nbsp;</font></td>
+                      <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.getDateAsString($!item.odimr_datefin)&nbsp;</font></td>
+                    </tr>
+                    #set($counter = $counter + 1)
+                  #end
+            #elseif($listing.list_type == 3)
+                #set($pattern = '##0.00')
+                <tr>
+                  <td align="right" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Immeuble</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Adresse</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Proc.</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type de proc&eacute;dure</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nature intervention</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date fin</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nbr.</font></strong></td>
+                  <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">C&ocirc;ut</font></strong></td>
+                </tr>
+                  #set($indexTo = $pageableResults.getIndexTo() + 1)
+                  #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+                  #set($counter = $indexFrom)
+                  #foreach($iteml in $pageableResults.getResults())
+                    #set($crtList = $!listing.asList($iteml))
+                    #set($item = $crtList.get(0))
+                    #set($nbre = $crtList.get(1))
+                    #set($cout = $crtList.get(2))
+                    #set($rue = $item.odrp_procedure.odimr_immeuble.odim_rue)
+                    <tr>
+                      <td align="right" height="20" style="width:5%;" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+                      <td align="left" style="width:15%;" width="15%"  background="images/fond_liste.gif" nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+                          $!item.odrp_procedure.odimr_immeuble.notNullName
+                      &nbsp;</font></td>
+                      <td align="center" style="width:20%;" width="20%"  background="images/fond_liste.gif" nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                      &nbsp;$!item.getAltValue($!item.odrp_procedure.odimr_immeuble.odim_num,'') $!item.getAltValue($!rue.odrue_type,'') $!item.getAltValue($!rue.odrue_liaison,'') $!item.getAltValue($!rue.odrue_nom,'')
+                      </font></td>
+                      <td align="center" style="width:10%;" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                          $!item.odrp_procedure.odimr_id
+                      </font></td>
+                      <td align="center" style="width:10%;" width="10%"  background="images/fond_liste.gif" nowrap><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.odrp_procedure.odimr_peril.odnt_nom&nbsp;</font></td>
+                      <td align="center" style="width:10%;" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                       #foreach($itemn in $!item.odrp_procedure.odimr_natinterv)
+                           $!itemn.odnt_nom
+                        #end
+                      &nbsp;</font></td>
+                      <td align="center" style="width:10%;" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.getDateAsString($!item.odrp_procedure.odimr_date)&nbsp;</font></td>
+                      <td align="center" style="width:10%;" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.getDateAsString($!item.odrp_procedure.odimr_datefin)&nbsp;</font></td>
+                      <td align="right" style="width:5%;" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!nbre&nbsp;</font></td>
+                      <td align="right" style="width:5%;" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!listing.getDoubleAsString($!cout, $pattern)&nbsp;</font></td>
+                    </tr>
+                    #set($counter = $counter + 1)
+                  #end
+             #end
+      </table>
+      <br><br>
+           #if(!$req.getParameter("printer") || $req.getParameter("printer").equals("") || $req.getParameter("printer").endsWith("XLS"))
+                <table width="90%" cellspacing="3" cellpadding="0" border="0"><tr >
+                <td width="50" valign="top"> <div align="right"></div></td>
+                <td width="50%" nowrap>
+                 &nbsp;
+                </td>
+                #set($pagesList = $pageableResults.getHandlers(5))
+                   <td valign="middle">
+                    <a href="#" onClick="document.rechercheForm.offset.value='FIRST';document.rechercheForm.submit();"><img src="images/fleche_g_02.gif" border="0" ></a>
+                   </td>
+                #if($pageableResults.getCurrentPage() > 0)
+                  <td valign="middle">
+                   <a href="#" onClick="document.rechercheForm.offset.value=-1;document.rechercheForm.submit();"><img src="images/fleche_g_01.gif" border="0"></a>
+                  </td>
+                #end
+                #foreach($page in $pagesList)
+                  #set($shownPage = $page + 1)
+                  #set($offsetValue = $page - $pageableResults.getCurrentPage())
+                  #if($offsetValue == 0)
+                      <td valign="middle">
+                      <input name="req_page" size=2 value="$!shownPage">
+                      </td>
+                      <td>
+                        <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                      </td>
+                  #else
+                    <td>
+                    <a href="#" onClick="document.rechercheForm.offset.value=$offsetValue;document.rechercheForm.submit();" style="color:blue;"> $shownPage</a>
+                    </td>
+                  #end
+                #end
+                #if($pageableResults.getCurrentPage() < $pageableResults.getPagesCount() - 1)
+                <td>
+                <a href="#" onClick="document.rechercheForm.offset.value=1;document.rechercheForm.submit();" ><img src="images/fleche_d_01.gif" border="0" ></a>
+                </td>
+                #end
+                   <td>
+                    <a href="#" onClick="document.rechercheForm.offset.value='LAST';document.rechercheForm.submit();"><img src="images/fleche_d_02.gif" border="0" ></a>
+                   </td>
+                   <td width="50%" align="right" nowrap>
+                    #set($crtPage = $pageableResults.getCurrentPage() + 1)
+                     Page  $crtPage / $pageableResults.getPagesCount()
+                   </td>
+                </tr></table>
+           #end
+       #else
+       <br><br>
+        <font color="#800000"><b>
+        <center>
+          #if($pageableResults.getQueryCount() == 0 )
+            Aucune réponse pour ces critères.
+          #end
+        </center>
+        </b></font>
+       #end
+#end

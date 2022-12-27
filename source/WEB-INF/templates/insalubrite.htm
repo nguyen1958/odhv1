@@ -1,0 +1,334 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function changeYear(){
+  document.rechercheForm.code.options.selectedIndex = 0;
+  document.rechercheForm.dispatcher.value='LIST';
+  document.rechercheForm.submit();
+}
+
+function changeCode(){
+if(document.rechercheForm.code.options.selectedIndex > 0)
+    document.rechercheForm.dispatcher.value='FOR_UPDATE';
+document.rechercheForm.submit();
+}
+
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pDispatcher = $req.getParameter("dispatcher"))
+#set($insaltype = $req.getParameter("type"))
+#parse("menu.htm")
+<form name="rechercheForm" method="post" action="insalubrite">
+<input type="hidden" name="dispatcher" value="LIST">
+<input type="hidden" name="type" value="$!req.getParameter('type')" >
+<p>&nbsp;</p>
+<center>
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td colspan="4" valign="absmiddle"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font><strong><font size="2">&nbsp;Maintenance -
+      #if($insaltype == "L")
+         Grille insalubrité lot
+      #else
+         Grille insalubrité immeuble
+      #end
+        </font></strong></strong></font>
+      </td>
+    </tr>
+    <tr><td colspan="4">&nbsp;</td></tr>
+    <tr>
+      <td colspan="4" align="center">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2"><strong>Année&nbsp;</strong></font>
+        <select name="year" onChange="changeYear()" >
+        <option>
+          #foreach($item in $years)
+            <option value="$item" $!insalubrite.getSelectedAttribute($item.toString(), $!req.getParameter("year"))>$!item.toString()
+          #end
+        </select>
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2"><strong>&nbsp;&nbsp;Code&nbsp;</strong></font>
+        <select name="code" onChange="changeCode()" >
+        <option>
+          #foreach($item in $codes)
+            <option value="$item" $!insalubrite.getSelectedAttribute($item.toString(), $!req.getParameter("code"))>$!item.toString()
+          #end
+        </select>
+         &nbsp;/&nbsp;<a href="#" onClick="document.rechercheForm.dispatcher.value='FOR_INSERT';document.rechercheForm.submit()" style="color:blue;" >Ajout d'une option</a>
+        </td>
+    </tr>
+    <tr>
+      <td colspan="4" align="center" > <p>
+        <font face="Times New Roman" size="4" color="#800000">
+             #if($null)
+                L'enregistrement choisi n'est plus disponible.
+             #end
+             #if($deleted)
+                 #if($deleted < $toDelete)
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                    <br>
+                    #set($toRem = $toDelete - $deleted)
+                    $toRem enregistrement(s) gard&eacute;s pour maintenir l'integrit&eacute; r&eacute;f&eacute;rentielle.
+                 #else
+                    $!deleted enregistrement(s) supprim&eacute;(s)
+                 #end
+            #end
+        </font>
+      </td>
+    </tr>
+</table>
+</center>
+</form>
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($!pDispatcher.endsWith('INSERT') || $!pDispatcher.endsWith('UPDATE'))
+<form name="objectForm" method="post" action="insalubrite"  >
+<input type="hidden" name="odins_id" value="$!insalubrite.odins_id">
+<input type="hidden" name="year" value="$!req.getParameter('year')" >
+<input type="hidden" name="code" value="$!req.getParameter('code')" >
+<input type="hidden" name="type" value="$!req.getParameter('type')" >
+#if($actionparam.endsWith('UPDATE'))
+<input type="hidden" name="dispatcher" value="UPDATE" >
+#else
+<input type="hidden" name="dispatcher" value="INSERT" >
+#end
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($insalubrite.hasErrors())
+                  Impossible de valider : Il y a $insalubrite.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($insalubrite.hasErrors())
+                  Impossible de valider : Il y a $insalubrite.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Année* / Code*
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odins_annee" type="text" value="$!insalubrite.getAltValue($insalubrite.odins_annee, 'odins_annee')" size="4" maxlength="4">
+                <select name="odins_code">
+                    #if($insaltype == "L")
+                       #foreach($itemcd in [1..29])
+                        <option value='L$!insalubrite.zeroFillToStart($itemcd.toString(),2)' $insalubrite.getSelectedAttribute($itemcd.toString(), $insalubrite.odins_code.substring(1))>L$!insalubrite.zeroFillToStart($itemcd.toString(),2)
+                       #end
+                    #else
+                       #foreach($itemcd in [1..40])
+                        <option value='B$!insalubrite.zeroFillToStart($itemcd.toString(),2)' $insalubrite.getSelectedAttribute($!insalubrite.zeroFillToStart($itemcd.toString(),2), $insalubrite.odins_code.substring(1))>B$!insalubrite.zeroFillToStart($itemcd.toString(),2)
+                       #end
+                    #end
+                </select>
+               #if ($insalubrite.hasError("odins_annee", "IS_INT"))
+                 <font color="red">Il faut introduire seulement des chiffres.</font>
+               #end
+               #if ($insalubrite.hasError("odins_annee", "MAX_LENGTH"))
+                 <font color="red">Le prénom est trop long. Maximum 4 caractères.</font>
+               #end
+               #if ($insalubrite.hasError("odins_annee", "MIN_LENGTH"))
+                 <font color="red">Le prénom est trop court. Minimum 4 caractères.</font>
+               #end
+                #if ($insalubrite.hasError("odins_code", "ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà une enregistrement avec ce code. </font><br/>
+                #end
+               #if($insalubrite.hasError("odins_annee", "IS_BLANK_OR_NULL"))
+                 <font color="red">L'année est obligatoire.</font>
+               #end
+               #if($insalubrite.hasError("odins_code", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le code est obligatoire.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Libelle
+        *</font></strong></em></td>
+      <td>&nbsp; <input name="odins_libelle" type="text" value="$!insalubrite.getAltValue($insalubrite.odins_libelle, 'odins_libelle')" size="60" maxlength="60">
+               #if($insalubrite.hasError("odins_libelle", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le libelle est obligatoire.</font>
+               #end
+               #if ($insalubrite.hasError("odins_libelle", "MAX_LENGTH"))
+                 <font color="red">Le nom est trop long. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Coefficient  / Maxi / Danger
+        </font></strong></em></td>
+      <td>&nbsp;
+                 <select name="odins_cfc">
+                  #foreach($itemcf in [1..30])
+                     <option value="$itemcf" $insalubrite.getSelectedAttribute($itemcf.toString(), $insalubrite.odins_cfc.toString()) >$itemcf
+                  #end
+                </select>
+                 <select name="odins_maxi">
+                  #foreach($itemmx in [3..50])
+                     <option value="$itemmx" $insalubrite.getSelectedAttribute($itemmx.toString(), $insalubrite.odins_maxi.toString()) >$itemmx
+                  #end
+                </select>
+                 <select name="odins_danger">
+                     <option value="false" $insalubrite.getSelectedAttribute("false", $insalubrite.odins_danger.toString()) >Non
+                     <option value="true" $insalubrite.getSelectedAttribute("true", $insalubrite.odins_danger.toString())>Oui
+                </select>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Critère
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odins_critere" type="text" value="$!insalubrite.getAltValue($insalubrite.odins_critere, 'odins_critere')" size="60" maxlength="60">
+               #if ($insalubrite.hasError("odins_critere", "MAX_LENGTH"))
+                 <font color="red">Le critère est trop long. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" ><table cellspacing="0" cellpadding="0" border="0" ><tr><td height="20">
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Bon
+        </font></strong></em></td>
+       </td></tr></table> </td>
+      <td>&nbsp;
+               <textarea name="odins_bon1" rows="2" cols="45">$!insalubrite.getAltValue($insalubrite.odins_bon1, 'odins_bon1')</textarea>
+               #if ($insalubrite.hasError("odins_bon1", "MAX_LENGTH"))
+                 <font color="red">Ce champ est trop long. Maximum 250 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" ><table cellspacing="0" cellpadding="0" border="0" ><tr><td height="20">
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Médiocre
+        </font></strong></em></td>
+       </td></tr></table> </td>
+      <td>&nbsp;
+               <textarea name="odins_mediocre1" rows="2" cols="45">$!insalubrite.getAltValue($insalubrite.odins_mediocre1, 'odins_mediocre1')</textarea>
+               #if ($insalubrite.hasError("odins_mediocre1", "MAX_LENGTH"))
+                 <font color="red">Ce champ est trop long. Maximum 250 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" ><table cellspacing="0" cellpadding="0" border="0" ><tr><td height="20">
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mauvais
+        </font></strong></em></td>
+       </td></tr></table> </td>
+      <td>&nbsp;
+               <textarea name="odins_mauvais1" rows="2" cols="45">$!insalubrite.getAltValue($insalubrite.odins_mauvais1, 'odins_mauvais1')</textarea>
+               #if ($insalubrite.hasError("odins_mauvais1", "MAX_LENGTH"))
+                 <font color="red">Ce champ est trop long. Maximum 250 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" ><table cellspacing="0" cellpadding="0" border="0" ><tr><td height="20">
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Très mauvais
+        </font></strong></em></td>
+       </td></tr></table> </td>
+      <td>&nbsp;
+               <textarea name="odins_tmauvais1" rows="2" cols="45">$!insalubrite.getAltValue($insalubrite.odins_tmauvais1, 'odins_tmauvais1')</textarea>
+               #if ($insalubrite.hasError("odins_tmauvais1", "MAX_LENGTH"))
+                 <font color="red">Ce champ est trop long. Maximum 250 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Élément influent
+        </font></strong></em></td>
+      <td>&nbsp;
+               <input name="odins_eleminfl" type="text" value="$!insalubrite.getAltValue($insalubrite.odins_eleminfl, 'odins_eleminfl')" size="60" maxlength="60">
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Précisions
+        </font></strong></em></td>
+      <td>&nbsp;
+               <input name="odins_precision" type="text" value="$!insalubrite.getAltValue($insalubrite.odins_precision, 'odins_precision')" size="60" maxlength="80">
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="insalubrite" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+
+#end
+<!--
+$pageableResults.listCommand
+<br>
+$pageableResults.countCommand
+<!--
+$hibernateError
+-->
+</body>
+</html>

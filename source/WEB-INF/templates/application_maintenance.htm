@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Utilisateurs en ligne - L'observatoire d'habitat </title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+</script>
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="10" topmargin="10" marginwidth="10" marginheight="10" >
+<p>
+<font color="#800000" size="4"><b>Gestionnaire d'Application</b></font>
+- <font color="#800000" size="4">Mode maintenance</font>
+/ <a href="application" style="color:blue;" >Configuration</a>
+/ <a href="application?action=structure" style="color:blue;" >Structure SQL</a>
+/ <a href="application?action=sessions" style="color:blue;" >Utilisateurs en ligne</a>
+/ <a href="intro" style="color:blue;" >Retour à L'observatoire d'habitat</a>
+
+<br>
+<font color="#800000" size="3">
+<br>Mode maintenance
+<br>
+<br>
+</font>
+<form name="modeForm" action ="application">
+<input type="hidden" name="action" value="mmode">
+<input type="radio"  name="mmode" value="false" #if($MAINTENANCE_MODE) checked #end onClick="document.modeForm.submit();">Oui</b></font>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="mmode"  value="true"  #if(!$MAINTENANCE_MODE) checked #end onClick="document.modeForm.submit();">Non</b></font>
+</form>
+</body>
+</html>

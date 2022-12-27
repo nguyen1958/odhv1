@@ -1,0 +1,21 @@
+<html>
+<head>
+<script>
+function printFrame(){
+  document.focusForm.printFocus.focus();
+  window.print();
+}
+</script>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="changeStatus()">
+<center>
+#parse("listing_results.htm")
+</center>
+ <form name="focusForm">
+ <div style="width:1;height:1;overflow:hidden;">
+<input type="text" size="1" name="printFocus" readonly style="background-color:white;width:0;height:0">
+ </div>
+ </form>
+</body>
+</html>

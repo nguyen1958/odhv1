@@ -1,0 +1,318 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $!req.getParameter('for_object'))
+
+ <p>&nbsp;</p>
+ <form name="rechercheForm" action="recherche" >
+ <input type="hidden" name="dispatcher" value="LIST" >
+ <input type="hidden" name="offset" value="0" >
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="9"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/moteur01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Recherche d'immeubles</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+       </font></strong></div></td>
+    </tr>
+    <tr>
+      <td colspan="9">&nbsp;&nbsp;</td>
+    </tr>
+ <tr>
+ <td align="center" colspan="9">
+ <table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Immeuble
+        </font></strong></em></td>
+      <td >&nbsp;&nbsp;</td>
+      <td width="200" valign="top" > <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="rech_immeuble" value="$!recherche.rech_immeuble" style="width:100%;" ></font></td>
+      <td>&nbsp;&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code lot
+        </font></strong></em></td>
+      <td >&nbsp;&nbsp;</td>
+      <td width="200" valign="top"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="rech_lot" value="$!recherche.rech_lot" style="width:100%;" ></font></td>
+      <td width="100" >&nbsp;</td>
+
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Rue
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="200"><input name="rech_rue" value="$!recherche.rech_rue" readonly  style="width:100%;" >
+      <input type="hidden" name="rech_rue_id" value="$!recherche.rech_rue_id"  >
+      </td>
+      <td width="100" nowrap><a href = "#" onClick ="objectWin = window.open('rue_list?chooser=recherche','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/fleche_g_01.gif" height="18" border="0"></a>
+        <a href = "#" onClick="document.rechercheForm.rech_rue.value='';document.rechercheForm.rech_rue_id.value='';return false;" >
+        <img src="images/fleche_d_01.gif" height="18" border="0"></a>
+      </td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Proprietaire
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="200"><input name="rech_proprietaire" value="$!recherche.rech_proprietaire" readonly style="width:100%;" >
+      <input type="hidden" name="rech_proprietaire_id" value="$!recherche.rech_proprietaire_id" >
+      </td>
+      <td width="100" nowrap><a href = "#" onClick ="objectWin = window.open('prop_list?chooser=recherche','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=600, width=800, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/fleche_g_01.gif" height="18" border="0"></a>
+        <a href = "#" onClick="document.rechercheForm.rech_proprietaire.value='';document.rechercheForm.rech_proprietaire_id.value='';return false;" >
+        <img src="images/fleche_d_01.gif" height="18" border="0"></a>
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;N&deg de rue
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="200" valign="top" nowrap> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input name="rech_norue" value="$!recherche.rech_norue" style="width:100%;"  >
+        </font>
+        </td>
+      <td>&nbsp;</td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Locataire
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="200"><input name="rech_locataire" value="$!recherche.rech_locataire" readonly style="width:100%;">
+      <input type="hidden" name="rech_locataire_id" value="$recherche.rech_locataire_id" >
+      </td>
+      <td width="100" nowrap><a href = "#" onClick ="objectWin = window.open('loc_list?chooser=recherche','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=600, width=800, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/fleche_g_01.gif" height="18" border="0"></a>
+        <a href = "#" onClick="document.rechercheForm.rech_locataire.value='';document.rechercheForm.rech_locataire_id.value='';return false;" >
+        <img src="images/fleche_d_01.gif" height="18" border="0"></a>
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" nowrap width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Cr&eacute;e
+       apr&egrave;s/avant (jj/mm/aaaa)</font></strong></em></td>
+      <td>&nbsp;</td>
+      <td colspan="2" width="300">
+      <input name="rech_imapres" value="$!recherche.rech_imapres" size="10" >
+      <input name="rech_imavant" value="$!recherche.rech_imavant" size="10" >
+      <!--
+            <select name="rech_expimm" >
+            <option value="">
+            #foreach($item in $!recherche.rech_expimmeuble)
+               <option value="$item.odexp_id" $recherche.getSelectedAttribute($item.getOdexp_id().toString(), $!recherche.getRech_expimm().toString())>$!item.odexp_pren $!item.odexp_nom
+            #end
+          </select>
+       -->
+       </td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Peril
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td colspan="2" width="300">
+            <select name="rech_peril" >
+            <option value="">
+            #foreach($item in $!recherche.rech_perils)
+               <option value="$item.odnt_id" $recherche.getSelectedAttribute($item.getOdnt_id().toString(), $!recherche.getRech_peril().toString())>$!item.odnt_nom
+            #end
+          </select>
+       </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Expert IMR
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td colspan="2" width="300">
+            <select name="rech_expimr" >
+            <option value="">
+            #foreach($item in $!recherche.rech_expprocedure)
+               <option value="$item.odexp_id" $recherche.getSelectedAttribute($item.getOdexp_id().toString(), $!recherche.getRech_expimr().toString())>$!item.odexp_pren $!item.odexp_nom
+            #end
+          </select>
+       </td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif" nowrap><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Date IMR (jj/mm/aaaa)
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="200" valign="top" > <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input name="rech_imrdate" value="$!recherche.rech_imrdate" style="width:100%;">
+        </font>
+        </td>
+    </tr>
+   </table>
+   </td>
+   </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9" align="center" >
+      <a href="#" onClick="document.rechercheForm.dispatcher.value='NEW';document.rechercheForm.submit();"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      <a href="#" onClick="document.rechercheForm.dispatcher.value='UPDATE';document.rechercheForm.submit();"><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+    </td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr>
+    <td colspan="9" >
+#if($req.getSession().getAttribute("Recherche.pojo"))
+      #if($pageableResults.getQueryCount() > 0 )
+     <table width="100%" cellspacing="0" celpadding="0" border="0">
+        <tr>
+          <td width="100%"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/moteur01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;
+          Résultat de votre recherche: $!pageableResults.getQueryCount() réponse(s)
+          </font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+           </font></strong></div></td>
+        </tr>
+      </table>
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" >
+        <tr>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;N&deg;</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Nom</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Usage</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Type de propriet&eacute;</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">N&deg; de rue</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Rue</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Syndic</font></strong></td>
+          <td align="center" bgcolor="#FFFFFF"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Vision globale</font></strong></td>
+          </font></strong></td>
+        </tr>
+          <tr>
+            <td colspan="8" ><div align="right"></div></td>
+          </tr>
+          #set($indexTo = $pageableResults.getIndexTo() + 1)
+          #set($indexFrom = $pageableResults.getIndexFrom() + 1)
+          #set($counter = $indexFrom)
+          #foreach($item in $pageableResults.getResults())
+            #set($rue = $item.odim_rue)
+            <tr>
+              <td align="right" height="20" width="5%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!counter&nbsp;&nbsp;&nbsp;</font></td>
+              <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!item.odim_id" style="color:blue;" >
+                    $!item.notNullName
+                  </a>
+                  </font></td>
+              <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                $!item.odim_groupe.odnt_nom
+              </font></td>
+              <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                $!item.odim_type.odnt_nom
+              </font></td>
+              <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.odim_num&nbsp;</font></td>
+              <td align="center" width="15%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!rue.odrue_type $!rue.odrue_liaison $!rue.odrue_nom </font></td>
+              <td align="center" width="10%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$!item.odim_syndic.odsyn_code </font></td>
+              <td align="center" width="20%"  background="images/fond_liste.gif"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+                  <a href="im_form?dispatcher=SHOW&for_object=immeuble&odim_id=$!item.odim_id" style="color:blue;" >
+                    voir
+                  </a>
+              </font></td>
+            </tr>
+            #set($counter = $counter + 1)
+          #end
+      </table>
+      <br><br>
+                <table width="90%" cellspacing="3" cellpadding="0" border="0"><tr >
+                <td width="50" valign="top"> <div align="right"></div></td>
+                <td width="50%" nowrap>
+                 &nbsp;
+                </td>
+                #set($pagesList = $pageableResults.getHandlers(5))
+                   <td valign="top">
+                    <a href="#" onClick="document.rechercheForm.offset.value='FIRST';document.rechercheForm.submit();"><img src="images/fleche_g_02.gif" border="0" ></a>
+                   </td>
+                #if($pageableResults.getCurrentPage() > 0)
+                  <td valign="top">
+                   <a href="#" onClick="document.rechercheForm.offset.value=-1;document.rechercheForm.submit();"><img src="images/fleche_g_01.gif" border="0"></a>
+                  </td>
+                #end
+                #foreach($page in $pagesList)
+                  #set($shownPage = $page + 1)
+                  #set($offsetValue = $page - $pageableResults.getCurrentPage())
+                  #if($offsetValue == 0)
+                      <td valign="top">
+                      <input name="req_page" size=2 value="$!shownPage">
+                      </td>
+                      <td>
+                        <a href="#" onClick="document.rechercheForm.submit();"><img src="images/bouton_ok.gif" border="0" ></a>
+                      </td>
+                  #else
+                    <td>
+                    <a href="#" onClick="document.rechercheForm.offset.value=$offsetValue;document.rechercheForm.submit();" style="color:blue;"> $shownPage</a>
+                    </td>
+                  #end
+                #end
+                #if($pageableResults.getCurrentPage() < $pageableResults.getPagesCount() - 1)
+                <td>
+                <a href="#" onClick="document.rechercheForm.offset.value=1;document.rechercheForm.submit();" ><img src="images/fleche_d_01.gif" border="0" ></a>
+                </td>
+                #end
+                   <td>
+                    <a href="#" onClick="document.rechercheForm.offset.value='LAST';document.rechercheForm.submit();"><img src="images/fleche_d_02.gif" border="0" ></a>
+                   </td>
+                   <td width="50%" align="right" nowrap>
+                    #set($crtPage = $pageableResults.getCurrentPage() + 1)
+                     Page  $crtPage / $pageableResults.getPagesCount()
+                   </td>
+                </tr></table>
+       #else
+       <br><br>
+        <font color="#800000"><b>
+        <center>
+          #if($pageableResults.getQueryCount() == 0 )
+            Aucune réponse pour ces critères.
+          #end
+        </center>
+        </b></font>
+       #end
+#end
+ </td>
+ <td>&nbsp;</td>
+ </tr>
+ </table>
+</form>
+</center>
+<p>&nbsp;</p>
+<!--
+$recherche.getListCommand() <br>
+#foreach($it in $recherche.getObjects())
+ $!it <br>
+#end
+-->
+<!--
+$pageableResults.getListCommand() <br>
+#foreach($it in $pageableResults.getParamValues())
+ $!it <br>
+#end
+-->
+<!--
+$hibernateError
+-->
+</center>
+</body>
+</html>
+

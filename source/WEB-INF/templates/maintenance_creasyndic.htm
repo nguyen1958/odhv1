@@ -1,0 +1,378 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();
+ }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#set($pChooser = $req.getParameter("chooser"))
+#set($pForObject = $req.getParameter('for_object'))
+#if(!$pChooser.equalsIgnoreCase("yes"))
+  #parse("menu.htm")
+#end
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="synd_form">
+<input type="hidden" name="odsyn_id" value="$!syndic.odsyn_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+<input type="hidden" name="chooser" value="$!pChooser" >
+<input type="hidden" name="for_object" value="$!pForObject">
+<input type="hidden" name="odim_id" value="$!req.getParameter('odim_id')" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left">
+      #if($immeuble_crt)
+        <font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/immeuble01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Immeuble&nbsp;<a href="im_form?dispatcher=FOR_UPDATE&for_object=$!pForObject&odim_id=$!immeuble_crt.odim_id" style="color:blue;" >$!immeuble_crt.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=$!pForObject&odim_id=$!immeuble_crt.odim_id" style="color:blue;">Globale</a></font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($!actionparam.endsWith("UPDATE"))
+           &nbsp;/&nbsp;Modification syndic
+        #end
+      #else
+        <font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Maintenance</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          /
+        #if($!actionparam.endsWith("UPDATE"))
+           Modification syndic
+        #else
+          Cr&eacute;ation syndic
+        #end
+      #end
+        </font></strong></div>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>SYNDIC <font color="#800000">$!syndic.odsyn_code</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($syndic.hasErrors())
+                  Impossible de valider : Il y a $!syndic.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($syndic.hasErrors())
+                  Impossible de valider : Il y a $!syndic.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+</table>
+</center>
+  <table width="98%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code *
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_code" type="text" value="$!syndic.getAltValue($syndic.odsyn_code, 'odsyn_code')" size="3" maxlength="3">
+                 <!-- error message -->
+                 #if ($syndic.hasError("odsyn_code", "IS_BLANK_OR_NULL"))
+                   <font color="red">Ce champ est obligatoire.</font><br/>
+                 #end
+                 #if ($syndic.hasError("odsyn_code", "MIN_LENGTH"))
+                   <font color="red">Le nom de syndic est trop court. Il faut avoir 3 caractères.</font><br/>
+                 #end
+                 #if ($syndic.hasError("odsyn_code", "MAX_LENGTH"))
+                   <font color="red">Le nom de syndic est trop long. Il faut avoir 3 caractères.</font><br/>
+                 #end
+                 #if ($syndic.hasError("odsyn_code","ALREADY_EXISTS"))
+                   <font color="red">Il y a déjà un syndic avec le code '$!syndic.odsyn_code'.</font><br/>
+                 #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Raison
+        sociale </font></strong></em></td>
+      <td nowrap>&nbsp; <input name="odsyn_raison" type="text"  value="$!syndic.getAltValue($syndic.odsyn_raison, 'odsyn_raison')"  size="40" maxlength="60">
+           <!-- validate error message -->
+           #if ($syndic.hasError("odsyn_raison", "MAX_LENGTH"))
+             <font color="red">Le raison est trop long. Maximum 60 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse1 *
+        </font></strong></em></td>
+      <td nowrap >&nbsp; <input name="odsyn_adr1" type="text"  value="$!syndic.getAltValue($syndic.odsyn_adr1, 'odsyn_adr1')" size="40" maxlength="80">
+           <!-- validate error message -->
+           #if ($syndic.hasError("odsyn_adr1", "IS_BLANK_OR_NULL"))
+             <font color="red">Ce champ est obligatoire.</font><br/>
+           #end
+           #if ($syndic.hasError("odsyn_adr1", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 80 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse2
+        </font></strong></em></td>
+      <td nowrap>&nbsp; <input name="odsyn_adr2" type="text"  value="$!syndic.getAltValue($syndic.odsyn_adr2, 'odsyn_adr2')"  size="40" maxlength="80">
+           <!-- validate error message -->
+           #if ($syndic.hasError("odsyn_adr2", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 80 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        postal </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_cpost" type="text"  value="$!syndic.getAltValue($!syndic.zeroFillToStart($syndic.odsyn_cpost.toString(), 5), 'odsyn_cpost')"  size="5" maxlength="5">
+           #if ($syndic.hasError("odsyn_cpost", "IS_FRENCH_CODEPOSTE"))
+             <font color="red">La valeur du code postal n'est pas celle d'un code postal.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ville
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_ville" type="text"   value="$!syndic.getAltValue($syndic.odsyn_ville, 'odsyn_ville')" size="40" maxlength="60">
+           #if ($syndic.hasError("odsyn_ville", "IS_BLANK_OR_NULL"))
+             <font color="red">Ce champ est obligatoire.</font><br/>
+           #end
+          #if ($syndic.hasError("odsyn_ville", "MAX_LENGTH"))
+             <font color="red">La valeur pour la ville est trop longue. Maximum 30 caractères.</font>
+          #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_com" type="text"   value="$!syndic.getAltValue($syndic.odsyn_com, 'odsyn_com')" size="40" maxlength="80">
+            #if ($syndic.hasError("odsyn_com", "MAX_LENGTH"))
+             <font color="red">La valeur pour ce champ est trop longue. Maximum 80 caractères.</font>
+            #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Tel
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_telfix" type="text"   value="$!syndic.getAltValue($syndic.odsyn_telfix, 'odsyn_telfix')" size="20" maxlength="20">
+              #if ($syndic.hasError("odsyn_telfix", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($syndic.hasError("odsyn_telfix", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de téléphone.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Fax
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_fax" type="text"   value="$!syndic.getAltValue($syndic.odsyn_fax, 'odsyn_fax')" size="20" maxlength="20">
+              #if ($syndic.hasError("odsyn_fax", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($syndic.hasError("odsyn_fax", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de fax.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mail
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_mail" type="text"   value="$!syndic.getAltValue($syndic.odsyn_mail, 'odsyn_mail')" size="40" maxlength="60">
+              #if ($syndic.hasError("odsyn_mail", "IS_EMAIL"))
+                 <font color="red">La valeur introduite n'est pas celle d'une adresse de mail.</font>
+               #end
+              #if ($syndic.hasError("odsyn_mail", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"></div></td>
+      <td colspan="2"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"></font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <br>Responsable <br></font></strong></div>
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Civilit&eacute;
+        </font></strong></em></td>
+
+      <td>&nbsp;
+        <select size="1" name="odsyn_rcivil">
+           <option value="M." $!syndic.getSelectedAttribute("M.", $!syndic.odsyn_rcivil) >M.</option>
+           <option value="Mme" $!syndic.getSelectedAttribute("Mme", $!syndic.odsyn_rcivil)>Mme</option>
+           <option value="Mlle" $!syndic.getSelectedAttribute("Mlle", $!syndic.odsyn_rcivil)>Mlle</option>
+        </select>
+               <!-- validate error message -->
+               #if ($syndic.hasError("odsyn_rcivil", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+       </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Pr&eacute;nom
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_rpren" type="text"   value="$!syndic.getAltValue($syndic.odsyn_rpren, 'odsyn_rpren')" size="30" maxlength="30">
+               #if ($syndic.hasError("odsyn_rpren", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le prénom est obligatoire.</font>
+               #end
+               #if ($syndic.hasError("odsyn_rpren", "MAX_LENGTH"))
+                 <font color="red">Le prénom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($syndic.hasError("odsyn_rpren", "MIN_LENGTH"))
+                 <font color="red">Le prénom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_rnom" type="text"   value="$!syndic.getAltValue($syndic.odsyn_rnom, 'odsyn_rnom')" size="30" maxlength="30">
+               #if ($syndic.hasError("odsyn_rnom", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le nom est obligatoire.</font>
+               #end
+               #if ($syndic.hasError("odsyn_rnom", "MAX_LENGTH"))
+                 <font color="red">Le nom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($syndic.hasError("odsyn_rnom", "MIN_LENGTH"))
+                 <font color="red">Le nom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Tel
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_rtelfix" type="text"   value="$!syndic.getAltValue($syndic.odsyn_rtelfix, 'odsyn_rtelfix')"  size="20" maxlength="20">
+              #if ($syndic.hasError("odsyn_rtelfix", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($syndic.hasError("odsyn_rtelfix", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de téléphone.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Tel-port
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_rtelport" type="text"    value="$!syndic.getAltValue($syndic.odsyn_rtelport, 'odsyn_rtelport')" size="20" maxlength="20">
+            #if ($syndic.hasError("odsyn_rtelport", "MAX_LENGTH"))
+               <font color="red">Le numéro de mobile est trop long. Maximum 20 caractères.</font>
+             #end
+             #if ($syndic.hasError("odsyn_rtelport", "IS_FRENCH_MOBILE"))
+               <font color="red">La valeur introduite n'est pas celle d'un numéro de mobile.</font>
+             #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mail
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsyn_rmail" type="text"    value="$!syndic.getAltValue($syndic.odsyn_rmail, 'odsyn_rmail')" size="40" maxlength="60">
+              #if ($syndic.hasError("odsyn_rmail", "IS_EMAIL"))
+                 <font color="red">La valeur introduite n'est pas celle d'une adresse de mail.</font>
+               #end
+              #if ($syndic.hasError("odsyn_rmail", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="deleteObject()"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="synd_list?chooser=$!pChooser" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+<!--
+$syndic.getFirstFieldWithError()
+$syndic.getFirstFieldError()
+-->
+</body>
+</html>

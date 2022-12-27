@@ -1,0 +1,220 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function changeStatus(){
+  disFlag = true;
+ if(document.rechercheForm.list_type[1].checked)
+    disFlag = false;
+
+ document.rechercheForm.list_termite.disabled = disFlag;
+ document.rechercheForm.list_plomb.disabled = disFlag;
+ document.rechercheForm.list_amiante.disabled = disFlag;
+}
+
+
+function show(){
+ document.rechercheForm.dispatcher.value='UPDATE';
+ document.rechercheForm.submit();
+}
+
+function showAsHTML(){
+ document.rechercheForm.dispatcher.value='UPDATE';
+ document.rechercheForm.printer.value='FOR_PRINT';
+ document.rechercheForm.submit();
+}
+
+function showAsXLS(){
+ document.rechercheForm.dispatcher.value='UPDATE';
+ document.rechercheForm.printer.value='FOR_XLS';
+ document.rechercheForm.submit();
+}
+
+function printListing(){
+  #if($req.getParameter("dispatcher").equals("NEW"))
+
+  #elseif($req.getParameter('printer').endsWith('PRINT'))
+    objectWin = window.open('listing?printer=PRINT','listing_imprimer',',directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes, height=400, width=800');
+    objectWin.focus();
+  #elseif($req.getParameter('printer').endsWith('XLS'))
+    window.location = 'listing.xls?printer=XLS&list_type=$!req.getParameter("list_type")';
+    window.focus();
+  #end
+  changeStatus();
+}
+
+
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="printListing()" >
+#parse("menu.htm")
+#set($pForObject = $!req.getParameter('for_object'))
+
+ <p>&nbsp;</p>
+ <form name="rechercheForm" method="POST" action="listing" >
+ <input type="hidden" name="dispatcher" value="LIST" >
+ <input type="hidden" name="printer" value="" >
+ <input type="hidden" name="offset" value="0" >
+ <table width="98%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td align="center" colspan="9">
+ <table cellspacing="0" celpadding="0" border="0">
+    <tr>
+      <td colspan="9"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;</font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2"><img src="images/moteur01.gif" width="60" height="30" align="absmiddle"></font></strong></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;</font></strong></font><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Listing</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+       </font></strong></div></td>
+    </tr>
+    <tr>
+      <td colspan="9" align="center" nowrap><b>Affichage  &nbsp;&nbsp;&nbsp;</b>
+      <input type="radio" name="list_type" value="0" $!listing.getCheckedAttribute("0", $!listing.list_type.toString()) onclick="changeStatus()" >Immeubles&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="list_type" value="1" $!listing.getCheckedAttribute("1", $!listing.list_type.toString()) onclick="changeStatus()" >Etats parasitaires&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="list_type" value="2" $!listing.getCheckedAttribute("2", $!listing.list_type.toString()) onclick="changeStatus()" >Proc&eacute;dures&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="list_type" value="3" $!listing.getCheckedAttribute("3", $!listing.list_type.toString()) onclick="changeStatus()" >Relogements
+      </td>
+    </tr>
+    <tr>
+      <td colspan="9">&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="250" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Immeuble
+        </font></strong></em></td>
+      <td >&nbsp;</td>
+      <td width="190"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="list_immeuble" value="$!listing.list_immeuble" style="width:100%;" ></font></td>
+      <td >&nbsp;</td>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif" ></div></td>
+      <td width="190" valign="top"  background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Type proc&eacute;dure
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td colspan="2" width="300">
+            <select name="list_peril" >
+            <option value="">
+            #foreach($item in $!listing.list_perils)
+               <option value="$item.odnt_id" $listing.getSelectedAttribute($item.getOdnt_id().toString(), $!listing.getList_peril().toString())>$!item.odnt_nom
+            #end
+          </select>
+       </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="250" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Rue
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="190"><input name="list_rue" value="$!listing.list_rue" readonly  style="width:100%;" >
+      <input type="hidden" name="list_rue_id" value="$!listing.list_rue_id">
+      </td>
+      <td nowrap><a href = "#" onClick ="objectWin = window.open('rue_list?chooser=listing&new=true','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/fleche_g_01.gif" height="16" border="0"></a>
+        <a href = "#" onClick="document.rechercheForm.list_rue.value='';document.rechercheForm.list_rue_id.value='';return false;" >
+        <img src="images/fleche_d_01.gif" height="16" border="0"></a>
+      </td>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="190" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Termite
+        </font></strong></em></td>
+      <td >&nbsp;</td>
+      <td colspan="2" width="300">
+            <select name="list_termite">
+            <option value="">
+            <option value="true" $listing.getSelectedAttribute('true', $!listing.getList_termite().toString())>Oui
+            <option value="false" $listing.getSelectedAttribute('false', $!listing.getList_termite().toString())>Non
+          </select>
+       </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="250" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Section / Parcelle 1
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="190" nowrap><input name="list_section" value="$!listing.list_section" style="width:40%;">&nbsp;<input name="list_par1" value="$!listing.list_par1" style="width:40%;">
+      </td>
+      <td width="80" >&nbsp;</td>
+
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="160" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Plomb <font size="1"><i>- plus de (mg)</i></font>
+        </font></strong></em></td>
+      <td width="1%">&nbsp;</td>
+      <td width="190"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="list_plomb" value="$!listing.list_plomb" style="width:100%;" ></font></td>
+    </tr>
+
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" nowrap valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Date proc&eacute;dure <font size="1"><i>(jj/mm/aaaa)</i></font>
+        </font></strong></em></td>
+      <td>&nbsp;</td>
+      <td width="190" valign="top" > <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          <input name="list_imrdate" value="$!listing.list_imrdate" style="width:100%;">
+        </font>
+        </td>
+      <td width="80">&nbsp;</td>
+
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="160" nowrap valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Amiante <font size="1"><i>- plus de (mg)</i></font>
+        </font></strong></em></td>
+      <td >&nbsp;&nbsp;</td>
+      <td width="170"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><input name="list_amiante" value="$!listing.list_amiante" style="width:100%;" ></font></td>
+    </tr>
+ </table>
+ </td>
+ </tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9">&nbsp;</td></tr>
+    <tr><td colspan="9" align="center" >
+      <a href="#" onClick="show()"><img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+      <a href="#" onClick="showAsHTML()"><img src="images/impression.gif" width="130" height="17" border="0"></a>
+      <a href="#" onClick="showAsXLS()" ><img src="images/xls.gif" width="130" height="17" border="0"></a>
+      <a href="#" onClick="document.rechercheForm.dispatcher.value='NEW';document.rechercheForm.submit();"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+    </td></tr>
+    <td colspan="9" width="100%" >
+    #parse("listing_results.htm")
+    </td>
+ </tr>
+ </table>
+</form>
+<!--
+$pageableResults.getListCommand() <br>
+$pageableResults.getCountCommand()<br><br>
+#foreach($it in $recherche.getObjects())
+ $!it <br>
+#end
+
+$pageableResults.getResults().size() <br>
+$pageableResults.getListCommand() <br>
+#foreach($it in $pageableResults.getParamValues())
+ $!it <br>
+#end
+
+<!--
+$hibernateError
+-->
+</body>
+</html>
+

@@ -1,0 +1,313 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odimr_natinterv.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odimr_natinterv.options[i].selected=true;
+    var optionsNumber = document.objectForm.odimr_experts.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odimr_experts.options[i].selected=true;
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $req.getParameter('for_object'))
+#set($actionparam = $req.getParameter("dispatcher"))
+<form name="objectForm" method="post" action="proced_form" >
+<input type="hidden" name="odimr_id" value="$!procedure.odimr_id">
+<input type="hidden" name="dispatcher" value="FOR_UPDATE_MD" >
+<input type="hidden" name="for_object" value="$!pForObject" >
+<input type="hidden" name="odim_id" value="$!req.getParameter('odim_id')" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<font face="Verdana, Arial, Helvetica, sans-serif"><strong><img src="images/procedure01.gif" width="60" height="30" align="absmiddle"></strong></font></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Proc&eacute;dures</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($procedure.odimr_immeuble)
+          / Immeuble <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;" >$!procedure.odimr_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=$!pForObject&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;">Globale</a>
+        #end
+          /
+           Modification mesure definitive
+          </font></strong></div></td>
+    </tr>
+        <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>MESURE DEFINITIVE&nbsp;&nbsp;<font color="#800000">$!procedure.odimr_id</font>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($procedure.odimr_mesdef.hasErrors())
+                  Impossible de valider : Il y a $!procedure.odimr_mesdef.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+</center>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">N&deg;
+        dossier</font></b></em></td>
+      <td valign="top"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+        $!procedure.odimr_id
+        </font></td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date
+        proc&eacute;dure  </em></strong></font></td>
+      <td valign="top">&nbsp;
+        $!procedure.getAltValue($!procedure.getDateAsString($!procedure.odimr_date),'odimr_date')
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">Type
+        de p&eacute;ril *</font></b></em></td>
+     <td>&nbsp; $!procedure.getOdimr_peril().odnt_nom
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Num arrete
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_numarrete" value="$!procedure.odimr_mesdef.getAltValue($!procedure.odimr_mesdef.odmd_numarrete,'odmd_numarrete')" maxlength=10 size="10">
+        </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_numarrete", "IS_INT"))
+                <font color="red">Il faut introduire seulement des chiffres.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date visite 1 expert
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datevis1exp" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_datevis1exp),'odmd_datevis1exp')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_datevis1exp", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Travaux r&eacute;alis&eacute;s
+         </font></strong></em></td>
+      <td>
+          <input name="odmd_travrealise" type="radio" value="true" $procedure.getCheckedAttribute($procedure.odimr_mesdef.odmd_travrealise, true)> Oui
+          <input name="odmd_travrealise" type="radio" value="false" $procedure.getCheckedAttribute($procedure.odimr_mesdef.odmd_travrealise, false) > Non&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date nouvel arrete
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_nouvelarrete" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_nouvelarrete),'odmd_nouvelarrete')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_nouvelarrete", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date visite sup expert
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datevissupexp" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_datevissupexp),'odmd_datevissupexp')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_datevissupexp", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top" ><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+       <td valign="top" width="210" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire viste 1
+              </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+      <td width="90%" >&nbsp; <textarea name="odmd_comvis1exp" cols="50" rows="5" maxlength="250" >$!procedure.odimr_mesdef.getAltValue($procedure.odimr_mesdef.odmd_comvis1exp, 'odmd_comvis1exp')</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" ><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+       <td valign="top" width="210" heigh="22" >
+          <table style="width:100%" cellspacing="0" cellpadding="0" border="0"  >
+            <tr>
+              <td valign="top" height="22" style="width:100%;" background="images/fond_sousmenu.gif" ><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire visite 2
+              </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+      <td width="90%" >&nbsp; <textarea name="odmd_comvis2exp" cols="50" rows="5" maxlength="250" >$!procedure.odimr_mesdef.getAltValue($procedure.odimr_mesdef.odmd_comvis2exp, 'odmd_comvis2exp')</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date r&eacute;alisation
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_daterealis" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_daterealis),'odmd_daterealis')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_daterealis", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date mail
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datemail" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_datemail),'odmd_datemail')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_datemail", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date recap
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_daterecap" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_daterecap),'odmd_daterecap')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_daterecap", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date PV Visite
+         </em></strong></font></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="odmd_datepvvis" value="$!procedure.odimr_mesdef.getAltValue($!procedure.getDateAsString($!procedure.odimr_mesdef.odmd_datepvvis),'odmd_datepvvis')" maxlength=10 size="10">
+        (jj/mm/aaaa) </font>
+           #if ($procedure.odimr_mesdef.hasError("odmd_datepvvis", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE_MD';document.objectForm.submit();">
+      <img src="images/modifier.gif" width="130" height="17" border="0">
+      </a>
+      <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!procedure.odimr_id" style="color:blue;" >
+      <img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+<!--
+$procedure.getFirstFieldWithError()
+$procedure.getFirstFieldError()
+-->
+</body>
+</html>

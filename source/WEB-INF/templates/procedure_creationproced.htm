@@ -1,0 +1,404 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+ function DeplacerCopier(l1,l2) {
+   	if (l1.options.selectedIndex>=0) {
+			o=new Option(l1.options[l1.options.selectedIndex].text,l1.options[l1.options.selectedIndex].value);
+			if(validateItem(l2,o.value) == "true")
+			  l2.options[l2.options.length]=o;
+			else{
+			  alert("Cette option a déjà été choisie.")
+			}
+		}else{
+			alert("Aucune option choisie.");
+		}
+  }
+
+  function DeplacerSupprimer(l1) {
+   	if (l1.options.selectedIndex>=0) {
+			l1.options[l1.options.selectedIndex]=null;
+		}else{
+		  if(l1.options.length > 0)
+			  alert("Aucune option choisie.");
+			else alert("La liste est vide");
+		}
+  }
+
+  function validateItem(listObj, itemValue)
+  {
+    var optionsNumber = listObj.options.length;
+    for( var i=0; i< optionsNumber; i++)
+    {
+      optionValue = listObj.options[i].value;
+      if(optionValue == itemValue)
+       return "false";
+    }
+    return "true";
+  }
+
+function selectItems(){
+    var optionsNumber = document.objectForm.odimr_natinterv.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odimr_natinterv.options[i].selected=true;
+    var optionsNumber = document.objectForm.odimr_experts.options.length;
+    for(var i=0; i< optionsNumber; i++)
+     document.objectForm.odimr_experts.options[i].selected=true;
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($pForObject = $req.getParameter('for_object'))
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE') || $actionparam.endsWith('UPDATE2'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="proced_form" >
+<input type="hidden" name="odimr_id" value="$!procedure.odimr_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+<input type="hidden" name="for_object" value="$!pForObject" >
+<input type="hidden" name="odim_id" value="$!req.getParameter('odim_id')" >
+<input type="hidden" name="module" value="$!req.getParameter('module')" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<font face="Verdana, Arial, Helvetica, sans-serif"><strong><img src="images/procedure01.gif" width="60" height="30" align="absmiddle"></strong></font></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;Proc&eacute;dures</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        #if($procedure.odimr_immeuble)
+          / Immeuble <a href="im_form?dispatcher=FOR_UPDATE&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;" >$!procedure.odimr_immeuble.notNullName</a>&nbsp;/&nbsp;<a href="im_form?dispatcher=SHOW&for_object=$!pForObject&odim_id=$!procedure.odimr_immeuble.odim_id" style="color:blue;">Globale</a>
+        #end
+          /
+        #if($actionparam.endsWith("UPDATE") || $actionparam.endsWith("UPDATE2"))
+           Modification proc&eacute;dure
+        #else
+          #if($procedure.odimr_immeuble)
+              Ajout d'une proc&eacute;dure
+          #else
+              Cr&eacute;ation proc&eacute;dure
+          #end
+        #end
+          </font></strong></div></td>
+    </tr>
+        <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($actionparam.endsWith("UPDATE") || $actionparam.endsWith("UPDATE2"))
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>PROC&Eacute;DURE <font color="#800000">$!procedure.odimr_id</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($procedure.hasErrors())
+                  Impossible de valider : Il y a $!procedure.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($procedure.hasErrors())
+                  Impossible de valider : Il y a $!procedure.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+</center>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+#if($actionparam.endsWith("UPDATE") || $actionparam.endsWith("UPDATE2"))
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">N&deg;
+        dossier</font></b></em></td>
+      <td valign="top"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;
+        $!procedure.odimr_id
+        </font></td>
+    </tr>
+#end
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">Type
+        de proc&eacute;dure *</font></b></em></td>
+     <td>&nbsp; <select name="odimr_peril" >
+          <option value="">
+          #foreach($item in $!procedure.all_perils)
+             <option value="$item.odnt_id" $procedure.getSelectedAttribute($item.getOdnt_id().toString(), $!procedure.getOdimr_peril().getOdnt_id().toString())>$!item.odnt_nom
+          #end
+        </select>
+        <input name="odimr_relog" type="checkbox" value="true" $procedure.getCheckedAttribute(true, $procedure.odimr_relog) > <i><b>Avec relogement</b></i>
+           #if ($procedure.hasError("odimr_peril", "IS_BLANK_OR_NULL"))
+                <font color="red">Ce champ est obligatoire.</font><br>
+           #end
+          #if ($procedure.hasError("odimr_peril", "NOT_EXISTS"))
+             <font color="red">Le type choisi n'existe plus. </font><br/>
+          #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif">&nbsp;&nbsp;<font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date
+        proc&eacute;dure  </em></strong></font></td>
+      <td valign="top">&nbsp;
+        <input type="text" name="odimr_date" value="$!procedure.getAltValue($!procedure.getDateAsString($!procedure.odimr_date),'odimr_date')" maxlength=10 size="10">
+        <font size="1" face="Verdana, Arial, Helvetica, sans-serif"><i>(jj/mm/aaaa)</i> </font>
+           #if ($procedure.hasError("odimr_date", "IS_DATA_VALIDE"))
+                <font color="red">La date n'est pas correcte.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Date
+        fin proc&eacute;dure</em></strong></font><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        </font></b></em></td>
+      <td valign="top">&nbsp;
+        <input type="text" name="odimr_datefin"  value="$procedure.getAltValue($!procedure.getDateAsString($!procedure.odimr_datefin),'odimr_datefin')" maxlength=10 size="10">
+        <font size="1" face="Verdana, Arial, Helvetica, sans-serif"><i>(jj/mm/aaaa)</i> </font>
+           #if ($procedure.hasError("odimr_datefin", "IS_DATA_VALIDE"))
+                <font color="red">La date fin n'est pas correcte.</font><br>
+           #end
+           #if ($procedure.hasError("odimr_datefin", "DATE_ORDERED"))
+                <font color="red">La date fin doit être supérieur ou égale à la date de demarage.</font><br>
+           #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+          <td width="210" valign="top" >
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+              <td valign="top" width="100%" background="images/fond_sousmenu.gif" height="20"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nature
+        intervention </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+        <td nowrap valign="top">
+          <table width="50%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>&nbsp;&nbsp;</td>
+              <td valign="top">
+                <select size="3" name="odimr_interv_all" style="width:200;height:80;" >
+                #foreach($item in $procedure.all_interventions)
+                   <option value='$!item.odnt_id' > $!item.odnt_nom
+                #end
+                </select>
+                </td>
+              <td><a href="javascript:DeplacerCopier(document.objectForm.odimr_interv_all,document.objectForm.odimr_natinterv);"><img src="images/fleche_d_01.gif" border="0" width="27" height="20"></a><br><br>
+                <a href="javascript:DeplacerSupprimer(document.objectForm.odimr_natinterv);"><img src="images/fleche_g_01.gif" border="0" width="27" height="20"></a>
+              </td>
+              <td nowrap>
+              <select size="3" name="odimr_natinterv" multiple="true" style="width:200;height:80;" >
+               #foreach($item in $procedure.odimr_natinterv)
+                   <option value='$!item.odnt_id' > $!item.odnt_nom
+                #end
+              </select>
+                #if ($procedure.hasError("odimr_natinterv", "NOT_EXISTS"))
+                   <font color="red">La nature intervention choisie n'existe plus. </font><br/>
+                #end
+              </td>
+                <td nowrap valign="bottom">
+                </td>
+            </tr>
+          </table>
+        </td>
+       </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif"><em><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Suiveur
+        </font></b></em></td>
+     <td>&nbsp; <select name="odimr_suiveur" >
+          <option value="">
+          #foreach($item in $!procedure.all_suiveurs)
+             <option value="$item.odsu_id" $procedure.getSelectedAttribute($item.getOdsu_id().toString(), $!procedure.getOdimr_suiveur().getOdsu_id().toString())>$!item.odsu_pren $!item.odsu_nom
+          #end
+        </select>
+                #if ($procedure.hasError("odimr_suiveur", "NOT_EXISTS"))
+                   <font color="red">Le suiveur choisi n'existe plus. </font><br/>
+                #end
+        </td>
+    </tr>
+     #set($immeuble = $procedure.odimr_immeuble)
+    <tr>
+      <td valign="top"><div align="right"></div></td>
+      <td valign="top"><em><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></b></em></td>
+      <td>&nbsp; </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td valign="top" background="images/fond_sousmenu.gif"><em><b><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Immeuble*
+        </font></b></em></td>
+      <td>&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><i><b>Section</b></i>
+        <input name="section" value="$!immeuble.odim_cadsct" type="text"  size="2" maxlength="2" readonly>
+        <i><b>Nom</b></i>   <input name="nom" value="$!immeuble.odim_nom" type="text" size="60" maxlength="60" readonly></font></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top">&nbsp;</td>
+      <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;<i><b>N&deg;</b></i>
+        <input name="numrue" value="$!immeuble.odim_num" type="text" size="10" maxlength="10" readonly>
+        <i><b> Rue</b></i>
+        #set($rue = $!immeuble.odim_rue)
+        <input name="nomrue" value="$!rue.odrue_type $!rue.odrue_liaison $!rue.odrue_nom" type="text" size="60" maxlength="60" readonly>
+        <input type="hidden" name="odimr_immeuble" value="$!immeuble.odim_id"><br>
+        <a href = "#" onClick ="objectWin = window.open('im_list?object=IMR&chooser=yes','object',',directories=no,location=no,status=yes,menubar=no,resize=yes,scrollbars=yes, height=500, width=700, top=0, left=0');objectWin.focus();return false;" >
+        <img src="images/rechercher.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="with(document.objectForm){section.value='';nom.value='';numrue.value='';nomrue.value='';odimr_immeuble.value=''}"><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+                #if ($procedure.hasError("odimr_immeuble", "IS_BLANK_OR_NULL"))
+                   <font color="red">L'immeuble est obligatoire. </font><br/>
+                #end
+                #if ($procedure.hasError("odimr_immeuble", "NOT_EXISTS"))
+                   <font color="red">L'immeuble choisi n'existe plus. </font><br/>
+                #end
+        </font></td>
+    </tr>
+    #set($syndic = $immeuble.odim_syndic)
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;</font></strong><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><em>Syndic
+        </em></strong></font><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        </font></b></em></td>
+      <td valign="top">&nbsp; <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="text" name="syndic" value="$!syndic.getAltValue($!syndic.odsyn_code, '')#if($syndic.odsyn_raison) - $!syndic.odsyn_raison#end" maxlength=60 size="60" readonly>
+        </font>
+        </td>
+    </tr>
+    <tr>
+       <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+        <td width="210" valign="top" >
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+              <td valign="top" width="100%" background="images/fond_sousmenu.gif" height="20"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Expert
+          </font></strong></em></td>
+            </tr>
+          </table>
+        </td>
+        <td nowrap valign="top">
+          <table width="50%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>&nbsp;&nbsp;</td>
+              <td valign="top">
+                <select size="3" name="odimr_experts_all" style="width:200;height:80;" >
+                #foreach($item in $procedure.all_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+                </select>
+                </td>
+              <td><a href="javascript:DeplacerCopier(document.objectForm.odimr_experts_all,document.objectForm.odimr_experts);"><img src="images/fleche_d_01.gif" border="0" width="27" height="20"></a><br><br>
+                <a href="javascript:DeplacerSupprimer(document.objectForm.odimr_experts);"><img src="images/fleche_g_01.gif" border="0" width="27" height="20"></a>
+              </td>
+              <td nowrap>
+              <select size="3" name="odimr_experts" multiple="true" style="width:200;height:80;" >
+               #foreach($item in $procedure.odimr_experts)
+                   <option value='$!item.odexp_id' > $!item.odexp_pren $!item.odexp_nom
+                #end
+              </select>
+              </td>
+                <td nowrap valign="bottom">
+                </td>
+            </tr>
+          </table>
+        </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Commentaire
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odimr_commentaire" type="text" value="$!procedure.getAltValue($procedure.odimr_commentaire, 'odimr_commentaire')" size="60" maxlength="100">
+           <!-- validate error message -->
+           #if ($procedure.hasError("odimr_commentaire", "MAX_LENGTH"))
+             <font color="red">Le commentaire est trop long. Maximum 100 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE") || $!actionparam.endsWith("UPDATE2"))
+        <a href="#" onClick="document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';selectItems();document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+        <a href="proced_form?dispatcher=FOR_UPDATE&odimr_id=$!procedure.odimr_id" style="color:blue;" >
+      #else
+        <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';selectItems();document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+        #if($!procedure.odimr_immeuble.odim_id)
+          <a href="proced_list?dispatcher=LIST&odim_id=$!procedure.odimr_immeuble.odim_id" >
+        #else
+          <a href="intro" >
+        #end
+      #end
+      <img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+<!--
+$procedure.getFirstFieldWithError()
+$procedure.getFirstFieldError()
+-->
+</body>
+</html>

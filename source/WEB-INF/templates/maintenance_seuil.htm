@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+<form name="objectForm" method="post" action="seuil">
+<input type="hidden" name="dispatcher" value="UPDATE" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Maintenance</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          / Gestion seuil
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($seuil.hasErrors())
+                  Impossible de valider : Il y a $!seuil.getErrorsCount() erreur(s)."
+              #else
+                $!hibernateError
+              #end
+            #end
+          </b></font>
+       </td></tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+</table>
+</center>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Plomb
+        </font></strong></em></td>
+      <td>&nbsp;<input name="odet_plomb" type="text" value="$!seuil.getAltValue($seuil.odet_plomb, 'odet_plomb')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($seuil.hasError("odet_plomb", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($seuil.hasError("odet_plomb", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($seuil.hasError("odet_plomb", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td valign="top"><div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Amiante
+        </font></strong></em></td>
+      <td>&nbsp;<input name="odet_amiante" type="text" value="$!seuil.getAltValue($seuil.odet_amiante, 'odet_amiante')" size="8" maxlength="8">
+        &nbsp;<font size="1" face="Verdana, Arial, Helvetica, sans-serif">mg </font>
+                 #if ($seuil.hasError("odet_amiante", "MAX_LENGTH"))
+                   <font color="red">Le texte est trop long. Maximum 8 caractères.</font><br/>
+                 #end
+                 #if ($seuil.hasError("odet_amiante", "IS_FLOAT"))
+                   <font color="red">Il faut introduire un nombre. </font><br/>
+                 #end
+                 #if ($seuil.hasError("odet_amiante", "IS_FLOAT_IN_RANGE"))
+                   <font color="red">Il faut introduire un nombre entre 00000,00 et 99999,99 </font><br/>
+                 #end
+        </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>
+          <a href="#" onClick="document.objectForm.submit();">
+          <img src="images/modifier.gif" width="130" height="17" border="0">
+          </a>
+        <a href="intro" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+        </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+  <!--
+$expert.getFirstFieldWithError()
+$expert.getFirstFieldError()
+-->
+</body>
+</html>

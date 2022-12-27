@@ -1,0 +1,278 @@
+<html>
+<head>
+<title>Analogon - Observatoire De l'Habitat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+<!--
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function deleteObject(){
+ if(confirm("Etes-vous certain vouloir faire cette suppression ?")){
+   document.objectForm.dispatcher.value='DELETE';document.objectForm.submit();
+ }
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.menu {font-family:Verdana; font-size:8pt
+; color:black; text-decoration:none;}
+a.menu:hover {color:red;}
+//-->
+</style>
+
+</head>
+<body background="images/fond02.gif" link="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#parse("menu.htm")
+#set($actionparam = $req.getParameter("dispatcher"))
+#if($actionparam.endsWith('UPDATE'))
+ #set($dispatcher = 'UPDATE')
+#else
+ #set($dispatcher = "INSERT")
+#end
+<form name="objectForm" method="post" action="suiv_form">
+<input type="hidden" name="odsu_id" value="$!suiveur.odsu_id">
+<input type="hidden" name="dispatcher" value="$!dispatcher" >
+  <p>&nbsp;</p>
+<center>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan="3"><div align="left"><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;&nbsp;<img src="images/maintenance01.gif" width="60" height="30" align="absmiddle"></font></strong></font><strong><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">&nbsp;Maintenance</font></strong></font><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+          /
+        #if($!actionparam.endsWith("UPDATE"))
+          Modification suiveur
+        #else
+          Cr&eacute;ation suiveur
+        #end
+        </font></strong></div></td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td valign="top" colspan="2">
+      #if($!actionparam.endsWith("UPDATE"))
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>SUIVEUR <font color="#800000">$!suiveur.odsu_civil $!suiveur.odsu_pren $!suiveur.odsu_nom</font>
+      #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan=3 align="center">
+          <font color="#800000"><b>
+          #if($actionparam.equalsIgnoreCase("INSERT"))
+            #if($executed)
+              L'enregistrement a été effectué.
+            #else
+              #if($suiveur.hasErrors())
+                  Impossible de valider : Il y a $!suiveur.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #elseif($actionparam.equalsIgnoreCase("UPDATE"))
+            #if($executed)
+              L'enregistrement a été actualisé.
+            #else
+              #if($suiveur.hasErrors())
+                  Impossible de valider : Il y a $!suiveur.getErrorsCount() erreur(s).
+              #else
+                $!hibernateError
+              #end
+            #end
+          #end
+          </b></font>
+       </td></tr>
+</table>
+</center>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td height="24" width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Civilit&eacute;
+        </font></strong></em></td>
+       <td>&nbsp;
+        <select size="1" name="odsu_civil">
+           <option value="M." $!suiveur.getSelectedAttribute("M.", $!suiveur.odsu_civil) >M.</option>
+           <option value="Mme" $!suiveur.getSelectedAttribute("Mme", $!suiveur.odsu_civil)>Mme</option>
+           <option value="Mlle" $!suiveur.getSelectedAttribute("Mlle", $!suiveur.odsu_civil)>Mlle</option>
+        </select>
+               <!-- validate error message -->
+               #if ($suiveur.hasError("odsu_civil", "IS_NOT_IN_COLLECTION"))
+                 <font color="red">L'option sélectionnée n'est pas valide.</font>
+               #end
+       </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Pr&eacute;nom
+        *</font></strong></em></td>
+      <td>&nbsp; <input name="odsu_pren" type="text" value="$!suiveur.getAltValue($suiveur.odsu_pren, 'odsu_pren')" size="40" maxlength="40">
+               #if ($suiveur.hasError("odsu_pren", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le prénom est obligatoire.</font>
+               #end
+               #if ($suiveur.hasError("odsu_pren", "MAX_LENGTH"))
+                 <font color="red">Le prénom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($suiveur.hasError("odsu_pren", "MIN_LENGTH"))
+                 <font color="red">Le prénom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Nom
+        *</font></strong></em></td>
+      <td>&nbsp; <input name="odsu_nom" type="text" value="$!suiveur.getAltValue($suiveur.odsu_nom, 'odsu_nom')" size="40" maxlength="40">
+               #if ($suiveur.hasError("odsu_nom", "IS_BLANK_OR_NULL"))
+                 <font color="red">Le nom est obligatoire.</font>
+               #end
+               #if ($suiveur.hasError("odsu_nom", "MAX_LENGTH"))
+                 <font color="red">Le nom est trop long. Maximum 30 caractères.</font>
+               #end
+               #if ($suiveur.hasError("odsu_nom", "MIN_LENGTH"))
+                 <font color="red">Le nom est trop court. Minimum 2 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse1
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_adr1" type="text" value="$!suiveur.getAltValue($suiveur.odsu_adr1, 'odsu_adr1')" size="60" maxlength="60">
+           <!-- validate error message -->
+           #if ($suiveur.hasError("odsu_adr1", "IS_BLANK_OR_NULL"))
+             <font color="red">Ce champ est obligatoire.</font><br/>
+           #end
+           #if ($suiveur.hasError("odsu_adr1", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 60 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Adresse2
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_adr2" type="text"  value="$!suiveur.getAltValue($suiveur.odsu_adr2, 'odsu_adr2')" size="40" maxlength="60">
+           <!-- validate error message -->
+           #if ($suiveur.hasError("odsu_adr2", "MAX_LENGTH"))
+             <font color="red">L'adresse est trop longue. Maximum 60 caractères.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Code
+        postal </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_cpost" type="text" value="$!suiveur.getAltValue($!suiveur.zeroFillToStart($suiveur.odsu_cpost.toString(), 5), 'odsu_cpost')" size="5" maxlength="5">
+           #if ($suiveur.hasError("odsu_cpost", "IS_FRENCH_CODEPOSTE"))
+             <font color="red">La valeur introduite n'est pas celle d'un code postal.</font>
+           #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ville
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_ville" type="text"  value="$!suiveur.getAltValue($suiveur.odsu_ville, 'odsu_ville')" size="40" maxlength="60">
+          #if ($suiveur.hasError("odsu_ville", "MAX_LENGTH"))
+             <font color="red">La valeur pour la ville est trop longue. Maximum 60 caractères.</font>
+          #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Libell&eacute;
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_libelle" type="text"   value="$!suiveur.getAltValue($suiveur.odsu_libelle, 'odsu_libelle')" size="40" maxlength="80">
+            #if ($suiveur.hasError("odsu_libelle", "MAX_LENGTH"))
+             <font color="red">La valeur pour ce champ est trop longue. Maximum 80 caractères.</font>
+            #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;T&eacute;l
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_telfix" type="text" value="$!suiveur.getAltValue($suiveur.odsu_telfix, 'odsu_telfix')" size="20" maxlength="20">
+              #if ($suiveur.hasError("odsu_telfix", "MAX_LENGTH"))
+                 <font color="red">Le numéro de téléphone est trop long. Maximum 20 caractères.</font>
+               #end
+              #if ($suiveur.hasError("odsu_telfix", "IS_PHONE"))
+                 <font color="red">La valeur introduite n'est pas celle d'un numéro de téléphone.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;T&eacute;l-port
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_telport" type="text"   value="$!suiveur.getAltValue($suiveur.odsu_telport, 'odsu_telport')" size="20" maxlength="20">
+            #if ($suiveur.hasError("odsu_telport", "MAX_LENGTH"))
+               <font color="red">Le numéro de mobile est trop long. Maximum 20 caractères.</font>
+             #end
+             #if ($suiveur.hasError("odsu_telport", "IS_FRENCH_MOBILE"))
+               <font color="red">La valeur introduite n'est pas celle d'un numéro de mobile.</font>
+             #end
+      </td>
+    </tr>
+    <tr>
+      <td width="50" valign="top"> <div align="right"><img src="images/fond_sousmenu2.gif"></div></td>
+      <td width="210" valign="top" background="images/fond_sousmenu.gif"><em><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Mail
+        </font></strong></em></td>
+      <td>&nbsp; <input name="odsu_mail" type="text"   value="$!suiveur.getAltValue($suiveur.odsu_mail, 'odsu_mail')" size="40" maxlength="60">
+              #if ($suiveur.hasError("odsu_mail", "IS_EMAIL"))
+                 <font color="red">La valeur introduite n'est pas celle d'une adresse de mail.</font>
+               #end
+              #if ($suiveur.hasError("odsu_mail", "MAX_LENGTH"))
+                 <font color="red">La valeur pour ce champ est trop longue. Maximum 60 caractères.</font>
+               #end
+      </td>
+    </tr>
+    <tr>
+      <td height="20" valign="top">&nbsp;</td>
+      <td colspan="2"valign="top">&nbsp;
+        <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2">&nbsp;&nbsp;<font color="#000000" size="2">Les
+          champs suivis de * sont obligatoires.</font>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">&nbsp;</td>
+      <td width="210" valign="top">&nbsp;</td>
+    <td>
+      #if($!actionparam.endsWith("UPDATE"))
+        <a href="#" onClick="deleteObject()"><img src="images/supprimer.gif" width="130" height="17" border="0"></a>
+        <a href="#" onClick="document.objectForm.dispatcher.value='UPDATE';document.objectForm.submit();"><img src="images/modifier.gif" width="130" height="17" border="0"></a>
+      #else
+      <a href="#" onClick="document.objectForm.dispatcher.value='INSERT';document.objectForm.submit();"><img src="images/creer.gif" width="130" height="17" border="0"></a>
+      #end
+      <a href="suiv_list" ><img src="images/annuler.gif" width="130" height="17" border="0"></a>
+      </td>
+      </tr>
+  </table>
+</form>
+<p>&nbsp;</p>
+</body>
+</html>
